@@ -1,23 +1,21 @@
 package QuestionTopN;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Random;
 
 /**
  * @Class: TopNSolution
- * @Description: Partition及小顶堆 两种方式实现找出数组中的最大的前N 个元素
+ * @Description: Partition 及小顶堆 两种方式实现找出数组中的最大的前N 个元素
  * @Author: Minsky
  * @Date: 2019/7/23 16:45
  * @Version: v1.0
  */
 public class TopNSolution {
 
-
     public static void main(String[]args){
         int[] test100 = randomIntArr(30);
         show(test100);
+        copyAndSort(test100);
         int[] topN = findTopN(test100, 9);
         // 结果
         show(topN);
@@ -34,15 +32,15 @@ public class TopNSolution {
         if(null == arr || arr.length == 0 || n > arr.length || n < 1) return null;
 
         int last = arr.length - 1;
+
         int id = partition(arr , 0 , last);
-        int targetId = last -n;
-        // 前 n 大的元素出现在arr的后面
+        int targetId = last - n;
+
+        // 前n大的元素出现在arr的后面
         while(id != targetId){
             if( id < targetId){
                 id = partition(arr , id + 1 , last);
-            }
-
-            if(id > targetId){
+            }else{
                 id = partition(arr , 0 , id - 1);
             }
         }
@@ -50,7 +48,7 @@ public class TopNSolution {
         // 循环结束 代表 id == targetId
         int[] topN = new int[n];
         for(int i = 0; i < n ; i++ ){
-            topN[i] = arr[id++];
+            topN[i] = arr[++id];
         }
 
         return topN;
@@ -67,14 +65,14 @@ public class TopNSolution {
     private static int partition(int[] a, int lo , int hi){
         // 取第一个元素作为枢轴
         int pivot = a[lo];
-        int i = lo, j = hi + 1;
+        int i = lo, j = hi;
 
         while(true){
             while(less(a[++i] , pivot)){
                 if (i == hi) break;
             }
 
-            while(less(pivot,a[--j])){
+            while(less(pivot,a[j--])){
                 if(j == lo) break;
             }
 
@@ -100,6 +98,18 @@ public class TopNSolution {
         a[r] = temp;
     }
 
+    private static void copyAndSort(int[] org){
+        int len = org.length;
+        int[] copy = new int[len];
+
+        for(int i = 0 ; i < len; i++){
+            copy[i] = org[i];
+        }
+
+        Arrays.sort(copy, 0, len);
+
+        show(copy);
+    }
 
     private static void show(int[]arr){
         for(int n : arr){
