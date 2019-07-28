@@ -1,5 +1,6 @@
-package QuestionTopN;
+package interviewQuestions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -13,28 +14,75 @@ import java.util.Random;
 public class TopNSolution {
 
     public static void main(String[]args){
-        int[] test100 = randomIntArr(30);
-        show(test100);
-        copyAndSort(test100);
-        int[] topN = findTopN(test100, 9);
-        // 结果
-        show(topN);
+
+        System.out.println("----------使用partition方式----------");
+        int[] testArr = randomIntArr(30);
+        show(testArr);
+        copyAndSort(testArr);
+
+        System.out.println("----------使用小顶堆----------");
+        int[] testArr1 = randomIntArr(20);
+        show(testArr1);
+
     }
 
 
     /**
-     * 找出arr中前N大的元素
+     * 找出arr中前N大的元素，采用小顶堆实现
+     * @param arr
+     * @param n
+     * @return
+     */
+    public int[] findTopN2(int[] arr, int n){
+        return findTopN1(arr,n);
+    }
+
+
+    /**
+     * 找出数组中最小的 n 个数
+     * @param arr
+     * @param n
+     * @return
+     */
+    public static ArrayList<Integer> findButtomN(int[] arr, int n){
+        if(null == arr || arr.length == 0 || n > arr.length || n < 1) return null;
+
+        int start = 0;
+        int end = arr.length - 1;
+
+        int id = partition(arr , start , end);
+        int target = n-1;
+
+        while(id != target){
+            if(id < target){
+                id = partition(arr, id + 1, end);
+            }else{
+                id = partition(arr,start, id - 1);
+            }
+        }
+
+
+        ArrayList<Integer> intList = new ArrayList<>();
+        for(int i = 0 ; i < n ; i++){
+            intList.add(new Integer(arr[i]));
+        }
+
+        return intList;
+    }
+
+    /**
+     * 找出arr中前N大的元素: 采用快速排序的partition方式实现
      * @param arr
      * @param n
      * @return int[]
      */
-    public static int[] findTopN(int[] arr, int n){
+    public static int[] findTopN1(int[] arr, int n){
         if(null == arr || arr.length == 0 || n > arr.length || n < 1) return null;
 
         int last = arr.length - 1;
 
         int id = partition(arr , 0 , last);
-        int targetId = last - n;
+        int targetId = arr.length - n;
 
         // 前n大的元素出现在arr的后面
         while(id != targetId){
@@ -48,7 +96,7 @@ public class TopNSolution {
         // 循环结束 代表 id == targetId
         int[] topN = new int[n];
         for(int i = 0; i < n ; i++ ){
-            topN[i] = arr[++id];
+            topN[i] = arr[id++];
         }
 
         return topN;
@@ -65,14 +113,16 @@ public class TopNSolution {
     private static int partition(int[] a, int lo , int hi){
         // 取第一个元素作为枢轴
         int pivot = a[lo];
-        int i = lo, j = hi;
+        int i = lo, j = hi + 1;
 
         while(true){
+            // 这里 i,j 的操作由于在while中判断后还需要做交换处理
+            // 因此 需要保证while中的 ++/-- 操作发生在使用之前
             while(less(a[++i] , pivot)){
                 if (i == hi) break;
             }
 
-            while(less(pivot,a[j--])){
+            while(less(pivot,a[--j])){
                 if(j == lo) break;
             }
 
@@ -88,8 +138,14 @@ public class TopNSolution {
         return j;
     }
 
+    /**
+     * 这里less 指的是小于等于
+     * @param a
+     * @param b
+     * @return
+     */
     private static boolean less(int a , int b){
-        return a < b ? true : false;
+        return a <= b ? true : false;
     }
 
     private static void exchange(int[] a, int l , int r){
