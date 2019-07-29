@@ -1,6 +1,7 @@
 package utils;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
 
 /**
@@ -13,10 +14,27 @@ import java.util.Random;
 public class ArrayUtil {
 
 
+
+    /**
+     * 产生指定长度的随机数组, 随机值最大值为maxVal
+     * @param n
+     * @param maxVal
+     * @return
+     */
+    public static int[] randValueArray(int n, int maxVal){
+        int[] rands = new int[n];
+        Random random = new Random();
+
+        for(int i = 0; i < n ; i++){
+            rands[i] = random.nextInt(maxVal);
+        }
+        return rands;
+    }
+
     /**
      * 产生指定长度的随机数组, 随机值最大值不超过传参 n
      * @param n
-     * @return
+     * @return 数值有可能重复
      */
     public static int[] randValueArray(int n){
         int[] rands = new int[n];

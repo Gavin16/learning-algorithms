@@ -1,6 +1,6 @@
 /******************************************************************************
- *  Compilation:  javac Merge.java
- *  Execution:    java Merge < input.txt
+ *  Compilation:  javac MergeTwoArray.java
+ *  Execution:    java MergeTwoArray < input.txt
  *  Dependencies: StdOut.java StdIn.java
  *  Data files:   https://algs4.cs.princeton.edu/22mergesort/tiny.txt
  *                https://algs4.cs.princeton.edu/22mergesort/words3.txt
@@ -10,13 +10,13 @@
  *  % more tiny.txt
  *  S O R T E X A M P L E
  *
- *  % java Merge < tiny.txt
+ *  % java MergeTwoArray < tiny.txt
  *  A E E L M O P R S T X                 [ one string per line ]
  *    
  *  % more words3.txt
  *  bed bug dad yes zoo ... all bad yet
  *  
- *  % java Merge < words3.txt
+ *  % java MergeTwoArray < words3.txt
  *  all bad bed bug dad ... yes yet zoo    [ one string per line ]
  *  
  ******************************************************************************/
@@ -24,7 +24,7 @@
 package edu.princeton.cs;
 
 /**
- *  The {@code Merge} class provides static methods for sorting an
+ *  The {@code MergeTwoArray} class provides static methods for sorting an
  *  array using mergesort.
  *  <p>
  *  For additional documentation, see <a href="https://algs4.cs.princeton.edu/22mergesort">Section 2.2</a> of
