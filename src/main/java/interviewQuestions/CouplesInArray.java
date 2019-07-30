@@ -82,7 +82,7 @@ public class CouplesInArray {
      */
     public static int sumValueLessThanN(int[] arr, int target, boolean repeat){
         // 先不考虑重复的情况  TODO
-        // 当前思路都是 O(n^2)
+
         return 0;
     }
 
