@@ -71,6 +71,12 @@ public class ReverseList {
     }
 
 
+    /**
+     * 第一次写的东西 与 reverse 比较一下
+     * @param res
+     * @param head
+     * @param next
+     */
     private static void traverseList(ListNode res, ListNode head, ListNode next){
         if(next != null && next.next == null){
             res = next;
@@ -79,6 +85,31 @@ public class ReverseList {
             traverseList(res,head.next,next.next);
         }
         res.next = head;
+    }
+
+    /**
+     * 注意与traverseList 比较下
+     * @param pre
+     * @param cur
+     * @return
+     */
+    private static ListNode reverse(ListNode pre,ListNode cur){
+        if(cur==null) return pre;
+        ListNode next = cur.next;
+        cur.next = pre;
+        return reverse(cur,next);
+    }
+
+    public ListNode reverseList2(ListNode head) {
+        ListNode pre = null;
+        ListNode cur = head;
+        while(cur!=null) {
+            ListNode next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return pre;
     }
 
 

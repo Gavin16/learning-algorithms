@@ -1,5 +1,6 @@
 package utils;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -33,6 +34,10 @@ public class LinkedListUtil {
         return head;
     }
 
+    /**
+     * 顺序打印链表元素
+     * @param nodes
+     */
     public static void showLinkedList(ListNode nodes){
         if(null == nodes) return ;
 
@@ -42,4 +47,24 @@ public class LinkedListUtil {
         }
         System.out.println("null");
     }
+
+
+    /**
+     * 生成有序链表
+     * @param n
+     */
+    public static ListNode genSortedLinkedList(int n){
+        int[] arr = ArrayUtil.randValueArray(n);
+
+        Arrays.sort(arr);
+
+        ListNode head = new ListNode(0);
+        ListNode cur = head;
+        for(int i : arr){
+            cur.next = new ListNode(i);
+            cur = cur.next;
+        }
+        return head.next;
+    }
+
 }
