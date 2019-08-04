@@ -14,7 +14,7 @@ public class LinkedListUtil {
 
 
     /**
-     * 生成随机值的 len 长度的单向链表
+     * 生成顺序值的 len 长度的单向链表
      * @param len
      */
     public static ListNode genLinkedList(int len){
@@ -25,9 +25,9 @@ public class LinkedListUtil {
         Random random = new Random();
         for(int i = 0 ; i < len ; i++){
             if(i == 0 ){
-                cursor.val = random.nextInt(len);
+                cursor.val = i+1;
             }else{
-                cursor.next = new ListNode(random.nextInt(len));
+                cursor.next = new ListNode(i+1);
                 cursor = cursor.next;
             }
         }
