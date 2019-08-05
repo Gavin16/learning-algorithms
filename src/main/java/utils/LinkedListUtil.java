@@ -58,6 +58,16 @@ public class LinkedListUtil {
 
         Arrays.sort(arr);
 
+        return genLinkedListFromArray(arr);
+    }
+
+
+    /**
+     * 根据数组生成链表
+     * @param arr
+     * @return
+     */
+    public static ListNode genLinkedListFromArray(int[] arr){
         ListNode head = new ListNode(0);
         ListNode cur = head;
         for(int i : arr){
@@ -66,5 +76,4 @@ public class LinkedListUtil {
         }
         return head.next;
     }
-
 }
