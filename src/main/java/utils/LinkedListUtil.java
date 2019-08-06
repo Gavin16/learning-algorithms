@@ -27,7 +27,7 @@ public class LinkedListUtil {
             if(i == 0 ){
                 cursor.val = i+1;
             }else{
-                cursor.next = new ListNode(i+1);
+                cursor.next = new ListNode(random.nextInt(len));
                 cursor = cursor.next;
             }
         }
