@@ -21,7 +21,8 @@ import java.util.*;
  *                (4) 递归调用
  *
  * II 删除排序链表中的重复元素,一个也不保留
- *
+ *       方法一： 将元素及对应计数保存到HashMap中，取出所有计数为1的元素排序，排序后构建链表
+ *       方法二： 递归实现
  * @Author: wufangmin
  * @Date: 2019/11/13 10:03
  * @Version: 1.1
@@ -29,16 +30,17 @@ import java.util.*;
 public class DeleteDuplicates {
 
     public static void main(String[] args) {
-        ListNode listNode = LinkedListUtil.genSortedLinkedList(7);
+        ListNode listNode = LinkedListUtil.genSortedLinkedList(12);
 
         LinkedListUtil.showLinkedList(listNode);
 
         LinkedListUtil.showLinkedList(deleteDuplicates2(listNode));
     }
 
+    /************************** 删除排序链表中的重复元素,保留第一个 ****************************/
+
     /**
      * 构建新的链表： 使用 TreeSet 来保存每个元素，并构建新的链表
-     *
      * @param head
      * @return
      */
@@ -60,23 +62,16 @@ public class DeleteDuplicates {
         return first.next;
     }
 
-    /**
-     * 删除链表中所有含重复值的节点
-     * @param head
-     * @return
-     */
-    public static ListNode deleteAllDuplicates1(ListNode head){
-        return null;
-    }
+
 
     /**
-     * 使用HashSet 保存数据,并在
+     * 构建新的链表：使用 LinkedHashSet 保存数据
      * @param head
      * @return
      */
     public static ListNode deleteDuplicates2(ListNode head) {
         if(null == head || head.next == null) return head;
-        HashSet<Integer> set = new HashSet<>();
+        Set<Integer> set = new LinkedHashSet<>();
 
         ListNode current = head;
         do{
@@ -85,14 +80,102 @@ public class DeleteDuplicates {
         }while(current != null);
 
         List<Integer> array = new ArrayList<>(set);
-        Collections.sort(array);
 
-        ListNode first = new ListNode(0);
-        ListNode cur = head;
+        ListNode cur = new ListNode(0),first = cur;
         for(int i : array){
             cur.next = new ListNode(i);
             cur = cur.next;
         }
-        return head.next;
+        return first.next;
     }
+
+
+    /**
+     * 递归删除重复的元素,保留第一个元素
+     * @param head
+     * @return
+     */
+    public static ListNode deleteDuplicates3(ListNode head){
+        if(null == head || head.next == null) return head;
+
+        if(head.next != null && head.val == head.next.val){
+            while(head.next != null && head.val == head.next.val){
+                head = head.next;
+            }
+        }else{
+            head.next = deleteDuplicates3(head.next);
+        }
+
+
+        return head;
+    }
+
+
+
+
+
+
+
+    /************************** 删除排序链表中的重复元素,一个也不保留 ****************************/
+
+
+    /**
+     * 删除排序链表中的重复元素,一个也不保留
+     * 将元素及对应计数保存到Set中，取出所有计数为1的元素排序，排序后构建链表
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode deleteAllDuplicates1(ListNode head){
+        if(null == head || head.next == null) return head;
+        // ListNode 元素分开存 set1,set2
+        // 或者直接使用 HashMap 取value 等于1的所以key构建链表
+        Set<Integer> set1 = new LinkedHashSet<>();
+        Set<Integer> set2 = new LinkedHashSet<>();
+
+        ListNode cur = head;
+        while(cur != null){
+            Integer valKey = cur.val;
+            if(!set1.contains(valKey)){
+                set1.add(valKey);
+            }else{
+                set2.add(valKey);
+            }
+            cur = cur.next;
+        }
+
+        // set1 - set2 得到的便是只出现一次的元素
+        set1.removeAll(set2);
+
+        // set 转 ListNode
+        ListNode first = new ListNode(0),tmp = first;
+        for(Integer ele : set1){
+            tmp.next = new ListNode(ele);
+            tmp = tmp.next;
+        }
+        return first.next;
+    }
+
+    /**
+     * 删除排序链表中的重复元素,一个也不保留
+     * 递归删除
+     * @param head
+     * @return
+     */
+    public static ListNode deleteAllDuplicates2(ListNode head){
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode next = head.next;
+        if (head.val == next.val) {
+            while (next != null && head.val == next.val) {
+                next = next.next;
+            }
+            head = deleteAllDuplicates2(next);
+        } else {
+            head.next = deleteAllDuplicates2(next);
+        }
+        return head;
+    }
+
 }
