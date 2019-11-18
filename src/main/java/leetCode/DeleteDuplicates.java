@@ -34,7 +34,7 @@ public class DeleteDuplicates {
 
         LinkedListUtil.showLinkedList(listNode);
 
-        LinkedListUtil.showLinkedList(deleteDuplicates2(listNode));
+        LinkedListUtil.showLinkedList(deleteDuplicates3(listNode));
     }
 
     /************************** 删除排序链表中的重复元素,保留第一个 ****************************/
@@ -92,20 +92,31 @@ public class DeleteDuplicates {
 
     /**
      * 递归删除重复的元素,保留第一个元素
+     *
+     * 递归改写思路：
+     * 对从头到尾的每一个元素,都可以按照以下方式去判断
+     * 若当前元素与下一个元素不同，则当前元素指向下一个元素的调用
+     * 若当前元素与下一个元素相同，则当前元素循环获取相同元素中的最后一个,拿到最后一个元素后让该元素指向下一个元素的调用
+     *
+     * 这样"递"到边界条件  head.next == null  "归" 返回得到的就是最终结果
+     *
      * @param head
      * @return
      */
     public static ListNode deleteDuplicates3(ListNode head){
         if(null == head || head.next == null) return head;
 
-        if(head.next != null && head.val == head.next.val){
-            while(head.next != null && head.val == head.next.val){
-                head = head.next;
-            }
-        }else{
-            head.next = deleteDuplicates3(head.next);
-        }
+        ListNode next = head.next;
 
+        if(next != null && head.val == next.val){
+            while(next != null && head.val == next.val){
+                head = head.next;
+                next = next.next;
+            }
+            head = deleteDuplicates3(head);
+        }else{
+            head.next = deleteDuplicates3(next);
+        }
 
         return head;
     }
