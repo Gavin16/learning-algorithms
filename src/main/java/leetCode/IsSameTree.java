@@ -6,7 +6,7 @@ import java.util.Stack;
 
 /**
  * @Class: IsSameTree
- * @Description: TODO
+ * @Description:
  * @Author: Minsky
  * @Date: 2019/8/14 20:16
  * @Version: v1.0
@@ -35,7 +35,6 @@ public class IsSameTree {
 
 
     /**
-     *
      * @param p
      * @param q
      * @return

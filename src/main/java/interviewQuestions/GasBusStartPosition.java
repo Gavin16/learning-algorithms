@@ -8,9 +8,17 @@ package interviewQuestions;
  * @Version: 1.0
  *
  * @Description: 加油车对工作区域加油
+ *
+ * 字节跳动面试题：
+ * 办公场所有 N 个工作区，加油车可以围着工作区转圈，加油车GasBus 可以在每一个区域加油，同时去往下一个区域需要也会耗油
+ *
+ * 加油和耗油对应的数组定义如下数组
  * gas = [1,2,3,4,5]
  * cost = [3,4,5,1,2]
- * 返回 3
+ *
+ * 若加油车能够循环一圈则返回起始位置，否则返回 -1
+ *
+ * 例如上例的情况返回 3
  *
  */
 public class GasBusStartPosition {
