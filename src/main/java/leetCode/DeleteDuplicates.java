@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * @ClassName: DeleteDuplicates
- * @CopyRight: 百果科技
+ * @CopyRight: wufangmin
  * @Description: 删除链表中重复元素,保留第一个元素
  *
  * I 删除排序链表中的重复元素

@@ -181,7 +181,6 @@ public class MultiThreadPeriodicPrint {
         threadB.start();
         threadC.start();
 
-
 //        new ThreadB().start();
 //        new ThreadA().start();
 //        new ThreadC().start();
