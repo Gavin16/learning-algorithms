@@ -21,10 +21,12 @@ import utils.ListNode;
 public class Course7 {
 
     public static void main(String[] args) {
-        ListNode listNode = LinkedListUtil.genSortedLinkedList(5);
+        ListNode listNode1 = LinkedListUtil.genSortedLinkedList(1);
+        ListNode listNode2 = LinkedListUtil.genSortedLinkedList(2);
 
-        LinkedListUtil.showLinkedList(listNode);
-        LinkedListUtil.showLinkedList(middleNodeInList(listNode));
+        LinkedListUtil.showLinkedList(listNode1);
+        LinkedListUtil.showLinkedList(listNode2);
+        LinkedListUtil.showLinkedList(mergeSortedList(listNode1,listNode2));
     }
 
     /*********************** （1）单链表反转  *************************/
@@ -77,13 +79,32 @@ public class Course7 {
      * 合并两个有序链表
      */
     static ListNode mergeSortedList(ListNode list1,ListNode list2){
-        // 将 list2 合并到 list1 中
-        ListNode curr = list1;
-        while(curr != null){
+        if(null == list1) return list2;
+        if(null == list2) return list1;
 
+        // 使用哨兵作为新链表头结点
+        ListNode newHead = new ListNode(-1),curr = newHead;
+
+
+        //遍历完其中一个链表
+        while(list1 != null && list2 != null){
+            if(list1.val <= list2.val){
+                curr.next = list1;
+                list1 = list1.next;
+            }else{
+                curr.next = list2;
+                list2 = list2.next;
+            }
+            curr = curr.next;
         }
 
-        return list1;
+        if(list1 != null){
+            curr.next = list1;
+        }else{
+            curr.next = list2;
+        }
+
+        return newHead.next;
     }
 
     /*********************** （4）删除链表倒数第 n 个结点 *************************/
