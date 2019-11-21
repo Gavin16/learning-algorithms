@@ -3,8 +3,6 @@ package GeekTimeCourse;
 import utils.LinkedListUtil;
 import utils.ListNode;
 
-import java.util.LinkedList;
-
 /**
  * @ClassName: Course7
  * @CopyRight: wufangmin
@@ -23,10 +21,10 @@ import java.util.LinkedList;
 public class Course7 {
 
     public static void main(String[] args) {
-        ListNode listNode = LinkedListUtil.genSortedLinkedList(9);
+        ListNode listNode = LinkedListUtil.genSortedLinkedList(5);
 
         LinkedListUtil.showLinkedList(listNode);
-        LinkedListUtil.showLinkedList(deleteLastNNode(listNode,1));
+        LinkedListUtil.showLinkedList(middleNodeInList(listNode));
     }
 
     /*********************** （1）单链表反转  *************************/
@@ -132,4 +130,20 @@ public class Course7 {
         }
     }
     /*********************** （5）求链表的中间结点 *************************/
+
+    /**
+     * 使用快慢指针获取链表的中间节点并返回
+     * @param head
+     * @return
+     */
+    static ListNode middleNodeInList(ListNode head){
+        if(head == null || head.next == null || head.next.next == null) return head;
+
+        ListNode fast = head, slow = head;
+        while(fast != null && fast.next != null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
 }
