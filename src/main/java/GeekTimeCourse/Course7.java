@@ -26,7 +26,7 @@ public class Course7 {
         ListNode listNode = LinkedListUtil.genSortedLinkedList(9);
 
         LinkedListUtil.showLinkedList(listNode);
-        LinkedListUtil.showLinkedList(inverseList(listNode));
+        LinkedListUtil.showLinkedList(deleteLastNNode(listNode,1));
     }
 
     /*********************** （1）单链表反转  *************************/
@@ -89,5 +89,47 @@ public class Course7 {
     }
 
     /*********************** （4）删除链表倒数第 n 个结点 *************************/
+    /**
+     * 传参 n为倒数第几的数值
+     * @param head
+     * @param n
+     * @return
+     */
+    static ListNode deleteLastNNode(ListNode head,int n){
+        if(null == head) return head;
+        // 判断长度是否 不小于 n; 不小于n 则继续
+        int cnt = 0,pi = 1;
+        ListNode curr = head ;
+        ListNode front = new ListNode(-1),back = head,prev = head;
+        while(curr != null){
+            cnt ++;
+            if(cnt == n){
+                front = curr;
+            }
+            curr = curr.next;
+        }
+        if(cnt < n){
+            return head;
+        }
+
+        // 继续删除 back 对应的元素; 对应cnt 为链表元素总长度
+        while(front.next != null){
+            if(pi == cnt - n){
+                prev = back;
+            }
+            back = back.next;
+            front = front.next;
+            pi ++;
+        }
+
+        if(back == head){
+            // 删除第一个元素
+            return back.next;
+        }else{
+            // 删除中间元素
+            prev.next = back.next;
+            return head;
+        }
+    }
     /*********************** （5）求链表的中间结点 *************************/
 }
