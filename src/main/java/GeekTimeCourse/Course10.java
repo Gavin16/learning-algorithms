@@ -15,7 +15,6 @@ package GeekTimeCourse;
 public class Course10 {
 
     public static void main(String[] args) {
-
     }
 
     /**
