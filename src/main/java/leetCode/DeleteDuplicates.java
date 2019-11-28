@@ -79,7 +79,7 @@ public class DeleteDuplicates {
             current = current.next;
         }while(current != null);
 
-        List<Integer> array = new ArrayList<>(set);
+        List<Integer> array = new ArrayList<Integer>(set);
 
         ListNode cur = new ListNode(0),first = cur;
         for(int i : array){
