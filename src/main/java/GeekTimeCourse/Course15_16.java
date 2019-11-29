@@ -19,7 +19,7 @@ public class Course15_16 {
 //        Arrays.sort(arr);
 //        ArrayUtil.showArray(arr);
         int[] arr = {0,2,2,3,5,6,6,6,7,8,8,10,11,12};
-        System.out.println(lastSmallerValue(arr,6));
+        System.out.println(lastSmallerValue(arr,7));
     }
 
 
