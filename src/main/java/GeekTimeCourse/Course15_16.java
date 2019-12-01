@@ -29,7 +29,6 @@ public class Course15_16 {
      * 类似的立方根，多少次方根都能很快求出来
      */
     static float getNumberSqrt(int num){
-
         float high = (float)num;
         float low = 0.0f;
 
