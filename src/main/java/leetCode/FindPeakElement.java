@@ -30,6 +30,10 @@ package leetCode;
  */
 public class FindPeakElement {
 
+    public static void main(String[] args) {
+
+    }
+
     public int findPeakElement(int[] nums) {
         //使用二分查找
         int len = nums.length;
@@ -44,5 +48,25 @@ public class FindPeakElement {
             }
         }
         return hi;
+    }
+
+    /**
+     *  O(logN) 时间复杂度寻找数组中的峰值
+     *  循环改递归(1) -- （√）
+     */
+    static int findPeakElement1(int[] nums){
+        int lo = 0, hi = nums.length - 1;
+        return recursiveFind(nums,lo,hi);
+    }
+
+    static int recursiveFind(int[] nums,int low, int high){
+        if(low >= high) return high;
+        int mid = low + (high - low)/2;
+        if(nums[mid] < nums[mid+1]){
+            return recursiveFind(nums,mid + 1, high);
+        }else{
+            // 根据条件，走该分支必然是 nums[mid] > nums[mid+1]
+            return recursiveFind(nums,low,mid);
+        }
     }
 }
