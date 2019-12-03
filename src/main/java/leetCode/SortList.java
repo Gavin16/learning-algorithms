@@ -25,15 +25,12 @@ import utils.ListNode;
  * @Version: v1.0
  */
 public class SortList {
-
-
-
     public static void main(String[]args){
 
     }
 
     /**
-     * TODO
+     *  在 O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序
      * @param head
      * @return
      */

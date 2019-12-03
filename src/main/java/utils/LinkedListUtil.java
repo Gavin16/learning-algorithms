@@ -1,6 +1,7 @@
 package utils;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Random;
 
 /**
@@ -75,5 +76,45 @@ public class LinkedListUtil {
             cur = cur.next;
         }
         return head.next;
+    }
+
+
+    /**
+     * 返回输入链表的反转链表(新建)
+     */
+    public static ListNode genInversedListNode(ListNode head){
+        ListNode sentinel = new ListNode(-1);
+        ListNode curr = head;
+
+        while(curr != null){
+            ListNode sNext = sentinel.next;
+            ListNode newNode = new ListNode(curr.val);
+            sentinel.next = newNode;
+            newNode.next = sNext;
+            curr = curr.next;
+        }
+        return sentinel.next;
+    }
+
+    /**
+     * 产生指定长度的随机回文链表
+     */
+    public static ListNode genPalindromeListNode(int n){
+        if(n <= 1) return genLinkedList(n);
+        // 考虑 n >= 2 的情况
+        int halfLen = (n & 1) == 0 ? n/2 : (n/2 + 1);
+
+        // 随机产生前半段，找到前半段最后一个元素
+        ListNode frontHalf = genLinkedList(halfLen),frontCurr = frontHalf;
+        while(frontCurr != null && frontCurr.next != null) frontCurr = frontCurr.next;
+
+        if((n & 1) == 0){
+            frontCurr.next = genInversedListNode(frontHalf);
+        }else{
+            ListNode inverse = genInversedListNode(frontHalf);
+            frontCurr.next = inverse.next;
+        }
+
+        return frontHalf;
     }
 }
