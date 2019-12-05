@@ -24,10 +24,33 @@ package interviewQuestions;
 public class GasBusStartPosition {
 
     public static void main(String[] args) {
-        int[] gas = {1,2,3,4,5};
-        int[] cost = {3,4,5,1,9};
+        int[] gas = {4,5,1,2,3};
+        int[] cost = {3,4,3,1,2};
 
-        System.out.println(circlyAddGas(gas,cost));
+        System.out.println(circlyAddGas1(gas,cost));
+    }
+
+    /**
+     * 和上一版本几乎一样; 时间复杂度 O(n^2)
+     */
+    static int circlyAddGas1(int[]gas, int[]cost){
+        int len = gas.length;
+        for(int i = 0 ; i < len; i++){
+            int j = i , sum = 0;
+            do{
+                sum += gas[j];
+                sum -= cost[j];
+                if(sum >=0 ){
+                    j = (++j) % len;
+                }else{
+                    // 若 sum < 0 退出当层循环
+                    break;
+                }
+            }while(j != i);
+
+            if(sum >= 0 && j == i) return i;
+        }
+        return -1;
     }
 
 
