@@ -2,7 +2,7 @@ package leetCode;
 
 import edu.princeton.cs.Stack;
 import utils.LinkedListUtil;
-import utils.ListNode;
+import dataStruct.ListNode;
 
 /**
  * 《LeetCode 445. 两数相加 II》

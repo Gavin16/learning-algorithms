@@ -1,7 +1,7 @@
 package leetCode;
 
 import utils.LinkedListUtil;
-import utils.ListNode;
+import dataStruct.ListNode;
 
 import java.util.Stack;
 

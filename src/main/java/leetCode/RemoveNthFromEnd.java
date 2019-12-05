@@ -1,7 +1,7 @@
 package leetCode;
 
 import utils.LinkedListUtil;
-import utils.ListNode;
+import dataStruct.ListNode;
 
 /**
  * 《LeetCode 19. 删除链表的倒数第N个节点》

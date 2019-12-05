@@ -1,6 +1,6 @@
 package leetCode;
 
-import utils.ListNode;
+import dataStruct.ListNode;
 
 import java.util.HashSet;
 

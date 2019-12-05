@@ -1,5 +1,5 @@
 import utils.LinkedListUtil;
-import utils.ListNode;
+import dataStruct.ListNode;
 
 /**
  * @ClassName: SolutionReview

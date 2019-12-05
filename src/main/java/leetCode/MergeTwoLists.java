@@ -1,9 +1,7 @@
 package leetCode;
 
 import utils.LinkedListUtil;
-import utils.ListNode;
-
-import java.util.LinkedList;
+import dataStruct.ListNode;
 
 /**
  * @Class: MergeTwoLists

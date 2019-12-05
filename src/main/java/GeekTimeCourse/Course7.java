@@ -1,7 +1,7 @@
 package GeekTimeCourse;
 
 import utils.LinkedListUtil;
-import utils.ListNode;
+import dataStruct.ListNode;
 
 /**
  * @ClassName: Course7

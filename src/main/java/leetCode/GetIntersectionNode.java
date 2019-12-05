@@ -1,7 +1,7 @@
 package leetCode;
 
 import edu.princeton.cs.Stack;
-import utils.ListNode;
+import dataStruct.ListNode;
 
 /**
  * @Class: GetIntersectionNode
