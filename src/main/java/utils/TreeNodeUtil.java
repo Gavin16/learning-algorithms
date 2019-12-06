@@ -26,7 +26,22 @@ public class TreeNodeUtil {
     }
 
     /**
-     * 从数组生成 BinTree
+     * TODO 从数组生成二叉搜索树: 读取数组所有元素生成二叉搜索树
+     */
+    public static TreeNode genBinSearchTreeFromArray(int[] arr){
+        if(null == arr || arr.length == 0) return null;
+
+        TreeNode root = new TreeNode(arr[0]);
+        for(int i = 1; i < arr.length ; i++){
+
+        }
+
+        return null;
+    }
+
+
+    /**
+     * 从数组生成完全二叉树
      */
     public static TreeNode genTreeNodeFromArray(int[] arr){
         int[] vals = offsetOnePosition(arr);
@@ -108,6 +123,8 @@ public class TreeNodeUtil {
      *       B   C
      *      /\   /\
      *     D  E F  G
+     *
+     * 循环遍历实现
      */
     public static void printTreeGraph(TreeNode root){
 
