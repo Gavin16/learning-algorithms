@@ -2,6 +2,8 @@ package utils;
 
 import dataStruct.TreeNode;
 
+import java.util.Random;
+
 /**
  * @ClassName: TreeNodeUtil
  * @Description: 二叉树测试工具类
@@ -12,30 +14,114 @@ import dataStruct.TreeNode;
 public class TreeNodeUtil {
 
     /**
-     * 产生随机的 BinTree
+     * 产生指定元素个数的随机 BinTree
      */
-    public static TreeNode genRandomTreeNode(){
-        return null;
+    public static TreeNode genRandomBinTree(int n){
+        if(n <= 0 ) return null;
+        // 生成随机值数组,随机值范围 [0,2n-1)
+        int[] randVals = ArrayUtil.randValueArray(n,2*n);
+        TreeNode root = null, temp;
+        Random random = new Random();
+        for(int i = 0; i < n ; i++){
+            //插入第一个元素
+            if(root == null){
+                root = new TreeNode(randVals[i]);
+            }else{
+                // root之后每一个元素插入的位置通过 random 随机产生
+                temp = root;
+                TreeNode node = null;
+                while(node == null){
+                    int sw = random.nextInt(2);
+                    if(sw > 0){
+                        if(temp.right == null){
+                            node = new TreeNode(randVals[i]);
+                            temp.right = node;
+                        }else{
+                            temp = temp.right;
+                        }
+                    }else{
+                        if(temp.left == null){
+                            node = new TreeNode(randVals[i]);
+                            temp.left = node;
+                        }else{
+                            temp = temp.left;
+                        }
+                    }
+                }
+            }
+        }
+        return root;
     }
 
 
     public static void main(String[] args) {
-        int[] testArr = {2,3,5,4,1,8,3};
-        TreeNode res = genTreeNodeFromArray(testArr);
-        backOrderPrint(res);
+        TreeNode treeNode = genRandomBinTree(9);
+        midOrderPrint(treeNode);
     }
 
     /**
-     * TODO 从数组生成二叉搜索树: 读取数组所有元素生成二叉搜索树
+     *  随机生成制定长度的二叉搜索树
+     */
+    public static TreeNode genRandomBinSearchTree(int n){
+        int[] randVals = ArrayUtil.randValueArray(n,2*n);
+        return genBinSearchTreeFromArray(randVals);
+    }
+
+
+    /**
+     * 从数组生成二叉搜索树: 读取数组所有元素生成二叉搜索树
      */
     public static TreeNode genBinSearchTreeFromArray(int[] arr){
         if(null == arr || arr.length == 0) return null;
 
         TreeNode root = new TreeNode(arr[0]);
         for(int i = 1; i < arr.length ; i++){
-
+            insertBinSearchTree(root,arr[i]);
         }
 
+        return root;
+    }
+
+    /**
+     * 向二叉搜索树插入
+     */
+    public static void insertBinSearchTree(TreeNode root, int val){
+        if(root == null){
+            root = new TreeNode(val);
+            return;
+        }
+        TreeNode node = null, tmp = root;
+        while(node == null){
+            if(val > tmp.val){
+                if(tmp.right == null){
+                    node = new TreeNode(val);
+                    tmp.right = node;
+                }
+                tmp = tmp.right;
+            }else{
+                if(tmp.left == null){
+                    node = new TreeNode(val);
+                    tmp.left = node;
+                }
+                tmp = tmp.left;
+            }
+        }
+    }
+
+    /**
+     * 二叉搜索树中查询值为 val 的节点
+     */
+    public static TreeNode findInBinSearchTree(TreeNode root, int val){
+        if(root == null) return null;
+        TreeNode tmp = root;
+        while(tmp != null){
+            if(tmp.val == val) return tmp;
+            else if(tmp.val > val){
+                tmp = tmp.left;
+            }else{
+                tmp = tmp.right;
+            }
+        }
         return null;
     }
 
@@ -83,6 +169,7 @@ public class TreeNodeUtil {
 
     /** 前序遍历二叉树 */
     public static void preOrderPrint(TreeNode root){
+        if(root == null) return;
         print(root);
         if(root.left != null){
             preOrderPrint(root.left);
@@ -105,6 +192,8 @@ public class TreeNodeUtil {
     }
     /** 后序遍历二叉树 */
     public static void backOrderPrint(TreeNode root){
+        if(root == null) return;
+
         if(root.left != null){
             backOrderPrint(root.left);
         }
