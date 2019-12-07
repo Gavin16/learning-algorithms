@@ -7,6 +7,21 @@ import java.util.Stack;
 /**
  * @Class: IsSameTree
  * @Description:
+ *
+ * 《LeetCode 100. 相同的树》 标签: 深度优先搜索
+ *  给定两个二叉树，编写一个函数来检验它们是否相同。
+ *
+ *  如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
+ *
+ *  示例 1:
+ *
+ *  输入:       1         1
+ *            / \       / \
+ *           2   3     2   3
+ *
+ *         [1,2,3],   [1,2,3]
+ *  输出: true
+ *
  * @Author: Minsky
  * @Date: 2019/8/14 20:16
  * @Version: v1.0
@@ -35,6 +50,7 @@ public class IsSameTree {
 
 
     /**
+     * 循环实现
      * @param p
      * @param q
      * @return
@@ -69,6 +85,25 @@ public class IsSameTree {
         }
 
         return true;
+    }
+
+
+    /**
+     * 判断p,q 两棵树是否是相同的树： 递归实现
+     */
+    static boolean isSameTree1(TreeNode p, TreeNode q){
+        if(p == null && q == null){
+            return true;
+        }else if(p == null || q == null){
+            return false;
+        }else{
+            if(p.val == q.val){
+                return isSameTree1(p.left, q.left) && isSameTree1(p.right,q.right);
+            }else{
+                return false;
+            }
+        }
+
     }
 
 

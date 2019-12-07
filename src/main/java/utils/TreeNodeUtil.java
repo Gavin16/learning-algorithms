@@ -13,6 +13,17 @@ import java.util.Random;
  */
 public class TreeNodeUtil {
 
+
+    public static void main(String[] args) {
+//        TreeNode treeNode = genRandomBinTree(9);
+//        midOrderPrint(treeNode);
+        int[] arr = {4,3,5,2,7,6,5};
+        TreeNode treeNode = genTreeNodeFromArray(arr);
+        preOrderPrint(treeNode);
+    }
+
+
+
     /**
      * 产生指定元素个数的随机 BinTree
      */
@@ -54,11 +65,6 @@ public class TreeNodeUtil {
     }
 
 
-    public static void main(String[] args) {
-        TreeNode treeNode = genRandomBinTree(9);
-        midOrderPrint(treeNode);
-    }
-
     /**
      *  随机生成制定长度的二叉搜索树
      */
@@ -86,10 +92,8 @@ public class TreeNodeUtil {
      * 向二叉搜索树插入
      */
     public static void insertBinSearchTree(TreeNode root, int val){
-        if(root == null){
-            root = new TreeNode(val);
-            return;
-        }
+        if(root == null) return ;
+
         TreeNode node = null, tmp = root;
         while(node == null){
             if(val > tmp.val){
@@ -125,32 +129,35 @@ public class TreeNodeUtil {
         return null;
     }
 
+    /**
+     * 删除搜索树中val为给定值的节点
+     */
+    public static void deleteFromBinSearchTree(TreeNode root, int val){
+
+    }
+
 
     /**
      * 从数组生成完全二叉树
      */
     public static TreeNode genTreeNodeFromArray(int[] arr){
         int[] vals = offsetOnePosition(arr);
-        // vals 转二叉树
-        TreeNode root = null;
-        return initTreeNode(root,vals,1);
+        return initTreeNode(vals,1);
     }
 
     /**
      *  递归生成二叉树
      */
-    private static TreeNode initTreeNode(TreeNode root, int[] vals, int i) {
+    private static TreeNode initTreeNode(int[] vals, int i) {
         if(i >= vals.length) return null;
 
-        root = new TreeNode(vals[i]);
+        TreeNode root = new TreeNode(vals[i]);
 
         if(2*i < vals.length){
-            TreeNode left = null;
-            root.left = initTreeNode(left,vals,2*i);
+            root.left = initTreeNode(vals,2*i);
         }
         if((2*i + 1) < vals.length){
-            TreeNode right = null;
-            root.right = initTreeNode(right,vals,2*i + 1);
+            root.right = initTreeNode(vals,2*i + 1);
         }
 
         return root;
