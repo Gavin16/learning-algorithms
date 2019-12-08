@@ -38,17 +38,8 @@ public class Course24 {
     }
 
     /**
-     * 二叉搜索树：查,增,删除
+     * 二叉搜索树：查,增,删除 : 写在TreeNodeUtil上
      */
-    static void insertBinSearchTree(TreeNode root, int val){
-
-    }
-    static TreeNode findInBinSearchTree(TreeNode root, int val){
-        return null;
-    }
-    static void deleteInBinSearchTree(TreeNode root, int val){
-
-    }
 
 
 }

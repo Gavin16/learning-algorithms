@@ -1,4 +1,4 @@
-package leetCode;
+package leetCode.depthFirstSearch;
 
 import dataStruct.TreeNode;
 import edu.princeton.cs.Stack;
