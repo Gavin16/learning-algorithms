@@ -1,5 +1,6 @@
 package utils;
 
+import dataStruct.BSTNode;
 import dataStruct.TreeNode;
 
 import java.util.Random;
@@ -15,10 +16,12 @@ public class TreeNodeUtil {
 
 
     public static void main(String[] args) {
-//        TreeNode treeNode = genRandomBinTree(9);
-//        midOrderPrint(treeNode);
         int[] arr = {4,3,5,2,7,6,5};
-        TreeNode treeNode = genTreeNodeFromArray(arr);
+        BSTNode bstNode = genBinSearchTreeFromArray(arr);
+        TreeNode max = findMaxValInBinSearchTree(bstNode);
+        preOrderPrint(bstNode);
+        System.out.println();
+        TreeNode treeNode = deleteFromBinSearchTree(bstNode, 4);
         preOrderPrint(treeNode);
     }
 
@@ -68,7 +71,7 @@ public class TreeNodeUtil {
     /**
      *  随机生成制定长度的二叉搜索树
      */
-    public static TreeNode genRandomBinSearchTree(int n){
+    public static BSTNode genRandomBinSearchTree(int n){
         int[] randVals = ArrayUtil.randValueArray(n,2*n);
         return genBinSearchTreeFromArray(randVals);
     }
@@ -77,10 +80,10 @@ public class TreeNodeUtil {
     /**
      * 从数组生成二叉搜索树: 读取数组所有元素生成二叉搜索树
      */
-    public static TreeNode genBinSearchTreeFromArray(int[] arr){
+    public static BSTNode genBinSearchTreeFromArray(int[] arr){
         if(null == arr || arr.length == 0) return null;
 
-        TreeNode root = new TreeNode(arr[0]);
+        BSTNode root = new BSTNode(arr[0]);
         for(int i = 1; i < arr.length ; i++){
             insertBinSearchTree(root,arr[i]);
         }
@@ -91,20 +94,20 @@ public class TreeNodeUtil {
     /**
      * 向二叉搜索树插入
      */
-    public static void insertBinSearchTree(TreeNode root, int val){
+    public static void insertBinSearchTree(BSTNode root, int val){
         if(root == null) return ;
 
         TreeNode node = null, tmp = root;
         while(node == null){
             if(val > tmp.val){
                 if(tmp.right == null){
-                    node = new TreeNode(val);
+                    node = new BSTNode(val);
                     tmp.right = node;
                 }
                 tmp = tmp.right;
             }else{
                 if(tmp.left == null){
-                    node = new TreeNode(val);
+                    node = new BSTNode(val);
                     tmp.left = node;
                 }
                 tmp = tmp.left;
@@ -115,7 +118,7 @@ public class TreeNodeUtil {
     /**
      * 二叉搜索树中查询值为 val 的节点
      */
-    public static TreeNode findInBinSearchTree(TreeNode root, int val){
+    public static TreeNode findInBinSearchTree(BSTNode root, int val){
         if(root == null) return null;
         TreeNode tmp = root;
         while(tmp != null){
@@ -130,10 +133,85 @@ public class TreeNodeUtil {
     }
 
     /**
+     * 找出最小节点
+     */
+    public static TreeNode findMinValInBinSearchTree(BSTNode root){
+        TreeNode tmp = root;
+        if(null != tmp){
+            while(tmp.left != null){
+                tmp = tmp.left;
+            }
+        }
+        return tmp;
+    }
+
+    /**
+     * 找出最大节点
+     */
+    public static TreeNode findMaxValInBinSearchTree(BSTNode root){
+        TreeNode tmp = root;
+        if(null != tmp){
+            while(tmp.right != null){
+                tmp = tmp.right;
+            }
+        }
+        return tmp;
+    }
+
+    /**
      * 删除搜索树中val为给定值的节点
      */
-    public static void deleteFromBinSearchTree(TreeNode root, int val){
+    public static TreeNode deleteFromBinSearchTree(TreeNode root, int val){
+        // 找出值为val的节点
+        if(null == root) return null;
+        TreeNode p = null, curr = root, pp = p;
+        while(curr != null){
+            if(curr.val > val){
+                pp = curr;
+                curr = curr.left;
+            }else if(curr.val < val){
+                pp = curr;
+                curr = curr.right;
+            }else{
+                p = curr;
+                break;
+            }
+        }
+        if(p == null) return null; //未找到值为 null 的元素
 
+        // 判断节点下子节点个数,若左右子节点都不为null则删除节点后用右子树最小节点替换当前节点,并删除右子树最小节点
+        if(p.left != null && p.right != null){
+            TreeNode rcp = p,rc = p.right;
+            while(rc.left != null){
+                rcp = rc;
+                rc = rc.left;
+            }
+            p.val = rc.val;
+            // 将删除目标节点转化为删除右子树最小节点
+            pp = rcp;
+            p = rc;
+        }
+
+        // 若左右子树有一个为null或者两个都为null
+        TreeNode node;
+        if(p.left != null){
+            node = p.left;
+        }else if (p.right != null){
+            node = p.right;
+        }else{
+            node = null;
+        }
+
+        // 要删除的就是根结点，且不同时存在左子树或右子树
+        if(pp == null){
+            pp = node;
+            return pp;
+        } else if(pp.left == p){
+            pp.left = node;
+        }else{
+            pp.right = node;
+        }
+        return root;
     }
 
 
