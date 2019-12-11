@@ -3,6 +3,8 @@ package utils;
 import dataStruct.BSTNode;
 import dataStruct.TreeNode;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 /**
@@ -16,13 +18,15 @@ public class TreeNodeUtil {
 
 
     public static void main(String[] args) {
-        int[] arr = {4,3,5,2,7,6,5};
+        int[] arr = {4,3,5,2,7,6,8};
         BSTNode bstNode = genBinSearchTreeFromArray(arr);
         TreeNode max = findMaxValInBinSearchTree(bstNode);
         preOrderPrint(bstNode);
         System.out.println();
         TreeNode treeNode = deleteFromBinSearchTree(bstNode, 4);
         preOrderPrint(treeNode);
+        System.out.println("------------");
+        BFSPrint(treeNode);
     }
 
 
@@ -286,6 +290,27 @@ public class TreeNodeUtil {
             backOrderPrint(root.right);
         }
         print(root);
+    }
+
+    /**
+     * 树的广度优先遍历
+     * 遍历方式：从根节点开始逐层遍历
+     */
+    public static void BFSPrint(TreeNode root){
+        if(null == root) return ;
+        Queue<TreeNode> queue = new LinkedList<>();
+
+        queue.offer(root);
+        TreeNode current;
+        while(!queue.isEmpty()){
+            current = queue.poll();
+            print(current);
+
+            if(null != current.left)
+                queue.offer(current.left);
+            if(null != current.right)
+                queue.offer(current.right);
+        }
     }
 
     /**
