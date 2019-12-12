@@ -2,7 +2,6 @@ package GeekTimeCourse;
 
 /**
  * @ClassName: TestDTO
- * @CopyRight: 百果科技
  * @Description: 重写equals&HashCode方法
  * @Author: wufangmin
  * @Date: 2019/12/3 14:22

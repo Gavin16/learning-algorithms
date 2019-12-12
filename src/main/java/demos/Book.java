@@ -2,7 +2,6 @@ package demos;
 
 /**
  * @ClassName: Book
- * @CopyRight: 百果科技
  * @Description: 类初始化顺序及实例初始化顺序
  * @Author: wufangmin
  * @Date: 2019/12/9 11:12

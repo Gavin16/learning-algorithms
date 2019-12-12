@@ -2,7 +2,6 @@ package demos;
 
 /**
  * @ClassName: Grandpa
- * @CopyRight: 百果科技
  * @Description: 类加载验证
  * @Author: wufangmin
  * @Date: 2019/12/9 10:54

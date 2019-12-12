@@ -52,8 +52,16 @@ public class ArrayUtil {
      * @param arr
      */
     public static void showArray(int[] arr){
-        System.out.print("[");
         int len = arr.length;
+        showArray(arr,len);
+    }
+
+    /**
+     * 打印array中指定个数的元素
+     */
+    public static void showArray(int[] arr,int n){
+        System.out.print("[");
+        int len = n;
         for(int i = 0 ; i < len ; i++){
             if(i == len-1){
                 System.out.print(arr[i]);
@@ -63,6 +71,7 @@ public class ArrayUtil {
         }
         System.out.println("]");
     }
+
 
     /**
      * 统计数组中值为n的元素重复出现的次数

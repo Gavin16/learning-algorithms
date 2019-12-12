@@ -2,6 +2,7 @@ package leetCode.depthFirstSearch;
 
 import dataStruct.TreeNode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,12 +69,29 @@ public class HasPathSum {
     }
 
 
+    static List<List<Integer>> resList = new ArrayList<>();
     /**
-     *  TODO 找出所有从根结点到叶子节点路径和等于sum 的路径
-     *
-     *  采用广度优先遍历
+     *  找出所有从根结点到叶子节点路径和等于sum 的路径
      */
     static List<List<Integer>> pathSum(TreeNode root, int sum) {
-        return null;
+        List<Integer> list = new ArrayList<>();
+        dfsToMatchSum(root,list,sum);
+        return resList;
     }
+
+    /** 深度优先搜索 */
+    static void dfsToMatchSum(TreeNode root,List<Integer> list, int sum){
+        if(null == root) return;
+
+        list.add(root.val);
+        if(sum == root.val && root.left == null && root.right == null){
+            // 需要在叶子节点处将对象拷贝一份，以便返回上级调用时可以重复使用
+            resList.add(new ArrayList<>(list));
+        }
+        dfsToMatchSum(root.left,list,sum - root.val);
+        dfsToMatchSum(root.right,list,sum - root.val);
+        // 返回上一级节点需要将当前节点删除
+        list.remove(list.size()-1);
+    }
+
 }
