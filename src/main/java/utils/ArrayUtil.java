@@ -6,7 +6,7 @@ import java.util.Random;
 
 /**
  * @Class: ArrayUtil
- * @Description: TODO
+ * @Description:
  * @Author: Minsky
  * @Date: 2019/7/28 8:46
  * @Version: v1.0

@@ -2,7 +2,7 @@ package dataStruct;
 
 /**
  * @Class: ListNode
- * @Description: TODO
+ * @Description:
  * @Author: Minsky
  * @Date: 2019/8/1 16:51
  * @Version: v1.0

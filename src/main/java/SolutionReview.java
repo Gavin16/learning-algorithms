@@ -1,6 +1,9 @@
 import utils.LinkedListUtil;
 import dataStruct.ListNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @ClassName: SolutionReview
  * @CopyRight: wufangmin
@@ -12,11 +15,15 @@ import dataStruct.ListNode;
 public class SolutionReview {
 
     public static void main(String[] args) {
-        ListNode listNode = LinkedListUtil.genSortedLinkedList(3);
+//        ListNode listNode = LinkedListUtil.genSortedLinkedList(3);
+//
+//        LinkedListUtil.showLinkedList(listNode);
+//
+//        LinkedListUtil.showLinkedList(deleteAllDeplicate1(listNode));
 
-        LinkedListUtil.showLinkedList(listNode);
+        int[] data = {1,2,3,4};
+        List<List<Integer>> lists = listPermute(data);
 
-        LinkedListUtil.showLinkedList(deleteAllDeplicate1(listNode));
     }
 
     /**
@@ -50,4 +57,65 @@ public class SolutionReview {
 
         return null;
     }
+
+    /**
+     * 打印输出数组的全排列
+     */
+    static void printPermute(int[] data){
+        if(data == null) return ;
+        int len = data.length - 1 , pos = len;
+        dfsPermute(data,pos,len);
+    }
+
+
+    static List<List<Integer>> list = new ArrayList<>();
+    /**
+     *  返回数组data的所有全排列
+     */
+    static List<List<Integer>> listPermute(int[] data){
+        addDfsPermute(data,data.length-1,data.length-1);
+        return list;
+    }
+
+    static void addDfsPermute(int[] data,int k , int n){
+        if(k == 0){
+            List<Integer> row = new ArrayList<>();
+            for(int i = 0; i <= n ; i++){
+                row.add(data[i]);
+            }
+            list.add(row);
+        }else{
+            for(int j = k ; j >= 0  ; j--){
+                swap(data,j,k);
+                addDfsPermute(data,k-1,n);
+                swap(data,k,j);
+            }
+        }
+    }
+
+
+    /**
+     * dfs 打印全排列
+     */
+    static void dfsPermute(int[] data,int k , int n){
+        if(k == 0){
+            for(int i = 0; i <= n ; i++){
+                System.out.print(data[i] + " ");
+            }
+            System.out.println();
+        }else{
+            for(int j = k ; j >= 0  ; j--){
+                swap(data,j,k);
+                dfsPermute(data,k-1,n);
+                swap(data,k,j);
+            }
+        }
+
+    }
+    static void swap(int[] data, int k, int l){
+        int temp = data[k];
+        data[k] = data[l];
+        data[l] = temp;
+    }
+
 }

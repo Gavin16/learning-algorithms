@@ -7,7 +7,7 @@ import java.util.Random;
 
 /**
  * @Class: LinkedListUtil
- * @Description: TODO
+ * @Description:
  * @Author: Minsky
  * @Date: 2019/8/1 16:50
  * @Version: v1.0
