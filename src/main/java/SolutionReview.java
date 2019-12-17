@@ -1,4 +1,3 @@
-import utils.LinkedListUtil;
 import dataStruct.ListNode;
 
 import java.util.ArrayList;
@@ -61,11 +60,11 @@ public class SolutionReview {
     /**
      * 打印输出数组的全排列
      */
-    static void printPermute(int[] data){
-        if(data == null) return ;
-        int len = data.length - 1 , pos = len;
-        dfsPermute(data,pos,len);
-    }
+//    static void printPermute(int[] data){
+//        if(data == null) return ;
+//        int len = data.length - 1 , pos = len;
+//        dfsPermute(data,pos,len);
+//    }
 
 
     static List<List<Integer>> list = new ArrayList<>();
@@ -97,21 +96,21 @@ public class SolutionReview {
     /**
      * dfs 打印全排列
      */
-    static void dfsPermute(int[] data,int k , int n){
-        if(k == 0){
-            for(int i = 0; i <= n ; i++){
-                System.out.print(data[i] + " ");
-            }
-            System.out.println();
-        }else{
-            for(int j = k ; j >= 0  ; j--){
-                swap(data,j,k);
-                dfsPermute(data,k-1,n);
-                swap(data,k,j);
-            }
-        }
-
-    }
+//    static void dfsPermute(int[] data,int k , int n){
+//        if(k == 0){
+//            for(int i = 0; i <= n ; i++){
+//                System.out.print(data[i] + " ");
+//            }
+//            System.out.println();
+//        }else{
+//            for(int j = k ; j >= 0  ; j--){
+//                swap(data,j,k);
+//                dfsPermute(data,k-1,n);
+//                swap(data,k,j);
+//            }
+//        }
+//
+//    }
     static void swap(int[] data, int k, int l){
         int temp = data[k];
         data[k] = data[l];

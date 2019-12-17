@@ -2,7 +2,7 @@ package dataStruct;
 
 /**
  * @Class: TreeNode
- * @Description:
+ * @Description: 二叉树节点
  * @Author: Minsky
  * @Date: 2019/8/14 20:17
  * @Version: v1.0

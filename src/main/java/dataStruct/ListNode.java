@@ -2,7 +2,7 @@ package dataStruct;
 
 /**
  * @Class: ListNode
- * @Description:
+ * @Description: 链表节点
  * @Author: Minsky
  * @Date: 2019/8/1 16:51
  * @Version: v1.0
