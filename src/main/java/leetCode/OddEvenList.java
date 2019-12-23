@@ -1,5 +1,8 @@
 package leetCode;
 
+import dataStruct.ListNode;
+import utils.LinkedListUtil;
+
 /**
  * @ClassName: OddEvenList
  * @Description:
@@ -28,5 +31,39 @@ package leetCode;
 public class OddEvenList {
 
 
+    public static void main(String[] args) {
+        ListNode listNode = LinkedListUtil.genSortedLinkedList(9);
+        LinkedListUtil.showLinkedList(listNode);
 
+        ListNode listNode1 = oddEvenList(listNode);
+        LinkedListUtil.showLinkedList(listNode1);
+    }
+
+
+    static ListNode oddEvenList(ListNode root){
+        if(null == root || null == root.next || null == root.next.next) return root;
+
+
+
+        return root;
+    }
+
+    static ListNode oddRecursive(ListNode pre,ListNode curr){
+        if(curr == null || curr.next == null){
+            return pre;
+        }
+
+        pre.next = oddRecursive(curr.next,curr.next.next);
+
+        return pre;
+    }
+
+    static ListNode evenRecursive(ListNode pre ,ListNode curr){
+        if(curr == null || curr.next == null){
+            return curr;
+        }
+
+        curr.next = evenRecursive(curr.next,curr.next.next);
+        return curr;
+    }
 }
