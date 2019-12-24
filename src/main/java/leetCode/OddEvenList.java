@@ -32,18 +32,40 @@ public class OddEvenList {
 
 
     public static void main(String[] args) {
-        ListNode listNode = LinkedListUtil.genSortedLinkedList(16);
+        ListNode listNode = LinkedListUtil.genSortedLinkedList(9);
         LinkedListUtil.showLinkedList(listNode);
 
         ListNode listNode1 = oddEvenList(listNode);
         LinkedListUtil.showLinkedList(listNode1);
     }
 
+    /**  */
+    private static ListNode oddEvenList(ListNode head) {
+        if(null == head || null == head.next || null == head.next.next) return head;
+
+        // 链表节点数大于 3
+        ListNode odd = head, even = head.next, evenHead = even ,curr = even.next;
+        int cnt = 1;
+        while(curr != null){
+            if((cnt & 1) == 1){
+                odd.next = curr;
+                odd = odd.next;
+            }else{
+                even.next = curr;
+                even = even.next;
+            }
+            cnt ++;
+            curr = curr.next;
+        }
+        even.next = null;
+        odd.next = evenHead;
+        return head;
+    }
 
     /**
      * 官方解法：注意结束条件
      */
-    static ListNode oddEvenList(ListNode head){
+    static ListNode oddEvenList2(ListNode head){
         if(null == head || null == head.next) return head;
 
         ListNode odd = head, even = head.next, evenHead = even;
@@ -58,5 +80,6 @@ public class OddEvenList {
         odd.next = evenHead;
         return head;
     }
+
 
 }

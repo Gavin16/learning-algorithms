@@ -31,10 +31,9 @@ public class SurroundingArea {
 
 
     /**
-     *
-     *
+     * 暴力破解,对每一个值为'O'的元素判断它是否能达到边界或者本身就在边界上
+     *  若不在且不能通过'O'达到边界，则置为 'X'
      */
     static void surroundingArea(char[][] board){
-
     }
 }
