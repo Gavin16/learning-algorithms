@@ -32,7 +32,7 @@ public class OddEvenList {
 
 
     public static void main(String[] args) {
-        ListNode listNode = LinkedListUtil.genSortedLinkedList(9);
+        ListNode listNode = LinkedListUtil.genSortedLinkedList(16);
         LinkedListUtil.showLinkedList(listNode);
 
         ListNode listNode1 = oddEvenList(listNode);
@@ -40,30 +40,23 @@ public class OddEvenList {
     }
 
 
-    static ListNode oddEvenList(ListNode root){
-        if(null == root || null == root.next || null == root.next.next) return root;
+    /**
+     * 官方解法：注意结束条件
+     */
+    static ListNode oddEvenList(ListNode head){
+        if(null == head || null == head.next) return head;
 
+        ListNode odd = head, even = head.next, evenHead = even;
 
+        while(even != null && even.next != null){
+            odd.next = even.next;
+            odd = odd.next;
 
-        return root;
-    }
-
-    static ListNode oddRecursive(ListNode pre,ListNode curr){
-        if(curr == null || curr.next == null){
-            return pre;
+            even.next = odd.next;
+            even = even.next;
         }
-
-        pre.next = oddRecursive(curr.next,curr.next.next);
-
-        return pre;
+        odd.next = evenHead;
+        return head;
     }
 
-    static ListNode evenRecursive(ListNode pre ,ListNode curr){
-        if(curr == null || curr.next == null){
-            return curr;
-        }
-
-        curr.next = evenRecursive(curr.next,curr.next.next);
-        return curr;
-    }
 }
