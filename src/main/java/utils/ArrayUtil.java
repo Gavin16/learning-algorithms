@@ -60,7 +60,6 @@ public class ArrayUtil {
      * 打印array中指定个数的元素
      */
     public static void showArray(int[] arr,int n){
-        System.out.print("[");
         int len = n;
         for(int i = 0 ; i < len ; i++){
             if(i == len-1){
@@ -69,7 +68,7 @@ public class ArrayUtil {
                 System.out.print(arr[i] + ",");
             }
         }
-        System.out.println("]");
+        System.out.println("");
     }
 
 
