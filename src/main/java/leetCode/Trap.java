@@ -90,7 +90,6 @@ public class Trap {
      * 双指针遍历找出所有的有效的小区域
      *
      * 遍历判断可以盛水的依据：
-     * (1)
      *
      */
     static int trap2(int[] height) {
@@ -109,7 +108,8 @@ public class Trap {
                         lDec = true;
                     }
                 }else{
-                    // 凹陷过且当前值仍然小于左侧的值,需要再次判断右侧是否有大于当前值的，若没有则计算当前l到i的容量
+                    // 凹陷过且当前值仍然小于左侧的值
+                    // 需要再次判断右侧是否有大于当前值的，若没有则计算当前l到i的容量
                     if(!hasBiggerThanCurr(height,i)){
                         cap += calculateCap(height,l,i);
                         lDec = false;
@@ -141,6 +141,6 @@ public class Trap {
         int[] nums = {0,1,0,2,1,0,1,3,2,1,2,1};
         int[] nums1 = {4,2,3};
         int[] nums2 = {2,6,3,8,2,7,2,5,0};
-        System.out.println(trap2(nums2));
+        System.out.println(trap2(nums));
     }
 }
