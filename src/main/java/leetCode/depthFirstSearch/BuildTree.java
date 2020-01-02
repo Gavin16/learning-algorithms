@@ -53,4 +53,13 @@ public class BuildTree {
         return root;
     }
 
+
+    /**
+     * 针对以上解法在 (inorder 每次都需要遍历才能找出id)的优化
+     *  TODO
+     */
+    private static TreeNode dfsConstructTree2(int[] preorder, int sp,int tp,int[] inorder, int si,int ti){
+        return null;
+    }
+
 }
