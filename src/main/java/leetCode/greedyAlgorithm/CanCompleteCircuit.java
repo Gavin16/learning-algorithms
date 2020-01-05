@@ -65,13 +65,33 @@ public class CanCompleteCircuit {
      *  (2) 如果从k的位置出发，但是cost[k] > gas[k], 这时无法出发则跳过 k 位置
      *  (3) 当从 j 位置 开到k位置没油时, 这时应该将出发位置设置为 k+1, 因为中间经过的位置，每个位置在经过前的剩余油量都满足 sum(gas) >= 0 ，
      *  如果将出发位置选在这中间位置譬如 l, 那么在经过l前的剩余油量为空， 对于之前的 >= 0 的情况都无法通过k, 从中间开始则更加不能通过 k
-     *
+     *  (4) 若gas 所有油的总和大于 cost 的消耗总和，那么一定存在一个位置，从该位置出发定能绕完整一圈
+     *          假设从0 的位置开始出发，走到中途某个 k的位置油不够了，那么一定有 gas[0:k] 的油量 < cost[0:k]的油量，
+     *          从而可以得出 gas[k+1,end] 油量 > cost[k+1,end]的油量，那么一定存在某个位置开始可以一直开到end位置，此时开到end
+     *          依然还是会有剩油，当利用剩油一直开到k的位置时，那么之后还能否经过位置k呢？？
+     *          答案是肯定的，因为之前跳过的单个位置或者区间位置都满足 加油量 < 耗油量，这样把这些位置的加油量加起来肯定 小于 耗油量的和。
+     *          假设 之前的耗油量 - 加油量 = n. 那么从后面的某一个位置(假设该位置记为p)起一定存在某一个位置或者某一个区间 加油量之和 - 耗油量之和 >= n;
+     *          （当区间从p位置起时 取等号）
      */
     public static int canCompleteCircuit(int[] gas, int[] cost) {
-        
+        int gasSum = 0 , costSum = 0;
+        for(int i = 0; i < gas.length ; i++)
+            gasSum += gas[i];
+        for(int j = 0 ; j < cost.length ; j++)
+            costSum += cost[j];
+        if(costSum > gasSum) return -1;
 
 
-        return -1;
+        int gasLeft = 0,startPos = 0;
+        for(int k = 0 ; k < gas.length ; k++){
+            gasLeft += gas[k] - cost[k];
+            if(gasLeft < 0){
+                startPos = k+1;
+                gasLeft = 0;
+            }
+        }
+
+        return startPos;
     }
 
 }
