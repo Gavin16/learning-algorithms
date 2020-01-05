@@ -1,7 +1,5 @@
 package leetCode.greedyAlgorithm;
 
-import java.lang.reflect.Field;
-
 /**
  * 《134. 加油站》
  *  在一条环路上有 N 个加油站，其中第 i 个加油站有汽油 gas[i] 升。
@@ -61,7 +59,17 @@ public class CanCompleteCircuit {
     public static void main(String[] args) {
     }
 
+    /**
+     *  问题分析:
+     *  (1) 如果 cost数组的和 大于  gas 数组的和； 那么可以确定无论从哪里出发都不能绕一圈
+     *  (2) 如果从k的位置出发，但是cost[k] > gas[k], 这时无法出发则跳过 k 位置
+     *  (3) 当从 j 位置 开到k位置没油时, 这时应该将出发位置设置为 k+1, 因为中间经过的位置，每个位置在经过前的剩余油量都满足 sum(gas) >= 0 ，
+     *  如果将出发位置选在这中间位置譬如 l, 那么在经过l前的剩余油量为空， 对于之前的 >= 0 的情况都无法通过k, 从中间开始则更加不能通过 k
+     *
+     */
     public static int canCompleteCircuit(int[] gas, int[] cost) {
+        
+
 
         return -1;
     }
