@@ -1,8 +1,7 @@
 package leetCode.greedyAlgorithm;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 《763. 划分字母区间》
@@ -24,20 +23,40 @@ import java.util.Map;
 public class PartitionLabels {
 
     public static void main(String[] args) {
-
+        String S = "eaaaabaaec";
+        String S2 = "ababcbacadefegdehijhklij";
+        System.out.println(partitionLabels(S));
+        System.out.println(partitionLabels(S2));
     }
 
     /**
      * 算法分析：
+     * 遍历所有字符最后出现的位置存map中，
+     * 再次遍历S时，使用 headPos 和 maxLastPos 两个指针来标识最后各个
      *
      */
     static List<Integer> partitionLabels(String S) {
-        //
-        Map<Character,Integer> map = new HashMap<>();
-        for(int i = 0 ; i < S.toCharArray().length ; i++){
-            map.put(S.charAt(i),i);
+        // 可以使用数组替换map,提高执行效率
+        int[] lastIds = new int[26];
+        char[] chars = S.toCharArray();
+        for(int i = 0 ; i <chars.length ; i++){
+            lastIds[chars[i] - 'a'] = i;
         }
 
-        return null;
+        List<Integer> list = new ArrayList<>();
+        int headMaxId = lastIds[chars[0] - 'a'],preLastId = 0;
+        for(int i = 0 ; i <chars.length ; i++){
+            Integer id = lastIds[chars[i] - 'a'];
+            if(i == headMaxId){
+                list.add(i - preLastId + 1);
+                headMaxId = (i == chars.length - 1) ? -1 : lastIds[chars[i+1]-'a'];
+                preLastId = i+1;
+            }else{
+                if(id > headMaxId){
+                    headMaxId = id;
+                }
+            }
+        }
+        return list;
     }
 }
