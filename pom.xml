@@ -16,5 +16,12 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.62</version>
         </dependency>
+
+        <!-- 使用Common IO 读取外部文件-->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
     </dependencies>
 </project>
