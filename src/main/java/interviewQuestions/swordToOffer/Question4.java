@@ -1,4 +1,4 @@
-package swordToOffer;
+package interviewQuestions.swordToOffer;
 
 /**
  * @Class: Question4

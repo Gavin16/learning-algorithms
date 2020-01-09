@@ -1,4 +1,4 @@
-package swordToOffer;
+package interviewQuestions.swordToOffer;
 
 
 import java.util.Arrays;
