@@ -4,6 +4,7 @@ import dataStruct.BSTNode;
 import dataStruct.TreeNode;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
@@ -226,6 +227,30 @@ public class TreeNodeUtil {
         int[] vals = offsetOnePosition(arr);
         return initTreeNode(vals,1);
     }
+
+
+    public static TreeNode genTreeNodeFromArray(Integer[] arr){
+        return initTreeNode(arr,0);
+    }
+
+    /**
+     *  递归生成二叉树，二叉树中间节点可以为 null
+     */
+    private static TreeNode initTreeNode(Integer[] nums , int i){
+        if(i >= nums.length || nums[i] == null) return null;
+
+        TreeNode root = new TreeNode(nums[i]);
+
+        if(2*i + 1 < nums.length){
+            root.left = initTreeNode(nums,2*i + 1);
+        }
+        if((2*i + 2) < nums.length){
+            root.right = initTreeNode(nums,2*i + 2);
+        }
+
+        return root;
+    }
+
 
     /**
      *  递归生成二叉树
