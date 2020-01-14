@@ -283,36 +283,53 @@ public class TreeNodeUtil {
 
     /** 前序遍历二叉树 */
     public static void preOrderPrint(TreeNode root){
+        recursivePreOrder(root);
+        System.out.println();
+    }
+
+    private static void recursivePreOrder(TreeNode root){
         if(root == null) return;
         print(root);
         if(root.left != null){
-            preOrderPrint(root.left);
+            recursivePreOrder(root.left);
         }
         if(root.right != null){
-            preOrderPrint(root.right);
+            recursivePreOrder(root.right);
         }
     }
+
     /** 中序遍历二叉树 */
     public static void midOrderPrint(TreeNode root){
+        recursiveMidOrder(root);
+        System.out.println();
+    }
+
+    private static void recursiveMidOrder(TreeNode root){
         if(root == null) return ;
 
         if(root.left != null){
-            midOrderPrint(root.left);
+            recursiveMidOrder(root.left);
         }
         print(root);
         if(root.right != null){
-            midOrderPrint(root.right);
+            recursiveMidOrder(root.right);
         }
     }
+
     /** 后序遍历二叉树 */
     public static void backOrderPrint(TreeNode root){
+        recursiveBackOrder(root);
+        System.out.println();
+    }
+
+    private static void recursiveBackOrder(TreeNode root){
         if(root == null) return;
 
         if(root.left != null){
-            backOrderPrint(root.left);
+            recursiveBackOrder(root.left);
         }
         if(root.right != null){
-            backOrderPrint(root.right);
+            recursiveBackOrder(root.right);
         }
         print(root);
     }

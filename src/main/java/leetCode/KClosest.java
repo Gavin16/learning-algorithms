@@ -1,6 +1,6 @@
 package leetCode;
 
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * @Class: KClosest
@@ -78,4 +78,19 @@ public class KClosest {
 
         return res;
     }
+
+    /**
+     * 对二维数组升序排序，返回前k个元素
+     */
+    public static int[][] kClosest1(int[][] points, int K) {
+        List<int[]> list = Arrays.asList(points);
+        Collections.sort(list, Comparator.comparingInt(o -> (o[0] * o[0] + o[1] * o[1])));
+
+        int[][] res = new int[K][2];
+        for(int j = 0 ; j < K ; j++){
+            res[j] = list.get(j);;
+        }
+        return res;
+    }
+
 }
