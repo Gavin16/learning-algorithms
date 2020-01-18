@@ -26,16 +26,26 @@ public class GenerateParenthesis {
         System.out.println(strings);
     }
 
-    private static BitSet bits = new BitSet();
 
     public static List<String> generateParenthesis(int n) {
         List<String> result = new ArrayList<>();
         if(n < 1) return result;
-        recursiveGen(result,n,0,0,0);
+        recursiveGen(result,n,0,0,"");
         return result;
     }
 
-    private static void recursiveGen(List<String> res, int n, int left, int right,int id){
-
+    private static void recursiveGen(List<String> res, int n, int left, int right,String str){
+        if(n >= left && left >= right){
+            if(n > left && left >= right){
+                recursiveGen(res, n, left+1, right, str+"(");
+                if(left > right){
+                    recursiveGen(res, n, left, right+1, str+")");
+                }
+            }else if(n == left && left > right){
+                recursiveGen(res, n, left, right+1, str+")");
+            }else if(n == left && right == left){
+                res.add(str);
+            }
+        }
     }
 }
