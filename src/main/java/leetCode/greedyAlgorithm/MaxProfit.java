@@ -35,14 +35,61 @@ public class MaxProfit {
         int[] prices1 ={7,6,4,3,1};
         int[] prices2 ={1,2,3,4,5};
         int[] prices3 ={7,1,5,3,6,4};
-        System.out.println(maxProfit(prices1));
-        System.out.println(maxProfit(prices2));
+        System.out.println(maxProfit2(prices1));
+        System.out.println(maxProfit2(prices2));
+        System.out.println(maxProfit2(prices3));
+
         System.out.println(maxProfit(prices3));
     }
 
 
+    /**
+     *  《121. 买卖股票的最佳时机》
+     *   给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。
+     *
+     * 如果你最多只允许完成一笔交易（即买入和卖出一支股票），设计一个算法来计算你所能获取的最大利润。
+     *
+     * 注意你不能在买入股票前卖出股票。
+     *
+     * 示例 1:
+     *
+     * 输入: [7,1,5,3,6,4]
+     * 输出: 5
+     * 解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+     *      注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格。
+     * 示例 2:
+     *
+     * 输入: [7,6,4,3,1]
+     * 输出: 0
+     * 解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+     *
+     * 这里不采用O(n^2)解法，采用动态规划的解法(用空间换时间)
+     *
+     * 动态规划状态转移方程: 第i天的最大收益  =  Max(第i天能获取的收益, 前i-1天的最大收益)
+     * 需要注意是， 对于第i天最大收益的计算，可以通过记录第i天前的最低价格来实现。
+     *
+     *
+     */
+    public static int maxProfit(int[] prices){
+        if(null == prices || prices.length < 2) return 0;
+        int min = prices[0];
+        int max = 0;
+        for(int i = 0 ; i < prices.length ; i++){
+            if(prices[i] < min){
+                min = prices[i];
+            }
+            if(prices[i] - min > max) max = prices[i]-min;
+        }
+        return max;
+    }
 
-    public static int maxProfit(int[] prices) {
+
+    /**
+     * 《122. 买卖股票的最佳时机 II》
+     *
+     *
+     */
+    public static int maxProfit2(int[] prices) {
         int profit = 0;
         for(int i = 1 ; i < prices.length; i ++){
             if(prices[i] > prices[i-1]){
