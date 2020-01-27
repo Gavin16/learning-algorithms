@@ -20,9 +20,10 @@ public class SolutionReview {
 //
 //        LinkedListUtil.showLinkedList(deleteAllDeplicate1(listNode));
 
-        int[] data = {1,2,3,4};
+        int[] data = {2,2,3,4};
         List<List<Integer>> lists = listPermute(data);
-
+        System.out.println(lists);
+        System.out.println("lists size " + lists.size());
     }
 
     /**
