@@ -79,4 +79,25 @@ public class HasCycle {
         return false;
     }
 
+
+    /**
+     *
+     * 《GeekTime -- practice day01》
+     * 判断一个链表中是否存在环
+     *
+     * 链表判环 还是首先想到快慢指针
+     *
+     */
+    public static boolean hasCycle2(ListNode head) {
+        if(null == head || head.next == null) return false;
+
+        ListNode slow = head, fast = slow;
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+            if(fast == slow) return true;
+        }
+        return false;
+    }
+
 }

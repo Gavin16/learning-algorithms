@@ -2,10 +2,7 @@ package leetCode;
 
 import utils.ArrayUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @ClassName: ThreeSum
@@ -90,10 +87,125 @@ public class ThreeSum {
 
 
     public static void main(String[] args) {
-        int[] nums = {-1, 0, 1, 2, -1, -4};
-        List<List<Integer>> lists = threeSum(nums);
-        for(List<Integer> list : lists){
-            System.out.println(list);
+        int[] nums = {-1, 0, 1, 2, -1, -4,-1};
+        int[] nums1 = {0,0,0,0};
+        int[] nums2 = {-2,0,0,2,2};
+        int[] nums3 = {-4,-2,1,-5,-4,-4,4,-2,0,4,0,-2,3,1,-5,0};
+        Arrays.sort(nums3);
+        ArrayUtil.showArray(nums3);
+//        List<List<Integer>> lists = threeSum(nums);
+//        for(List<Integer> list : lists){
+//            System.out.println(list);
+//        }
+
+        threeSum2(nums3);
+        System.out.println(result);
+        System.out.println(threeSum3(nums3));
+    }
+
+
+
+    /**
+     *  解题思路
+     *
+     *  考虑是否可以使用回溯算法？   ---  可以回溯解决, 怎么去重？？ 参考《40. 组合总和 II》
+     *
+     */
+    public static List<List<Integer>> threeSum2(int[] nums) {
+        if(null == nums || nums.length == 0) return new ArrayList<>();
+        Arrays.sort(nums);
+        dfs(nums,nums.length,0);
+        return result;
+    }
+    private static List<List<Integer>> result = new ArrayList<>();
+    private static List<Integer> combin = new ArrayList<>();
+    private static Set<Integer> set = new HashSet<>();
+
+    private static void dfs(int[]nums ,int len, int i){
+        if(i == len || combin.size() > 2) return;
+        // 当前是第三个数，且满足 a+b+c = 0;
+        if(combin.size() == 2 && combin.get(0) + combin.get(1) + nums[i] == 0 ){
+            combin.add(nums[i]);
+            result.add(new ArrayList<>(combin));
+            return;
+        }
+
+        if( i < len && len - i + combin.size()  >= 2){
+
+            // 跳过当前元素，跳过规则:
+            // 若下一个元素与当前元素相同，则找出i之后第一个不同的元素
+            // 若下一元素与当前元素不同，则取 i+1 作为下一个元素
+            int nextId = getNextId(nums,i);
+            dfs(nums,len,nextId);
+
+            combin.add(nums[i]);
+            dfs(nums,len,i+1);
+            combin.remove(combin.size()-1);
         }
     }
+
+    private static int getNextId(int[] nums, int i) {
+        int j = i+1;
+        for(; j < nums.length ; j++){
+            if(nums[j] == nums[i]) continue;
+            else break;
+        }
+        return j;
+    }
+
+
+    /**
+     * 三数之和循环解法：
+     * 《GeekTime -- practice day01》
+     * (1) 先对数组排序
+     * (2) 按顺序从左至右固定一个元素，然后对这之后的元素求两数之和
+     * (3) 如果固定的元素自身大于 0, 则介绍循环(因为最小的数大于0，三数之和不可能为0)
+     * (4) 若固定的元素的当前元素和前一个元素相同则跳过当前元素
+     */
+    public static List<List<Integer>> threeSum3(int[]nums){
+        if(null == nums || nums.length < 3) return new ArrayList<>();
+
+        Arrays.sort(nums);
+        int pre = nums[0] , len = nums.length;
+        List<List<Integer>> result = new ArrayList<>();
+        for(int i = 0 ; i < len ; i++){
+            if(i > 0 && pre == nums[i]){
+                continue;
+            }else{
+                // 求nums 中 i 到 len 范围内是否存在满足 两数之和等于 -nums[i]
+                twoSum(result,nums,i,len);
+                pre = nums[i];
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 两数之和去重做法：
+     * 判断其中一个指针是否与前一个值相同 ，若相同则跳过，此时保持另一个指针不变
+     */
+    private static void twoSum(List<List<Integer>> result, int[] nums, int i, int len) {
+        if(i + 3 <= len){
+            int j = i + 1 , k = len - 1, target = -1*nums[i];
+            int pj = j , pjv = nums[j];
+            while(j < k){
+                if(nums[j] + nums[k] > target){
+                    k -- ;
+                }else if(nums[j] + nums[k] < target){
+                    j++;
+                }else{
+                    if(j == pj || nums[j] != pjv){
+                        List<Integer> combin = new ArrayList<>();
+                        combin.add(nums[i]);
+                        combin.add(nums[j]);
+                        combin.add(nums[k]);
+                        result.add(combin);
+                        pjv = nums[j];
+                    }
+                    j++;k--;
+                }
+            }
+        }
+    }
+
 }
