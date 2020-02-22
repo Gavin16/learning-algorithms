@@ -49,12 +49,18 @@ public class MyCircularDeque {
 
 
     public static void main(String[] args) {
-        MyCircularDeque deque = new MyCircularDeque(5);
+        MyCircularDeque deque = new MyCircularDeque(3);
 
-        deque.insertFront(7);
-        deque.insertLast(0);
-        int front = deque.getFront();
-        boolean b = deque.insertLast(3);
+        deque.insertLast(1);
+        deque.insertLast(2);
+        deque.insertFront(3);
+        deque.insertFront(4);
+        int front = deque.getRear();
+        boolean isFull = deque.isFull();
+        deque.deleteLast();
+        deque.insertFront(4);
+        deque.getFront();
+
         deque.getFront();
         deque.insertFront(9);
         deque.getRear();
@@ -88,15 +94,20 @@ public class MyCircularDeque {
     /** Adds an item at the front of Deque. Return true if the operation is successful. */
     public boolean insertFront(int value) {
         if(size == cap) return false;
-        if(head < 0){
-            // 数据向后移位一个，由于size < cap ,因此tail 肯定小于 size
-            for(int i = tail ; i >=0; i--){
-                nums[i+1] = nums[i];
-            }
-            nums[0] = value;
-            tail++;
+
+        if(head > 0){
+            nums[--head] = value;
         }else{
-            nums[head--] = value;
+            if(size == 0){
+                nums[head] = value;
+                tail++;
+            }else{
+                for(int i = size ; i > 0 ; i--){
+                    nums[i] = nums[i-1];
+                }
+                nums[head] = value;
+                tail++;
+            }
         }
         size ++;
         return true;
@@ -105,18 +116,17 @@ public class MyCircularDeque {
     /** Adds an item at the rear of Deque. Return true if the operation is successful. */
     public boolean insertLast(int value) {
         if(size == cap) return false;
-        if(tail == cap-1){
-            // 若队尾已经到数组末尾，则将队列所有元素移动到数组最前端
-            if(head > -1){
-                for(int k = head + 1; k <= tail ; k++){
-                    nums[k - head - 1] = nums[k];
-                }
-                head = -1;
-                tail = tail - head - 1;
-            }
 
+        if(tail == cap){
+            for(int i = 0 ; i< size ; i++){
+                nums[i] = nums[tail - size + i];
+            }
+            head = 0;tail = size;
+            nums[tail++] = value;
+        }else{
+            // tail < cap
+            nums[tail++] = value;
         }
-        nums[++tail] = value;
         size++;
         return true;
     }
