@@ -65,4 +65,9 @@ public class IsValidBST {
         nodeValueCheck(root.left,lLess,lGreat);
         nodeValueCheck(root.right,rLess,rGreat);
     }
+
+
+    public static boolean isValidBST1(TreeNode root) {
+        return false;
+    }
 }
