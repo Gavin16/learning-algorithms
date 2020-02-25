@@ -1,5 +1,7 @@
 package leetCode;
 
+import java.util.Arrays;
+
 /**
  * 《146. LRU缓存机制》
  *
@@ -28,18 +30,56 @@ package leetCode;
 public class LRUCache {
 
 
+    // 双向链表首尾结点
+    private Node head;
+    private Node tail;
 
 
+    private int cap;
+
+    private Node[] tab;
 
     public LRUCache(int capacity) {
-
+        this.cap = capacity;
+        tab = new Node[capacity];
     }
 
     public int get(int key) {
-        return -1;
+        Node node = tab[key-1];
+        if(null == node) return -1;
+
+        if(node != head){
+            Node temp = node.next;
+            node.next = head;
+            node.pre.next = temp;
+            head = node;
+            if(head == tail){
+                tail = node.pre;
+            }
+        }
+        return node.val;
     }
 
     public void put(int key, int value) {
+        Node curr = tab[key-1];
+        if(curr == null){
+            curr = new Node(value);
+        }else{
+            curr.val = value;
+        }
 
+        tab[key-1] = curr;
+    }
+
+    private class Node{
+        int val;
+        // hash拉链指针
+        Node hNext;
+        // 双向链表指针
+        Node pre;
+        Node next;
+        public Node(int val){
+            this.val = val;
+        }
     }
 }
