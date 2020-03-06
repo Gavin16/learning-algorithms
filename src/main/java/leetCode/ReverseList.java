@@ -29,8 +29,9 @@ public class ReverseList {
     public static void main(String[]args){
         ListNode listNode = LinkedListUtil.genLinkedList(5);
         LinkedListUtil.showLinkedList(listNode);
-        ListNode res = reverseList1(listNode);
-        LinkedListUtil.showLinkedList(res);
+//        ListNode res = reverseList1(listNode);
+//        LinkedListUtil.showLinkedList(res);
+        LinkedListUtil.showLinkedList(reverseList3(listNode));
     }
 
     public static ListNode reverseList(ListNode head) {
@@ -86,6 +87,24 @@ public class ReverseList {
         }
         res.next = head;
     }
+
+    /**
+     *  循环反转链表
+     */
+    public static ListNode reverseList3(ListNode node){
+        if(node == null || node.next == null) return node;
+        ListNode pre = node, curr = node.next;
+
+        while(curr != null){
+            ListNode tmp = curr.next;
+            curr.next = pre;
+            pre = curr;
+            curr = tmp;
+        }
+        node.next = null;
+        return pre;
+    }
+
 
     /**
      * 注意与traverseList 比较下
