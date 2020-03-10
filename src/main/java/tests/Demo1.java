@@ -1,6 +1,7 @@
 package tests;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,5 +27,10 @@ public class Demo1 {
         for(int i = 0 ; i < list.size() ;i++){
             System.out.println(list.get(i) == list1.get(i));
         }
+
+        String [] strArr = {"csd",null,"abc"};
+        Object[] objects = Arrays.copyOf(strArr, strArr.length +1, Object[].class);
+
+
     }
 }
