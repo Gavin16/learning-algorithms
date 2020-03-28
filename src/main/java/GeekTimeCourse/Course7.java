@@ -167,4 +167,14 @@ public class Course7 {
         }
         return slow;
     }
+
+
+
+
+
+
+
+    public static ListNode middleNode(ListNode head) {
+        return null;
+    }
 }
