@@ -44,9 +44,11 @@ public class Rob {
         TreeNodeUtil.preOrderPrint(treeNode);
 
         System.out.println(rob3(treeNode));
-        int[] xx = {1,2,3,1};
+        int[] xx = {1};
         System.out.println(rob1X(xx));
         System.out.println(rob1XX(xx));
+
+        System.out.println(massage(xx));
     }
 
 
@@ -169,6 +171,26 @@ public class Rob {
         }
         return max;
     }
+
+
+    /**
+     *  《面试题 17.16. 按摩师》 按摩师问题 同打家劫舍
+     *
+     *  一个有名的按摩师会收到源源不断的预约请求，每个预约都可以选择接或不接。在每次预约服务之间要有休息时间，
+     *  因此她不能接受相邻的预约。给定一个预约请求序列，替按摩师找到最优的预约集合（总预约时间最长），返回总的分钟数。
+     *
+     */
+    public static int massage(int[] nums) {
+        int[] dpm = new int[nums.length + 2];
+        dpm[0] = 0 ;
+        dpm[1] = 0;
+        for(int k = 0 ; k < nums.length ; k++){
+            dpm[k+2] = Math.max(nums[k] + dpm[k],dpm[k+1]);
+        }
+        return dpm[nums.length+1];
+    }
+
+
 
     /**
      * 《337. 打家劫舍 III》

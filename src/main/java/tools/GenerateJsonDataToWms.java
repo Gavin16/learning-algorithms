@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * 仅限到货推送WMS使用
  */
-public class GenerateJsonData {
+public class GenerateJsonDataToWms {
 
     public static void main(String[] args) throws Exception{
         String inputFilePath = "C:\\Users\\kupat\\Desktop\\messageToWms.xlsx";
@@ -41,7 +41,6 @@ public class GenerateJsonData {
                 }
                 setDetailInfo(detailList,detailDto,cell,j);
             }
-            System.out.println();
         }
         headDto.setDetailsItem(detailList);
         System.out.println(JSON.toJSONString(headDto));
@@ -49,7 +48,7 @@ public class GenerateJsonData {
         fileInput.close();
     }
 
-    private static void setDetailInfo(List<DetailDto> detailList,DetailDto detailDto, XSSFCell cell, int j) {
+    protected static void setDetailInfo(List<DetailDto> detailList,DetailDto detailDto, XSSFCell cell, int j) {
         switch (j){
             case 1:detailDto.setDetailId(cell.getStringCellValue());break;
             case 9:detailDto.setGoodsCode(cell.getStringCellValue());break;
@@ -68,7 +67,7 @@ public class GenerateJsonData {
         }
     }
 
-    private static void setHeadInfo(HeadDto headDto, XSSFCell cell, int j) {
+    static void setHeadInfo(HeadDto headDto, XSSFCell cell, int j) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         switch (j){
             case 0:headDto.setArrivedOrderNo(cell.getStringCellValue()); break;

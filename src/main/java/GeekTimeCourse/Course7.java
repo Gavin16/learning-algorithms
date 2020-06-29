@@ -173,8 +173,18 @@ public class Course7 {
 
 
 
-
+    /**
+     * 链表存在head节点 作为哨兵节点
+     * 找出链表的中间节点: 如果有两个中间节点，返回后面一个
+     */
     public static ListNode middleNode(ListNode head) {
-        return null;
+        if(head.next == null || head.next.next == null) return head.next;
+        ListNode slow = head, fast = slow;
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return fast == null ? slow : slow.next;
     }
 }
