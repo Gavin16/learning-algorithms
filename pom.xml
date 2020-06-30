@@ -17,6 +17,15 @@
             <version>1.2.62</version>
         </dependency>
 
+
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
+        </dependency>
+
+
         <!-- 使用Common IO 读取外部文件-->
         <dependency>
             <groupId>commons-io</groupId>
