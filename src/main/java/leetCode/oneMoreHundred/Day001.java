@@ -25,7 +25,8 @@ public class Day001 {
 
     public static void main(String[] args) {
         int[] input = new int[]{0,1,0,3,12};
-        moveZeroes(input);
+//        moveZeroes1(input);
+        moveZeroes2(input);
         ArrayUtil.showArray(input);
     }
 
@@ -35,7 +36,7 @@ public class Day001 {
      * @Version: 版本1： 从前到后遍历数组, 数组中非零元素写入 nums[id] 中
      * @param nums
      */
-    public static void moveZeroes(int[] nums) {
+    public static void moveZeroes1(int[] nums) {
         if(null == nums) return;
         int id = 0;
         for(int n : nums){
@@ -47,6 +48,23 @@ public class Day001 {
             nums[k] = 0;
         }
     }
+
+    /**
+     * @Title: 283 移动零
+     * @Version: 版本2： 双下标在数组中交换元素，一次for循环
+     * @param nums
+     */
+    public static void moveZeroes2(int[] nums) {
+        if(null == nums) return;
+        for(int i =0 , j = 0 ; i < nums.length ; i++){
+            if(nums[i] != 0){
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j++] = temp;
+            }
+        }
+    }
+
 
     /**
      * @Title: 155. 最小栈
