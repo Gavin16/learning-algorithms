@@ -176,4 +176,46 @@ public class Day003 {
         return null;
     }
 
+
+    /**
+     * @Title: 剑指 Offer 22. 链表中倒数第k个节点
+     * @Version: 版本1 双指针遍历
+     * @param head
+     * @param k
+     * @return
+     */
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        if(k <=0 || null == head) return head;
+        ListNode front = head,back = head;
+        while(k > 1 && front != null){
+            front = front.next;
+            k--;
+        }
+        if(front == null) return null;
+
+        while(front.next != null){
+            front = front.next;
+            back = back.next;
+        }
+        return back;
+    }
+
+    /**
+     * @Title: 876. 链表的中间结点
+     * @Version: 版本1: 快慢指针寻找中间节点
+     * @param head
+     * @return
+     */
+    public ListNode middleNode(ListNode head) {
+        if(null == head || head.next == null) return head;
+
+        ListNode slow = head, fast = head.next.next;
+
+        while(fast!= null && fast.next != null){
+            head = head.next;
+            fast = fast.next.next;
+        }
+        return slow.next;
+    }
+
 }
