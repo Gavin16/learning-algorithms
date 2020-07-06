@@ -1,5 +1,9 @@
 package leetCode.oneMoreHundred;
 
+import com.alibaba.fastjson.JSON;
+import utils.ArrayUtil;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +31,11 @@ public class Day004 {
         int[] testArr = {2,2,1};
         System.out.println(singleNumber(testArr));
 
+        //
+        int[] testArr2 ={4,3,2,7,8,2,3,1};
+        List<Integer> list = findDisappearedNumbers(testArr2);
+        System.out.println(JSON.toJSONString(list));
+
 
     }
 
@@ -47,11 +56,23 @@ public class Day004 {
 
     /**
      * @Title: 448. 找到所有数组中消失的数字
-     * @Version:
+     * @Version: 版本1 原地修改出下标为出现过的数值(n-1) 的元素值为-1
      * @param nums
      * @return
      */
-    public List<Integer> findDisappearedNumbers(int[] nums) {
-        return null;
+    public static List<Integer> findDisappearedNumbers(int[] nums) {
+        for(int n : nums){
+            n = n < 0 ? (-1)*n : n;
+            if(nums[n-1] > 0){
+                nums[n-1] = nums[n-1] * (-1);
+            }
+        }
+        List<Integer> list = new ArrayList<>();
+        for(int i = 0 ; i < nums.length ; i++){
+            if(nums[i] > 0){
+                list.add(i+1);
+            }
+        }
+        return list;
     }
 }
