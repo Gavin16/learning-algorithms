@@ -1,8 +1,6 @@
 package leetCode.oneMoreHundred;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -49,5 +47,18 @@ public class Day005 {
             visited.add(n);
         }
         return pairs.size();
+    }
+
+
+
+    /**
+     * @Title： 532. 数组中的K-diff数对
+     * @Version: 版本2  TODO
+     * @param nums
+     * @param k
+     * @return
+     */
+    public static int findPairs1(int[] nums, int k) {
+        return -1;
     }
 }
