@@ -24,6 +24,10 @@ public class Day005 {
     public static void main(String[] args) {
         int[] test = {1, 3, 1, 5, 4};
         System.out.println(findPairs(test,0));
+
+        // 测试快排枢轴
+        int[] arr = {7,3,6,4,2,5,8};
+        System.out.println(testPartition(arr));
     }
 
     /**
@@ -59,6 +63,37 @@ public class Day005 {
      * @return
      */
     public static int findPairs1(int[] nums, int k) {
+
+
         return -1;
+    }
+
+
+    /**
+     * 快排 partition方法测试
+     * 当 i != j 时，nums[i] > pivot ，这时遇到nums[j] < pivot 时 交换nums[i] 和 nums[j] 可以确保[0,i) 范围都是小于 pivot
+     * 当 i == j 时, [0,i) 范围内所有元素都小于 pivot
+     *
+     * @param nums
+     * @return
+     */
+    public static int testPartition(int[]nums){
+        if(nums == null || nums.length < 1) return -1;
+        int pivot = nums[nums.length-1] , i = 0;
+        for(int j = i ; j < nums.length ; j++){
+            if(nums[j] < pivot){
+                swap(nums,j,i);
+                i++;
+            }
+        }
+        swap(nums,i,nums.length-1);
+        return i;
+    }
+
+
+    private static void swap(int[] nums , int j , int k){
+        int temp = nums[j];
+        nums[j] = nums[k];
+        nums[k] = temp;
     }
 }
