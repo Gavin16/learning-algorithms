@@ -2,6 +2,9 @@ package leetCode.oneMoreHundred;
 
 import utils.ArrayUtil;
 
+import java.util.Deque;
+import java.util.LinkedList;
+
 /**
  * @Date: 2020年7月13日
  * ==============================================================================
@@ -25,7 +28,8 @@ public class Day006 {
         int[] ints2 = dailyTemperatures(test2);
         ArrayUtil.showArray(ints2);
 
-
+        int[] ints = dailyTemperatures2(test2);
+        ArrayUtil.showArray(ints);
     }
 
     /**
@@ -68,13 +72,23 @@ public class Day006 {
 
     /**
      * @Title: 739. 每日温度
-     * @Version: 版本2
+     * @Version: 版本2 使用单调栈
      * @param T
      * @return
      */
     public static int[] dailyTemperatures2(int[] T) {
-        if(T.length == 1) return new int[1];
-
-        return null;
+        if(T.length == 1){
+            return new int[1];
+        }
+        Deque<Integer> stack = new LinkedList<>();
+        int[] res = new int[T.length];
+        for(int k = 0 ; k < T.length ; k++){
+            while(!stack.isEmpty() && T[k] > T[stack.peek()]){
+                Integer pop = stack.pop();
+                res[pop] = k - pop;
+            }
+            stack.push(k);
+        }
+        return res;
     }
 }
