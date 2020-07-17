@@ -75,12 +75,32 @@ public class Day008 {
 
     /**
      * @Title: 121. 买卖股票的最佳时机
-     * @Version: 版本1 动态规划实现
+     * @Version: 版本1 比较所有时刻的价格与历史最低价格的差价获取最大收益
+     * 可行原因: 控制变量的做法
+     * 要想收益最大 ，在遍历时有两方面的要求： 1 买入价格尽可能低， 2 卖出价格尽可能高
+     *
+     * 但是本质而言我们要的是 卖出价-买入价  的差价最大，而要使差价最大正常我们需要两两比较找出最大的差价，
+     * 这就是暴力破解法，两次循环实现。
+     *
+     * 我们从前至后的遍历数组元素,同时记录当前碰到的最低价和最大差价, 当一段时间内最低价不变时，卖出时刻的最高价
+     * 就决定了差价大小，当最低价变小时，变小前的那一段时间内的最大差价会和变下之后的一段时间内的差价做比较
+     * 最终保存最大的差价返回
+     *
+     *
+     *
      * @param prices
      * @return
      */
     public int maxProfit(int[] prices) {
-
+        int maxProfit = 0,minPrice = Integer.MAX_VALUE;
+        for(int n : prices){
+            if(n < minPrice){
+                minPrice = n;
+            }else if(maxProfit < n - minPrice){
+                maxProfit = n - minPrice;
+            }
+        }
+        return maxProfit;
     }
 
     /**
@@ -92,6 +112,6 @@ public class Day008 {
      * @return
      */
     public static int maxProfit(int[] prices, int fee) {
-
+        return -1;
     }
 }
