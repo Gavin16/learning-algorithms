@@ -45,7 +45,7 @@ package leetCode.oneMoreHundred;
  * 0 <= nums.length <= 100
  * 0 <= nums[i] <= 400
  * ==============================================================================
- * 面试题 16.17. 连续数列 【动态规划，】
+ * 面试题 16.17. 连续数列 【贪心算法, 动态规划，分治算法】
  * ==============================================================================
  * 给定一个整数数组，找出总和最大的连续数列，并返回总和。
  *
@@ -61,7 +61,15 @@ package leetCode.oneMoreHundred;
 public class Day009 {
 
     public static void main(String[] args) {
+        int[] arr = {-2,1,-3,4,-1,2,1,-5,4};
+        int[] arr1 = {-2};
+        int[] arr2 = {-2,-3,4,-1};
+        int[] arr3 = {-2,1};
 
+        System.out.println(maxSubArray1(arr));
+        System.out.println(maxSubArray1(arr1));
+        System.out.println(maxSubArray1(arr2));
+        System.out.println(maxSubArray1(arr3));
     }
 
     /**
@@ -84,7 +92,7 @@ public class Day009 {
     /**
      * @Title: 198. 打家劫舍
      * @Version: 版本1 动态规划
-     * 设定 maxAmt(i) 代表偷窃到第i个房屋所能获得的金额总数
+     * 设定 maxAmt(i) 代表偷窃到第i个房屋所能获得的最大金额
      * 那么状态转移方程如下:
      * maxAmt(i) = max(maxAmt(i-1), maxAmt(i-2) + num[i])
      *
@@ -92,9 +100,11 @@ public class Day009 {
      * @return
      */
     public static int rob(int[] nums) {
-        if(nums.length < 2) return nums[0];
-        int pre = nums[0], prePre = nums[1];
-        int maxAmt = Math.max(pre,prePre);
+        if(nums.length < 2){
+            return nums.length == 1 ? nums[0] : 0;
+        }
+        int prePre = nums[0],pre = Math.max(nums[0],nums[1]);
+        int maxAmt = pre;
         for(int k = 2 ; k < nums.length ; k++){
             maxAmt = Math.max(pre, prePre + nums[k]);
             prePre = pre;
@@ -103,9 +113,66 @@ public class Day009 {
         return maxAmt;
     }
 
+
+    /**
+     * @Title:  面试题 16.17. 连续数列
+     * @Version: 版本1 遍历求连续子序列最大和
+     * @param nums
+     * @return
+     */
     public static int maxSubArray(int[] nums) {
-        return -1;
+        if(nums.length < 2) return nums.length == 0 ? 0 : nums[0];
+        int currSum = nums[0],maxSum =  currSum;
+
+        for(int i = 1 ; i < nums.length; i++){
+            if(currSum >= 0){
+                currSum += nums[i];
+            }else if(nums[i] >= 0){
+                currSum = nums[i];
+            }else{
+                currSum = Math.max(currSum,nums[i]);
+            }
+
+            maxSum = currSum > maxSum ? currSum : maxSum;
+        }
+        return maxSum;
     }
 
+
+    /**
+     * @Title:  面试题 16.17. 连续数列
+     * @Version: 版本2 贪心算法， 版本1优化
+     * @param nums
+     * @return
+     */
+    public static int maxSubArray1(int[] nums) {
+        if(nums.length < 2) return nums.length == 0 ? 0 : nums[0];
+        int currSum = nums[0],maxSum =  currSum;
+
+        for(int i = 1 ; i < nums.length; i++){
+            if(currSum >= 0){
+                currSum += nums[i];
+            }else{
+                currSum = nums[i];
+            }
+
+            maxSum = currSum > maxSum ? currSum : maxSum;
+        }
+        return maxSum;
+    }
+
+
+    /**
+     * @Title:  面试题 16.17. 连续数列
+     * @Version: 版本3 动态规划实现
+     * 状态转移方程：
+     * maxSum(i)    =  maxSum(i-1) + nums[i]  (nums[i] > 0)
+     *           or =  maxSum(i-1)
+     * @param nums
+     * @return
+     */
+    public static int maxSubArray2(int[] nums) {
+        return -1;
+    }
 
 }
