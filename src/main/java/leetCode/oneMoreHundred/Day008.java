@@ -1,14 +1,12 @@
 package leetCode.oneMoreHundred;
 
-import org.apache.commons.compress.utils.Lists;
-import utils.ArrayUtil;
-
-import java.util.*;
+import java.util.Deque;
+import java.util.LinkedList;
 
 /**
  * @Date：2020年7月16日
  * ==============================================================================
- * 121. 买卖股票的最佳时机
+ * 121. 买卖股票的最佳时机【股票，动态规划，单调栈】
  * ==============================================================================
  * 给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。
  *
@@ -23,7 +21,7 @@ import java.util.*;
  *      注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
  *
  * ==============================================================================
- * 122. 买卖股票的最佳时机 II
+ * 122. 买卖股票的最佳时机 II 【贪心算法,动态规划】
  * ==============================================================================
  * 给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。
  *
@@ -42,34 +40,12 @@ import java.util.*;
  * 1 <= prices.length <= 3 * 10 ^ 4
  * 0 <= prices[i] <= 10 ^ 4
  *
- * ==============================================================================
- * 714. 买卖股票的最佳时机含手续费
- * ==============================================================================
- * 给定一个整数数组 prices，其中第 i 个元素代表了第 i 天的股票价格 ；非负整数 fee 代表了交易股票的手续费用。
- *
- * 你可以无限次地完成交易，但是你每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。
- *
- * 返回获得利润的最大值。
- *
- * 注意：这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。
- *
- * 示例 1:
- *
- * 输入: prices = [1, 3, 2, 8, 4, 9], fee = 2
- * 输出: 8
- * 解释: 能够达到的最大利润:
- * 在此处买入 prices[0] = 1
- * 在此处卖出 prices[3] = 8
- * 在此处买入 prices[4] = 4
- * 在此处卖出 prices[5] = 9
- * 总利润: ((8 - 1) - 2) + ((9 - 4) - 2) = 8.
- *
- * 注意:
- * 0 < prices.length <= 50000.
- * 0 < prices[i] < 50000.
- * 0 <= fee < 50000.
- * ==============================================================================
- *
+ * 示例 2:
+ * 输入: [1,2,3,4,5]
+ * 输出: 4
+ * 解释: 在第 1 天（股票价格 = 1）的时候买入，在第 5 天 （股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5-1 = 4 。
+ *      注意你不能在第 1 天和第 2 天接连购买股票，之后再将它们卖出。
+ *      因为这样属于同时参与了多笔交易，你必须在再次购买前出售掉之前的股票。
  *
  */
 public class Day008 {
@@ -78,6 +54,11 @@ public class Day008 {
 
         int[] arr = {7,1,5,3,6,4};
         System.out.println(maxProfit3(arr));
+
+        // 122. 买卖股票的最佳时机 II
+        int[] testA = {7,1,5,3,6,4};
+        System.out.println(maxProfit01(testA));
+
     }
 
     /**
@@ -96,7 +77,7 @@ public class Day008 {
      * @param prices
      * @return
      */
-    public int maxProfit(int[] prices) {
+    public static int maxProfit1(int[] prices) {
         int maxProfit = 0,minPrice = Integer.MAX_VALUE;
         for(int n : prices){
             if(n < minPrice){
@@ -117,7 +98,7 @@ public class Day008 {
      * @param prices
      * @return
      */
-    public int maxProfit2(int[] prices) {
+    public static int maxProfit2(int[] prices) {
         if(prices.length < 2) return 0;
 
         int minPrice = prices[0];
@@ -171,14 +152,49 @@ public class Day008 {
 
 
     /**
-     * @Title: 714. 买卖股票的最佳时机含手续费
-     * @Version: 版本1 动态规划实现
+     * @Title: 122. 买卖股票的最佳时机 II
+     * @Version: 版本1 动态规划实现【解法未理解】
      * 状态转移方程：
+     * int[] cash  代表持有现金
+     * int[] stock 代表持有股票
+     * (1)cash[i] = max(cash[i-1],stock[i-1] + price[i])
+     * (2)stock[i] = max(stock[i-1],cash[i-1] - price[i])
+     *
      * @param prices
-     * @param fee
      * @return
      */
-    public static int maxProfit(int[] prices, int fee) {
-        return -1;
+    public static int maxProfit01(int[] prices) {
+        if(prices.length < 2) return 0;
+
+        int[]cash =  new int[prices.length];
+        int[]stock = new int[prices.length];
+        cash[0] = 0 ;
+        stock[0] = -prices[0];
+
+        for(int i = 1 ; i < prices.length ; i++){
+            cash[i] = Math.max(cash[i-1],stock[i-1] + prices[i]);
+            stock[i] = Math.max(stock[i-1],cash[i-1] - prices[i]);
+        }
+        return cash[prices.length-1];
+    }
+
+    /**
+     * @Title: 122. 买卖股票的最佳时机 II
+     * @Version: 版本2 贪心算法实现
+     * 每次买卖都争取获得最大收益,那么在全局环境下也可以获得最大收益
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit02(int[] prices) {
+        if(prices.length < 2) return 0;
+        int maxProfit = 0;
+
+        for(int k = 1 ; k < prices.length ; k++){
+            if(prices[k] > prices[k-1]){
+                maxProfit += prices[k] - prices[k-1];
+            }
+        }
+        return maxProfit;
     }
 }
