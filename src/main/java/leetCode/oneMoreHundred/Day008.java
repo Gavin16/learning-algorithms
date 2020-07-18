@@ -1,5 +1,10 @@
 package leetCode.oneMoreHundred;
 
+import org.apache.commons.compress.utils.Lists;
+import utils.ArrayUtil;
+
+import java.util.*;
+
 /**
  * @Date：2020年7月16日
  * ==============================================================================
@@ -71,6 +76,8 @@ public class Day008 {
 
     public static void main(String[] args) {
 
+        int[] arr = {7,1,5,3,6,4};
+        System.out.println(maxProfit3(arr));
     }
 
     /**
@@ -86,8 +93,6 @@ public class Day008 {
      * 就决定了差价大小，当最低价变小时，变小前的那一段时间内的最大差价会和变下之后的一段时间内的差价做比较
      * 最终保存最大的差价返回
      *
-     *
-     *
      * @param prices
      * @return
      */
@@ -102,6 +107,68 @@ public class Day008 {
         }
         return maxProfit;
     }
+
+    /**
+     * @Title: 121. 买卖股票的最佳时机
+     * @Version: 版本2 DP算法实现
+     * 状态转移方程：
+     * maxProfit(i) = max(maxProfit(i-1) , prices[i] - minPrice)
+     *
+     * @param prices
+     * @return
+     */
+    public int maxProfit2(int[] prices) {
+        if(prices.length < 2) return 0;
+
+        int minPrice = prices[0];
+        int[] maxProfit = new int[prices.length];
+        maxProfit[0] = 0;
+        for(int i = 1 ; i < prices.length ; i++){
+            if(prices[i] < minPrice){
+                minPrice = prices[i];
+            }
+            maxProfit[i] = Math.max(maxProfit[i-1],prices[i]-minPrice);
+        }
+        return maxProfit[prices.length-1];
+    }
+
+
+    /**
+     * @Title: 121. 买卖股票的最佳时机
+     * @Version: 版本3 使用单调栈
+     * 单调栈使用方式：
+     * (1)若添加的元素比栈顶元素大，则直接入栈
+     * (2)若添加的元素比栈顶元素小，则一直出栈直到当前判断的元素比栈顶大
+     * (3)每次出栈时计算出栈元素与栈底元素的差值，若差值大于原有值则更新原有值
+     *
+     * 使用单调栈需要在数组末尾添加哨兵,以防单调递增的情况下求得最大收益为 0
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit3(int[] prices) {
+        if(prices.length < 2) return 0;
+
+        Deque<Integer> stack = new LinkedList<>();
+        int maxProfit = 0;
+        for(int n : prices){
+            if(stack.isEmpty() || n > stack.peek()){
+                stack.push(n);
+            }else if(n < stack.peek()){
+                while(!stack.isEmpty() && n < stack.peek()){
+                    int pop = stack.pop();
+                    if(!stack.isEmpty()){
+                        int curr = pop - stack.getLast();
+                        maxProfit = maxProfit < curr ? curr : maxProfit;
+                    }
+                }
+                stack.push(n);
+            }
+        }
+        return maxProfit;
+    }
+
+
 
     /**
      * @Title: 714. 买卖股票的最佳时机含手续费
