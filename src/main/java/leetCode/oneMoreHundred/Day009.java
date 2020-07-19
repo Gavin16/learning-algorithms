@@ -66,10 +66,10 @@ public class Day009 {
         int[] arr2 = {-2,-3,4,-1};
         int[] arr3 = {-2,1};
 
-        System.out.println(maxSubArray1(arr));
-        System.out.println(maxSubArray1(arr1));
-        System.out.println(maxSubArray1(arr2));
-        System.out.println(maxSubArray1(arr3));
+        System.out.println(maxSubArray3(arr));
+        System.out.println(maxSubArray3(arr1));
+        System.out.println(maxSubArray3(arr2));
+        System.out.println(maxSubArray3(arr3));
     }
 
     /**
@@ -165,14 +165,58 @@ public class Day009 {
     /**
      * @Title:  面试题 16.17. 连续数列
      * @Version: 版本3 动态规划实现
+     * 状态定义:
+     * dp[i] 代表以i结尾的最大连续子序列的和
+     *
      * 状态转移方程：
-     * maxSum(i)    =  maxSum(i-1) + nums[i]  (nums[i] > 0)
-     *           or =  maxSum(i-1)
+     * dp[i]    =  dp[i-1] + nums[i]  (dp[i-1] > 0)
+     *       or =  nums[i]            (dp[i-1] < 0)
+     *
+     * 状态转移方程的含义
+     * (1)若以 i-1 结尾的最大子序列的和小于0, 那么从i开始重新计算子序列
+     * (2)若以i-1 结尾的子序列的和大于0，则继续累加
+     *
+     * 情况(2) 在将子序列和累加为负数之前一定会有一个最大值出现，这样再扫描一遍dp数组就可获得
+     * 最大子序列的和
+     *
      * @param nums
      * @return
      */
     public static int maxSubArray2(int[] nums) {
-        return -1;
+        if(nums.length <= 1) return nums.length == 1 ? nums[0] : 0;
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        for(int j = 1 ; j < nums.length ;j++){
+            if(dp[j-1] > 0){
+                dp[j] = dp[j-1] + nums[j];
+            }else{
+                dp[j] = nums[j];
+            }
+        }
+        int maxSum = dp[0];
+        for(int n : dp){
+            if(n > maxSum) maxSum =n;
+        }
+        return maxSum;
+    }
+
+    /**
+     * @Title: 面试题 16.17. 连续数列
+     * @Version: 版本4 动态规划空间复杂度优化实现(一次循环实现)
+     * @param nums
+     * @return
+     */
+    public static int maxSubArray3(int[] nums){
+        if(nums.length <= 1) return nums.length == 1 ? nums[0] : 0;
+        int maxSum = nums[0];
+
+        for(int i = 1 ; i < nums.length ; i++){
+            if(nums[i-1] > 0){
+                nums[i] += nums[i-1];
+            }
+            maxSum = nums[i] > maxSum ? nums[i] : maxSum;
+        }
+        return maxSum;
     }
 
 }
