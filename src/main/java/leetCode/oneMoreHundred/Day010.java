@@ -102,4 +102,27 @@ public class Day010 {
         }
         return maxLen;
     }
+
+
+    /**
+     * @Title: 718. 最长重复子数组
+     * @Version: 版本2  动态规划优化解法
+     * @param A
+     * @param B
+     * @return
+     */
+    public static int findLength2(int[] A, int[] B) {
+        if(A.length < 1 || B.length < 1) return 0;
+        int[][] dp = new int[A.length+1][B.length+1];
+        int maxLen = 0;
+        for(int k = 0 ; k < A.length ; k++){
+            for(int l = 0; l < B.length ; l++){
+                if(A[k] == B[l]){
+                    dp[k+1][l+1] = dp[k][l] + 1;
+                    if(dp[k+1][l+1] > maxLen) maxLen = dp[k+1][l+1];
+                }
+            }
+        }
+        return maxLen;
+    }
 }
