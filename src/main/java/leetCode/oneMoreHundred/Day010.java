@@ -125,4 +125,50 @@ public class Day010 {
         }
         return maxLen;
     }
+
+
+    /**
+     * @Title: 718 最长重复子数组
+     * @Version: 版本3 滑动窗比较公共相同子序列，并找出最长子序列
+     * @param A
+     * @param B
+     * @return
+     */
+    public static int findLength3(int[]A , int[] B){
+        return A.length < B.length ? findMax(A,B) : findMax(B,A);
+    }
+
+    /**
+     * A 为长度较小的那个
+     * @param A
+     * @param B
+     * @return
+     */
+    public static int findMax(int[] A , int[] B){
+        int max = 0, lenA = A.length , lenB = B.length;
+        for(int i = 1 ; i < lenA ; i++){
+            max = Math.max(max, sameSeqLength(A,0,B,lenB-i,i));
+        }
+        for(int j = lenB - lenA; j > 0; j--){
+            max = Math.max(max,sameSeqLength(A,0,B,j,lenA));
+        }
+        for(int k = 0 ; k < lenA ; k++){
+            max = Math.max(max,sameSeqLength(A,k,B,0,lenA - k));
+        }
+        return max;
+    }
+
+
+    public static int sameSeqLength(int[] A , int aStart , int[] B , int bStart, int len){
+        int max = 0,cnt = 0;
+        for(int k = 0 ; k < len ; k++){
+            if(A[aStart + k] == B[bStart + k]){
+                cnt++;
+            }else{
+                cnt = 0;
+            }
+            max = Math.max(cnt,max);
+        }
+        return max;
+    }
 }
