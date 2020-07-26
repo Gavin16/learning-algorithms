@@ -70,4 +70,28 @@ public class Day011 {
         arrList.toArray(ret);
         return ret;
     }
+
+
+    /**
+     * @title: 56. 合并区间
+     * @version: 版本2 版本1简化
+     * @param intervals
+     * @return
+     */
+    public static int[][] merge2(int[][] intervals) {
+        if(intervals.length < 2) return intervals;
+
+        Arrays.sort(intervals, Comparator.comparingInt(o -> o[0]));
+
+        int[][] res = new int[intervals.length][2];
+        int id = -1;
+        for(int[] range : intervals){
+            if(id == -1 || range[0] > res[id][0]){
+                res[++id][0] = range[0];
+            }else{
+                res[id][1] = Math.max(res[id][1],range[1]);
+            }
+        }
+        return Arrays.copyOf(res,id+1);
+    }
 }
