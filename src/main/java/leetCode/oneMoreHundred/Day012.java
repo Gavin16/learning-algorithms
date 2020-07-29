@@ -1,5 +1,8 @@
 package leetCode.oneMoreHundred;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @Date: 2020年7月26日
  * ==============================================================================
@@ -132,16 +135,37 @@ public class Day012 {
 
     /**
      * @Title: 3. 无重复字符的最长子串长度
-     * @Version: 版本1 动态规划实现
-     * (1) 状态定义
-     * 定义maxLen[i] 为以i为末尾元素的最大无重复元素字串的长度
-     * (2) 状态转移方程
-     * maxLen[i] = maxLen[i-1] + 1    (当字串中不包含s[i]时 )
-     *           =
+     * @Version: 版本1 单次循环(双指针)实现
      * @param s
      * @return
      */
     public int lengthOfLongestSubstring(String s) {
+        if(s.length() < 2) return s.length();
+        int startId = 0,maxLen = 0;
+        Set<Character> charSet = new HashSet<>();
+        for(int k = 0 ; k < s.length() ; k++){
+            char c = s.charAt(k);
+            if(charSet.contains(c)){
+                while(charSet.contains(c)){
+                    char cl = s.charAt(startId++);
+                    charSet.remove(cl);
+                }
+            }
+            charSet.add(c);
+            maxLen = Math.max(maxLen,charSet.size());
+        }
+        return maxLen;
+    }
+
+
+    /**
+     * @Title: 3. 无重复字符的最长子串长度
+     * @version： 版本2 动态规划实现
+     * @param s
+     * @return
+     */
+    public int lengthOfLongestSubstring2(String s){
         return -1;
     }
+
 }
