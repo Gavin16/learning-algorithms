@@ -1,6 +1,8 @@
 package leetCode.oneMoreHundred;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -160,12 +162,43 @@ public class Day012 {
 
     /**
      * @Title: 3. 无重复字符的最长子串长度
-     * @version： 版本2 动态规划实现
+     * @version： 版本2 滑动窗(版本1简化)
+     * 这里优化的地方在于:当发现前面有重复自字符时不再需要循环的去遍历处理
+     * 若采用HashMap 保存字符-下标  k-v 对时，若发现重复可以立刻获取到重复字符对应的下标，
+     * 然后让子串的起始位置从重复字符的下一个字符开始算起即可；该解法巧妙的地方在于:
+     *    (*) 当发现重复子串起始下标从left 开始后,Map 中重复字符之前的元素不需要移除
+     *    不移除怎么避免重复字符之前的元素被重复误判为重复呢，基于以下两点
+     *    (1) Map 每次都会把最新的字符保存进来,新的重复字符会覆盖原有的重复字符的下标
+     *    (2) left 更新时每次取 重复字符的下标 和 left自身 两者中间的较大值
+     *
+     *    当map判断有重复字符时，对应的所有情况如下
+     *    (I) map没有value 小于left 的k-v对
+     *    (II) map中有value 小于left,重复元素对应value 小于left
+     *    (III) map中有value 小于left,重复元素对应 value 大于left
+     *
+     *    对于情况(I),对应为初始的情况, 直接取 map.get(c) 作为left 的更新值即可
+     *    对于情况(II) 说明就是在当前子串中出现了重复元素(可能是第一次出现,也可能是多次出现后面的覆盖了前面的)，处理方式同(I)
+     *    对于情况(III) 说明在当前子串的前面出现了重复元素,这种情况可以忽略,之所以会有这种情况是因为 map中left之前的元素没有清楚
+     *    所有这三种情况都可以通过 left = Math.max(left,map.get(c) + 1) 来实现更新
+     *
+     *
      * @param s
      * @return
      */
     public int lengthOfLongestSubstring2(String s){
-        return -1;
+        if(s.length() < 2) return s.length();
+
+        Map<Character,Integer> map = new HashMap<>();
+        int left = 0,max = 0 ;
+        for(int i = 0 ; i < s.length() ; i++){
+            char c = s.charAt(i);
+            if(map.containsKey(c)){
+                left = Math.max(left,map.get(c) + 1);
+            }
+            map.put(c,i);
+            max = Math.max(max,i - left +1);
+        }
+        return max;
     }
 
 }

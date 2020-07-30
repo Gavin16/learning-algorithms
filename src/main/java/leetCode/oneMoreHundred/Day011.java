@@ -30,10 +30,13 @@ public class Day011 {
         int[][] dim2Arr = {{1,3},{2,6},{8,10},{15,18}};
         int[][] dim2Arr1 = {{1,4},{4,5}};
         int[][] dim2Arr2 = {{2,3},{4,5},{6,7},{8,9},{1,10}};
-        int[][] merge = merge(dim2Arr2);
+        int[][] merge = merge2(dim2Arr2);
         for(int[] arr : merge){
             ArrayUtil.showArray(arr);
         }
+
+
+
     }
 
 
@@ -86,8 +89,8 @@ public class Day011 {
         int[][] res = new int[intervals.length][2];
         int id = -1;
         for(int[] range : intervals){
-            if(id == -1 || range[0] > res[id][0]){
-                res[++id][0] = range[0];
+            if(id == -1 || range[0] > res[id][1]){
+                res[++id] = range;
             }else{
                 res[id][1] = Math.max(res[id][1],range[1]);
             }
