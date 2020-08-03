@@ -1,9 +1,6 @@
 package leetCode.oneMoreHundred;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Date: 2020年7月26日
@@ -33,6 +30,21 @@ import java.util.Set;
  * 输出: 3
  * 解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
  *      请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+ *
+ * ==============================================================================
+ * 5. 最长回文子串
+ * ==============================================================================
+ * 给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
+ *
+ * 示例 1：
+ *
+ * 输入: "babad"
+ * 输出: "bab"
+ * 注意: "aba" 也是一个有效答案。
+ * 示例 2：
+ *
+ * 输入: "cbbd"
+ * 输出: "bb"
  *
  * ==============================================================================
  */
@@ -199,6 +211,51 @@ public class Day012 {
             max = Math.max(max,i - left +1);
         }
         return max;
+    }
+
+
+    /**
+     * @Title: 5. 最长回文子串
+     * @Version: 版本1 滑动窗解法
+     * @param s
+     * @return
+     */
+    public static String longestPalindrome(String s) {
+        if(s.length() <= 1) return s;
+        char[] carr = s.toCharArray();
+        int len = carr.length;
+        // 从前到后搜索
+        String max1 = findMaxByOrder(carr, len);
+        // 从后到前搜索
+        for(int k = 0 ; k < len/2 ; k++){
+            char temp = carr[k];
+            carr[k] = carr[len - k - 1];
+            carr[len-k-1] = temp;
+        }
+        String max2 = findMaxByOrder(carr, len);
+        return max1.length() > max2.length() ? max1 : max2;
+    }
+
+    /**
+     * @return
+     */
+    public static String findMaxByOrder(char[] carr , int len){
+        String maxStr = "";
+        for(int i = 0;  i < len ; i++){
+            int head = i , tail = len-1;
+            while(head < tail){
+                if(carr[head] !=carr[tail]){break;}
+                else{
+                    head++;tail--;
+                }
+            }
+            // 找到便返回
+            if(head >= tail){
+                maxStr = Arrays.copyOfRange(carr, i, len).toString();
+                break;
+            }
+        }
+        return maxStr;
     }
 
 }
