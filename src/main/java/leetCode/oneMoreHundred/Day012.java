@@ -56,6 +56,15 @@ public class Day012 {
         int[] test3 = {1,2,2,3,4,5,5,5,6,7,8,9};
         int[] test4 = {1,2,3,3,4,4,5,6,6,6,6,9};
 
+
+        // 最长回文字串
+        String tt = "babad";
+        String tt1 = "aaaa";
+        String ss = longestPalindrome2(tt);
+        System.out.println(ss);
+
+        System.out.println(longestPalindrome3(tt1));
+
     }
 
     /**
@@ -216,7 +225,7 @@ public class Day012 {
 
     /**
      * @Title: 5. 最长回文子串
-     * @Version: 版本1 滑动窗解法
+     * @Version: 版本1 滑动窗解法 算法错误
      * @param s
      * @return
      */
@@ -251,11 +260,96 @@ public class Day012 {
             }
             // 找到便返回
             if(head >= tail){
-                maxStr = Arrays.copyOfRange(carr, i, len).toString();
+                maxStr = String.valueOf(Arrays.copyOfRange(carr, i, len));
                 break;
             }
         }
         return maxStr;
+    }
+
+
+    /**
+     * @title: 5. 最长回文子串
+     * @Version: 版本2 暴力破解法 O(N^3)时间复杂度
+     * @param s
+     * @return
+     */
+    public static String longestPalindrome2(String s){
+        if(s.length() < 2) return s;
+        char[] ca  = s.toCharArray();
+        int maxLen = 1,startId = 0;
+        int len = ca.length;
+        for(int i = 0 ; i < len-1 ; i++){
+            for(int k = i+1 ; k < len; k++){
+                if(k - i +1 > maxLen && isPalindrome(ca,i,k)){
+                    maxLen = k-i+1;
+                    startId = i;
+                }
+            }
+        }
+        return s.substring(startId,startId + maxLen);
+    }
+
+
+
+    private static boolean isPalindrome(char[] chars ,int s , int e){
+        int head = s ,tail = e ;
+        while(head < tail){
+            if(chars[head] != chars[tail]){
+                return false;
+            }
+            head ++ ; tail --;
+        }
+        return true;
+    }
+
+
+    /**
+     * @title: 5. 最长回文子串
+     * @Version: 版本3 动态规划解法
+     * 状态定义:
+     * dp[i][j] 代表以下标i为起始下标,下标j为终止下标的字串是否是回文字符串
+     * 状态转移方程:
+     * dp[i][j] = dp[i+1][j-1]   (s[i] == s[j] && j - i >= 3)
+     *          = true           (s[i] == s[j] && j - i < 3)
+     *          = false          (s[i] != s[j])
+     * 返回结果:
+     * 记录maxLen并更新状态, 返回 s.subString(startId , startId + maxLen)
+     *
+     * @param s
+     * @return
+     */
+    public static String longestPalindrome3(String s){
+        if(s.length() < 2) return s;
+        char[] ca = s.toCharArray();
+        int len = s.length();
+        int maxLen = 1, startId = 0;
+        boolean[][] dp = new boolean[len][len];
+
+        for(int k = 0; k < len ; k++){
+            dp[k][k] = true;
+        }
+
+        // 由于dp[i][j] 需要用到dp[i+1][j-1] 的值,因此需要确保 i+1 行的值事先被赋值
+        // 所以这里采用逐列对dp数组赋值的方式
+        for(int j = 1 ; j < len ; j++){
+            for(int i = 0 ; i < j ; i++){
+                if(ca[i] == ca[j]){
+                    if(j - i >= 3){
+                        dp[i][j] = dp[i+1][j-1];
+                    }else{
+                        dp[i][j] = true;
+                    }
+                }else{
+                    dp[i][j] = false;
+                }
+                if(dp[i][j] == true && j - i + 1 > maxLen){
+                    maxLen = j - i + 1;
+                    startId = i;
+                }
+            }
+        }
+        return s.substring(startId,startId + maxLen);
     }
 
 }
