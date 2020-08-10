@@ -26,11 +26,11 @@ public class Day014 {
 
 
     public static void main(String[] args) {
-        System.out.println(numTrees(1));
-        System.out.println(numTrees(2));
-        System.out.println(numTrees(3));
-        System.out.println(numTrees(4));
-        System.out.println(numTrees(5));
+        System.out.println(numTrees2(1));
+        System.out.println(numTrees2(2));
+        System.out.println(numTrees2(3));
+        System.out.println(numTrees2(4));
+        System.out.println(numTrees2(5));
     }
 
     /**
@@ -87,11 +87,23 @@ public class Day014 {
      * @return
      */
     public static int numTrees2(int n){
-        int[] T = new int[n+1];
-        T[0] = 1;T[1] = 1;
+        long c  = 1;
         for(int k = 2 ; k <= n ; k++){
-            T[k] = 2*(2*k-1)*T[k-1]/(k+1);
+            c =  2 * c * (2 * k - 1)/(k + 1);
         }
-        return T[n];
+        return (int)c;
     }
+
+    /**
+     * 常见卡特兰数问题
+     * (1) 求合法的括号序列的个数
+     * (2) 求带限制条件的路径条数
+     * (3) N个数入栈后出栈的排列总数
+     * (4) n+m个人排队买票，假设售票点无零钱，n+m 中n人有5元m人有10元,所有人都能买到票问题
+     * (5) 火车出站问题
+     *
+     *
+     *
+     *
+     */
 }
