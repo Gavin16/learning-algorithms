@@ -66,4 +66,32 @@ public class Day014 {
         }
         return T[n];
     }
+
+
+    /**
+     * @Title:  96. 不同的二叉搜索树
+     * @Version: 卡特兰数公式实现
+     *
+     * 对于函数f(n),若满足f(n) = Σf(i-1)*f(n-i)  (i = 1,2,3,4,..,n)
+     * 则 f(n) 被称为卡特兰数,对于卡特兰数，有如下递推公式
+     *
+     * f(n) = C(2*n,n)/n+1
+     * f(n+1) = C(2*(n+1),n+1)/n+2 = (2*(2n+1)/(n+2))*f(n)
+     *
+     * 故对于任意输入n ,求对应不同的二叉搜索树的个数满足如下递推公式
+     * f(n+1) = (2*(2n+1)/(n+2))*f(n)
+     * 也即：
+     * f(n) = (2*(2n-1)/(n+1))*f(n-1)
+     *
+     * @param n
+     * @return
+     */
+    public static int numTrees2(int n){
+        int[] T = new int[n+1];
+        T[0] = 1;T[1] = 1;
+        for(int k = 2 ; k <= n ; k++){
+            T[k] = 2*(2*k-1)*T[k-1]/(k+1);
+        }
+        return T[n];
+    }
 }
