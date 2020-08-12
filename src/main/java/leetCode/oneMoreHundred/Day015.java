@@ -1,7 +1,10 @@
 package leetCode.oneMoreHundred;
 
+import javafx.util.Pair;
+
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 /**
@@ -37,6 +40,27 @@ import java.util.Queue;
  */
 public class Day015 {
 
+
+    public static void main(String[] args) {
+        int[][] test =
+                {{0,0,1,0,0,0,0,1,0,0,0,0,0},
+                {0,0,0,0,0,0,0,1,1,1,0,0,0},
+                {0,1,1,0,1,0,0,0,0,0,0,0,0},
+                {0,1,0,0,1,1,0,0,1,0,1,0,0},
+                {0,1,0,0,1,1,0,0,1,1,1,0,0},
+                {0,0,0,0,0,0,0,0,0,0,1,0,0},
+                {0,0,0,0,0,0,0,1,1,1,0,0,0},
+                {0,0,0,0,0,0,0,1,1,0,0,0,0}};
+
+        int[][] test1 = {
+                        {1,1,0,0,0},
+                        {1,1,0,0,0},
+                        {0,0,0,1,1},
+                        {0,0,0,1,1}};
+
+        System.out.println(maxAreaOfIsland2(test));
+        System.out.println(maxAreaOfIsland2(test1));
+    }
 
     /**
      * @Title:  695. 岛屿的最大面积
@@ -116,7 +140,31 @@ public class Day015 {
      * @return
      */
     private static int bfs(int[][] grid, int i, int j){
-        return 1;
+        if(grid[i][j] == 0) return 0;
+        Deque<Integer> rQueue = new LinkedList<>(),cQueue = new LinkedList<>();
+        rQueue.offer(i); cQueue.offer(j);
+
+        int c,r,area = 0;
+        while(!rQueue.isEmpty()){
+            r = rQueue.poll();
+            c = cQueue.poll();
+            if(r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == 0){
+                continue;
+            }
+            area += 1;
+            grid[r][c] = 0;
+            addSurroundings(rQueue,cQueue,r,c);
+        }
+        return area;
+    }
+
+    private static void addSurroundings(Deque<Integer> rQueue, Deque<Integer> cQueue, Integer r, Integer c) {
+        int[] rs = {1,-1,0,0};
+        int[] cs = {0,0,1,-1};
+        for(int i = 0; i < rs.length ;i++){
+            rQueue.add(r+rs[i]);
+            cQueue.add(c+cs[i]);
+        }
     }
 
 }
