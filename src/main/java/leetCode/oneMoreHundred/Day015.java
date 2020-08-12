@@ -1,11 +1,7 @@
 package leetCode.oneMoreHundred;
 
-import javafx.util.Pair;
-
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
 
 /**
  * @Date: 2020年8月11日
@@ -65,8 +61,14 @@ import java.util.Queue;
  * 输出: 3
  * 解释: 每座岛屿只能由水平和/或竖直方向上相邻的陆地连接而成。
  * ==============================================================================
+ * 463 岛屿的周长
+ * ==============================================================================
  *
+ * ==============================================================================
+ * 827 最大的人工岛
+ * ==============================================================================
  *
+ * ==============================================================================
  */
 public class Day015 {
 
@@ -90,6 +92,28 @@ public class Day015 {
 
         System.out.println(maxAreaOfIsland2(test));
         System.out.println(maxAreaOfIsland2(test1));
+
+
+        // 搜索岛屿数量
+        char[][] chars = {
+                            {'1','1','1','1','0'},
+                            {'1','1','0','1','0'},
+                            {'1','1','0','0','0'},
+                            {'0','0','0','0','0'}};
+
+
+        char[][] chars2 = {
+                {'1','1','0','0','0'},
+                {'1','1','0','0','0'},
+                {'0','0','1','0','0'},
+                {'0','0','0','1','1'}
+        };
+
+        char[][] ccc  = {{'1','1'},{'1','0'}};
+
+        System.out.println(numIslands(chars));
+        System.out.println(numIslands(chars2));
+
     }
 
     /**
@@ -200,10 +224,47 @@ public class Day015 {
 
     /**
      * @Title: 200. 岛屿数量
+     * @Version: 深度优先搜索
      * @param grid
      * @return
      */
     public static int numIslands(char[][] grid) {
-
+        int num = 0;
+        for(int i = 0 ; i < grid.length ; i++){
+            for(int j = 0 ; j < grid[0].length ; j++){
+                if(grid[i][j] == '1'){
+                    num += dfsCountIslands(grid,i,j);
+                }
+            }
+        }
+        return num;
     }
+
+
+    private static int dfsCountIslands(char[][] grid, int i, int j) {
+        if(i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] == '0'){
+            return 0;
+        }
+        grid[i][j] = '0';
+
+        int[] iShf = {1,-1,0,0};
+        int[] jShf = {0,0,1,-1};
+        for(int k = 0 ; k < iShf.length ; k++){
+            dfsCountIslands(grid,i+iShf[k] , j+jShf[k]);
+        }
+        return 1;
+    }
+
+
+    /**
+     * @Title: 200. 岛屿数量
+     * @Version: 版本2 Flood fill 算法实现
+     *
+     * @param grid
+     * @return
+     */
+    public static int numIslands2(char[][] grid) {
+        return 0;
+    }
+
 }
