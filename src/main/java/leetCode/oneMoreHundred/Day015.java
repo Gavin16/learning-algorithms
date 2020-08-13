@@ -63,11 +63,25 @@ import java.util.LinkedList;
  * ==============================================================================
  * 463 岛屿的周长
  * ==============================================================================
+ * 给定一个包含 0 和 1 的二维网格地图，其中 1 表示陆地 0 表示水域。
+ *
+ * 网格中的格子水平和垂直方向相连（对角线方向不相连）。整个网格被水完全包围，但其中恰好有一个岛屿（或者说，一个或多个表示陆地的格子相连组成的岛屿）。
+ *
+ * 岛屿中没有“湖”（“湖” 指水域在岛屿内部且不和岛屿周围的水相连）。格子是边长为 1 的正方形。网格为长方形，且宽度和高度均不超过 100 。计算这个岛屿的周长。
+ * 示例 :
+ *
+ * 输入:
+ * [[0,1,0,0],
+ *  [1,1,1,0],
+ *  [0,1,0,0],
+ *  [1,1,0,0]]
+ *
+ * 输出: 16
  *
  * ==============================================================================
  * 827 最大的人工岛
  * ==============================================================================
- *
+ * TODO
  * ==============================================================================
  */
 public class Day015 {
@@ -114,6 +128,13 @@ public class Day015 {
         System.out.println(numIslands(chars));
         System.out.println(numIslands(chars2));
 
+        // 岛屿的周长
+        int[][] singleIsland = {{1,1,0,0},
+                                {1,1,1,1},
+                                {0,1,0,0},
+                                {1,1,0,0}};
+//        System.out.println(islandPerimeter(singleIsland));
+        System.out.println(islandPerimeter3(singleIsland));
     }
 
     /**
@@ -267,4 +288,105 @@ public class Day015 {
         return 0;
     }
 
+
+    /**
+     * @Title: 463 岛屿的周长
+     * @version: DFS
+     * @param grid
+     * @return
+     */
+    public static int islandPerimeter(int[][] grid) {
+        for(int i = 0 ; i< grid.length ; i++){
+            for(int j = 0 ; j < grid[0].length ; j++){
+                if(grid[i][j] == 1){
+                    return dfsEdge(grid,i,j);
+                }
+            }
+        }
+        return 0;
+    }
+
+    private static int dfsEdge(int[][] grid, int i, int j) {
+        if(outOfBoundry(grid,i,j) || grid[i][j] == 0) return 1;
+        if(grid[i][j] == 1){
+            grid[i][j] = -1;
+            int num = dfsEdge(grid,i+1,j) + dfsEdge(grid,i-1,j) + dfsEdge(grid, i, j+1) + dfsEdge(grid, i, j-1);
+            return num;
+        }
+        return 0;
+    }
+
+    private static boolean outOfBoundry(int[][] grid ,int i , int j){
+        if(i < 0 || j < 0 || i >= grid.length || j >= grid[0].length){
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * @Title: 463 岛屿的周长
+     * @Version: 遍历计数
+     *
+     * 正向统计1 周围的 0 或者 边界 判断较为麻烦
+     * 反向统计1周围的1相对简单
+     *
+     * @param grid
+     * @return
+     */
+    public static int islandPerimeter2(int[][] grid) {
+        int num = 0 ;
+        for(int i = 0 ; i < grid.length ; i++){
+            for(int j = 0 ; j < grid[0].length ; j++){
+                if(grid[i][j] == 1){
+                    num += 4;
+                    if(i > 0 && grid[i-1][j] == 1){
+                        num -= 1;
+                    }
+                    if( i < grid.length-1 && grid[i+1][j] == 1){
+                        num -= 1;
+                    }
+                    if(j > 0 && grid[i][j-1] == 1){
+                        num -= 1;
+                    }
+                    if(j < grid[0].length - 1 && grid[i][j+1] == 1){
+                        num -= 1;
+                    }
+                }
+            }
+        }
+        return num;
+    }
+
+    /**
+     * @Title: 463 岛屿的周长
+     * @Version: 版本3
+     *
+     * 考虑若岛屿中的每个单元格周围都是0的情况，这时
+     * 计算岛屿的的周长有 C = 4*N， 其中C为所有单元格的周长和,N为每个单元格(值为1的点)的个数
+     *
+     * 现在如果将岛屿的所有相邻的单元格按原有的上下左右的顺序临接起来,得到的就是题目中的岛屿
+     * 每个相邻的边对应的被两个单元格共用,因此可以单向的对出现相邻边的减2(版本2是双向的对同一单元格邻接边减1)
+     *
+     * @param grid
+     * @return
+     */
+    public static int islandPerimeter3(int[][] grid) {
+        int num = 0 ;
+        for(int i = 0 ; i < grid.length ; i++){
+            for(int j = 0 ; j < grid[0].length ; j++){
+                // 这里判断左边和上边(也可以判断右边和下边)
+                if(grid[i][j] == 1){
+                    num += 4;
+                    if(i > 0 && grid[i-1][j] == 1){
+                        num -= 2;
+                    }
+                    if(j > 0 && grid[i][j-1] == 1){
+                        num -= 2;
+                    }
+                }
+            }
+        }
+        return num;
+    }
 }
