@@ -118,4 +118,43 @@ public class LinkedListUtil {
 
         return frontHalf;
     }
+
+    public static ListNode sortList(ListNode head) {
+        if(head == null || head.next == null) return head;
+
+        ListNode middleNode = findMiddleNode(head);
+        ListNode right = middleNode.next;
+        middleNode.next = null;
+
+        ListNode rightPart = sortList(right);
+        ListNode leftPart = sortList(head);
+        ListNode result = merge(leftPart,rightPart);
+        return result;
+    }
+
+    private static ListNode merge(ListNode leftPart, ListNode rightPart) {
+        ListNode res = new ListNode(-1),curr = res;
+        while(leftPart != null && rightPart != null){
+            if(leftPart.val < rightPart.val){
+                curr.next = leftPart;
+                leftPart = leftPart.next;
+            }else{
+                curr.next = rightPart;
+                rightPart = rightPart.next;
+            }
+            curr = curr.next;
+        }
+        ListNode remain = leftPart != null ? leftPart : rightPart;
+        curr.next = remain;
+        return res.next;
+    }
+
+    private static ListNode findMiddleNode(ListNode head) {
+        ListNode slow = head, fast = head.next;
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
 }
