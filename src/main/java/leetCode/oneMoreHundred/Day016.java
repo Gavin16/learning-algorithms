@@ -48,6 +48,15 @@ public class Day016 {
             }
             System.out.println();
         }
+
+
+        // IP地址还原
+        String ipAddr = "25525511135";
+        List<String> strings = restoreIpAddresses(ipAddr);
+        for(String str : strings){
+            System.out.println(str);
+        }
+
     }
 
 
@@ -98,11 +107,50 @@ public class Day016 {
 
     /**
      * @Title: 93. 复原IP地址
+     * 定义dfs(s,i) 来深度优先搜索
+     * 其中 s 代表ip地址的段数, i 代表第s段地址起始位置的下标
+     * 那么在搜索时, 遍历的去寻找第s段地址的结束位置 j,然后判断以i,j 下标为首尾地址的数据段是否
+     * 符合IP地址定义的范围,若符合则添加到列表中，若不符合则终止循环(因为再找下去i到j段内的数值只会越来越大)
+     *
+     *
      * @param s
      * @return
      */
+    static int MAX_LEN= 4;
+    static String[] segs = new String[4];
+    static List<String> result = new ArrayList<>();
     public static List<String> restoreIpAddresses(String s) {
-        return null;
+        dfs(s,0,0);
+        return result;
+    }
+
+    private static void dfs(String s,int ipSegNum, int idStart){
+        // idStart 等于 s.length() 已经成功将4段IP添加并且已经没有剩余的元素了
+        if(ipSegNum == MAX_LEN){
+            if(idStart == s.length()){
+                String join = String.join(".", segs);
+                result.add(join);
+            }
+            return;
+        }else if(idStart == s.length()){
+            return;
+        }
+
+        if(s.charAt(idStart) == '0'){
+            segs[ipSegNum] = "0";
+            dfs(s,ipSegNum+1,idStart+1);
+        }
+
+        int value = 0 ;
+        for(int idEnd = idStart ; idEnd < s.length() ; idEnd++){
+            value = value*10 + (s.charAt(idEnd) - '0');
+            if(value > 0 && value <= 255){
+                segs[ipSegNum] = String.valueOf(value);
+                dfs(s,ipSegNum+1,idEnd+1);
+            }else{
+                break;
+            }
+        }
     }
 
 }
