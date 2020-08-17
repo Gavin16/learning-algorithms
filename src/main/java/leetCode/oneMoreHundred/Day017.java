@@ -174,6 +174,33 @@ public class Day017 {
         return result;
     }
 
+
+    /**
+     * @title: 94. 二叉树的中序遍历
+     *
+     * 栈+循环实现重写
+     *
+     * @param root
+     * @return
+     */
+    public List<Integer> inorderTraversal3(TreeNode root) {
+        TreeNode curr = root;
+        List<Integer> list = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        while(curr != null || !stack.isEmpty()){
+            if(curr != null){
+                stack.push(curr);
+                curr = curr.left;
+            }else{
+                TreeNode pop = stack.pop();
+                list.add(pop.val);
+                curr = curr.right;
+            }
+        }
+        return list;
+    }
+
+
     /**
      * @Title: 79. 单词搜索
      * @Version: 回溯算法实现
