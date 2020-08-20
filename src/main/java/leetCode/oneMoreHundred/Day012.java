@@ -94,6 +94,14 @@ public class Day012 {
 
         System.out.println(longestPalindrome3(tt1));
 
+        // 最大子序和
+        int[] nums = {-2,1,-3,4,-1,2,1,-5,4,3};
+        System.out.println(new Day012().maxSubArray2(nums));
+
+        // 最大乘积子数组
+        int[] nums1 = {2,3,-2,4};
+        System.out.println(new Day012().maxProduct2(nums1));
+
     }
 
     /**
@@ -383,21 +391,107 @@ public class Day012 {
 
     /**
      * @Title: 152. 乘积最大子数组
+     * @version: 动态规划解法
+     *
+     * 定义dp1[i]为以下标i结尾的乘积最大子数组的乘积
+     * 定义dp2[i] 为以下标i结尾的乘积最小子数组的乘积
+     *
+     * 状态转移方程：
+     * dp1[i] = Math.max(dp1[i-1]*nums[i],dp2[i-1]*nums[i],nums[i]);
+     * dp2[i] = Math.min(dp1[i-1]*nums[i],dp2[i-1]*nums[i],nums[i]);
+     *
+     * 初始值:
+     * dp1[0] = nums[0];
+     * dp2[0] = nums[0];
+     *
      * @param nums
      * @return
      */
     public static int maxProduct(int[] nums) {
-        return -1;
+        if(null == nums || nums.length == 0) return 0;
+        int len = nums.length;
+        int[]minDp = new int[len];
+        int[]maxDp = new int[len];
+        minDp[0] = nums[0];
+        maxDp[0] = nums[0];
+        for(int k = 1 ; k < len ; k++){
+            maxDp[k] = Math.max(nums[k],Math.max(maxDp[k-1]*nums[k],minDp[k-1]*nums[k]));
+            minDp[k] = Math.min(nums[k],Math.min(maxDp[k-1]*nums[k],minDp[k-1]*nums[k]));
+        }
+        int max = maxDp[0];
+        for(int n : maxDp){
+            max = Math.max(max , n);
+        }
+        return max;
     }
 
 
     /**
-     * 53. 最大子序和
+     * @Title: 152. 乘积最大子数组
+     * @version: 动态规划 O(1) 空间复杂度
+     * @param nums
+     * @return
+     */
+    public static int maxProduct2(int[] nums){
+        if(null == nums || nums.length == 0) return 0;
+        int max = nums[0], maxCurr = max , minCurr = nums[0];
+
+        for(int k = 1 ; k < nums.length ; k++){
+            int maxTmp = maxCurr;
+            maxCurr = Math.max(nums[k],Math.max(maxCurr * nums[k],minCurr * nums[k]));
+            minCurr = Math.min(nums[k],Math.min(maxTmp * nums[k],minCurr * nums[k]));
+            max = Math.max(max,maxCurr);
+        }
+        return max;
+    }
+
+
+
+    /**
+     * @title: 53. 最大子序和
+     * @version: 动态规划实现
+     *
+     * 状态定义：
+     * 定义dp[i] 为以下标i结尾的最大子数组和
+     *
+     * 状态转移方程:
+     * dp[i] = Math.max(dp[i-1]+nums[i],nums[i])
+     *
+     * 状态初始值:
+     * dp[0] = nums[0];
+     *
      * @param nums
      * @return
      */
     public int maxSubArray(int[] nums) {
-        return -1;
+        if(null == nums || nums.length == 0) return 0;
+        int len = nums.length;
+        int[]dp = new int[len];
+        dp[0] = nums[0];
+        for(int k = 1 ; k < len ; k++){
+            dp[k] = Math.max(dp[k-1]+nums[k] , nums[k]);
+        }
+        int max = dp[0];
+        for(int n : dp){
+            max = Math.max(max,n);
+        }
+        return max;
+    }
+
+    /**
+     * @title: 53. 最大子序和
+     * @Version: 动态规划优化 -- O(1) 空间复杂度
+     * @param nums
+     * @return
+     */
+    public int maxSubArray2(int[] nums) {
+        if(null == nums || nums.length == 0) return 0;
+        int curr = nums[0], max = curr;
+        for(int k = 1 ; k < nums.length ; k++){
+            curr = Math.max(nums[k] + curr,nums[k]);
+            max = Math.max(curr,max);
+        }
+        return max;
     }
 
 }
