@@ -1,7 +1,11 @@
 package leetCode.oneMoreHundred;
 
+import utils.ArrayUtil;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * @Date: 2020年8月17日
@@ -28,8 +32,13 @@ import java.util.Comparator;
 public class Day019 {
 
     public static void main(String[] args) {
-        int[][] arrs = {{1,3},{2,6},{8,10},{15,18}};
-        new Day019().merge(arrs);
+        int[][] arrs = {{8,10},{1,3},{2,6},{15,18}};
+        int[][] merge = new Day019().merge(arrs);
+
+        for(int[] ele : merge){
+            ArrayUtil.showArray(ele);
+        }
+
     }
 
 
@@ -43,14 +52,20 @@ public class Day019 {
         if(null == intervals || intervals.length == 0) return intervals;
 
         Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+        List<int[]> result = new ArrayList<>();
 
-        int[][] result = new int[intervals.length][intervals[0].length];
-
-        int[] pre = intervals[0];
+        int[] temp = intervals[0];
         for(int k = 1 ; k < intervals.length ; k++){
-
+            if(intervals[k][0] > temp[1]){
+                result.add(temp);
+                temp = intervals[k];
+            }else{
+                temp[0] = Math.min(temp[0],intervals[k][0]);
+                temp[1] = Math.max(temp[1],intervals[k][1]);
+            }
         }
+        result.add(temp);
 
-        return result;
+        return result.toArray(new int[result.size()][2]);
     }
 }
