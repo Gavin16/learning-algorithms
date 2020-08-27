@@ -87,10 +87,10 @@ public class Day019 {
         }
 
         // 加油站
-        int[] gas = {1,2,3,4,5};
-        int[] cost = {3,4,5,1,2};
+        int[] gas = {2,3,4};
+        int[] cost = {3,4,3};
 
-        System.out.println(new Day019().canCompleteCircuit(gas,cost));
+        System.out.println(new Day019().canCompleteCircuit2(gas,cost));
     }
 
 
@@ -172,7 +172,21 @@ public class Day019 {
      * @return
      */
     public int canCompleteCircuit2(int[] gas, int[] cost) {
-
+        int gasLeft = 0;
+        int len = gas.length;
+        for(int i = 0 ; i < len ; i++){
+            gasLeft += (gas[i] - cost[i]);
+        }
+        if(gasLeft < 0) return -1;
+        int totalGas = 0,st = 0;
+        for(int k = 0; k < len ; k++){
+            totalGas += (gas[k] - cost[k]);
+            if(totalGas < 0){
+                totalGas = 0;
+                st = k+1;
+            }
+        }
+        return st < len ? st : -1;
     }
 
 }
