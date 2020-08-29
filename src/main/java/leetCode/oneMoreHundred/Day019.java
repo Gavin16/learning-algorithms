@@ -90,7 +90,7 @@ public class Day019 {
         int[] gas = {2,3,4};
         int[] cost = {3,4,3};
 
-        System.out.println(new Day019().canCompleteCircuit2(gas,cost));
+        System.out.println(new Day019().canCompleteCircuit(gas,cost));
     }
 
 
