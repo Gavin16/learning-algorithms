@@ -2,7 +2,9 @@ package leetCode.oneMoreHundred;
 
 import dataStruct.TreeNode;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Date: 2020年8月29日
@@ -156,6 +158,29 @@ public class Day020 {
             }
         }
         return cnt;
+    }
+
+    /**
+     * @Title:  560. 和为K的子数组
+     *
+     *
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int subarraySum3(int[] nums, int k) {
+        int count = 0,pre = 0;
+        Map<Integer,Integer> map = new HashMap<>();
+        map.put(0,1);
+        for(int n : nums){
+            pre += n;
+            if(map.containsKey(pre - k)){
+                count += map.get(pre-k);
+            }
+            map.put(pre,map.getOrDefault(pre,0)+1);
+        }
+        return count;
     }
 
 
