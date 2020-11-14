@@ -1,6 +1,6 @@
 package utils;
 
-import dataStruct.ListNode;
+import datastruct.ListNode;
 
 import java.util.Arrays;
 import java.util.Random;

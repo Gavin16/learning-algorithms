@@ -1,10 +1,9 @@
 package utils;
 
-import dataStruct.BSTNode;
-import dataStruct.TreeNode;
+import datastruct.BSTNode;
+import datastruct.TreeNode;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 

@@ -1,7 +1,6 @@
 package utils;
 
-import dataStruct.Heap;
-import org.omg.Messaging.SyncScopeHelper;
+import datastruct.Heap;
 
 /**
  * @ClassName: HeapUtil
