@@ -1,4 +1,4 @@
-package leetcode.oneMoreHundred;
+package datastruct;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -8,15 +8,25 @@ import java.util.Queue;
  *
  * AC自动机实现多模式匹配
  *
- * (1) 字符串多模式匹配仅考虑a-z 26 个英文字母
+ * (1) 字符串多模式匹配仅考虑 a-z 26 个英文字母
  *
  */
 public class ACMachine {
 
-    /** 根节点不存储任何信息用 '/' 标识 */
+
+    public static void main(String[] args) {
+        HashSet<String> set = new HashSet<>();
+        set.add("abc");
+        set.add("bc");
+        set.add("ad");
+        ACMachine acMachine = new ACMachine(set);
+        acMachine.match("ahsjbcdabc".toCharArray());
+    }
+
     private AcNode root;
 
     public ACMachine(HashSet<String> templateStrs){
+        //  根节点不存储任何信息用 '/' 标识
         root = new AcNode('/');
         for(String str : templateStrs){
             if(str.length() > 0){
@@ -41,6 +51,7 @@ public class ACMachine {
             p = p.children[index];
         }
         p.isEndingChar = true;
+        p.length = text.length;
     }
 
     private void buildFailurePointer() {
@@ -73,6 +84,28 @@ public class ACMachine {
         }
     }
 
+
+
+    public void match(char[] text) { // text是主串
+        int n = text.length;
+        AcNode p = root;
+        for (int i = 0; i < n; ++i) {
+            int idx = text[i] - 'a';
+            while (p.children[idx] == null && p != root) {
+                p = p.fail; // 失败指针发挥作用的地方
+            }
+            p = p.children[idx];
+            if (p == null) p = root; // 如果没有匹配的，从root开始重新匹配
+            AcNode tmp = p;
+            while (tmp != root) { // 打印出可以匹配的模式串
+                if (tmp.isEndingChar == true) {
+                    int pos = i-tmp.length+1;
+                    System.out.println("匹配起始下标" + pos + "; 长度" + tmp.length);
+                }
+                tmp = tmp.fail;
+            }
+        }
+    }
 
 
 
