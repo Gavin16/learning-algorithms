@@ -44,6 +44,11 @@ public class Day023 {
         int s = 7;
         System.out.println(new Day023().minSubArrayLen(s, arr));
 
+        System.out.println("---------------Simple DP ------------");
+//        int[] nums = {7,1,5,3,6,4};
+        int[] nums = {2,5};
+        System.out.println(new Day023().maxProfit(nums));
+
     }
 
     /**
@@ -138,5 +143,35 @@ public class Day023 {
         }
         return minLen == Integer.MAX_VALUE ? 0 : minLen;
     }
+
+
+    /**
+     *
+     * (4) 动态规划
+     * 剑指 Offer 63. 股票的最大利润
+     * 假设把某股票的价格按照时间先后顺序存储在数组中，请问买卖该股票一次可能获得的最大利润是多少？
+     *
+     * DP状态定义
+     * dp[i] 为前i天可以获得的最大收益
+     *
+     * dp[i] = max(dp[i-1], prices[i] - minPrice)
+     *
+     * dp[0] = 0, dp[1] = 0
+     *
+     */
+    public int maxProfit(int[] prices) {
+        if(null == prices || prices.length < 2) return 0;
+        int[]dp = new int[prices.length+1];
+        int minPrice = prices[0];
+
+        for(int i = 1 ; i < prices.length ; i++){
+            dp[i+1] = Math.max(dp[i],prices[i] - minPrice);
+            minPrice = prices[i] < minPrice ? prices[i] : minPrice;
+        }
+        return dp[prices.length];
+    }
+
+
+
 
 }
