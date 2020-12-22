@@ -49,6 +49,14 @@ public class Day023 {
         int[] nums = {2,5};
         System.out.println(new Day023().maxProfit(nums));
 
+        System.out.println("---------------- backtracking --------------");
+        int[] nums1 = {2,3,5};
+        List<List<Integer>> lists = new Day023().combinationSum(nums1, 8);
+        for(List<Integer> list : lists){
+            System.out.println(list);
+        }
+
+
     }
 
     /**
@@ -173,5 +181,44 @@ public class Day023 {
 
 
 
+
+
+
+    /**
+     * 39. 组合总和
+     * 给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+     *
+     * candidates 中的数字可以无限制重复被选取
+     *
+     * 说明：
+     *
+     * 所有数字（包括 target）都是正整数。
+     * 解集不能包含重复的组合。
+     *
+     */
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> comb = new ArrayList<>();
+
+        dfs(result,comb,candidates,target,0);
+        return result;
+    }
+
+
+    private void dfs(List<List<Integer>> result, List<Integer> comb, int[] candidates, int target, int id) {
+        if(id >= candidates.length) return;
+        if(target == 0){
+            result.add(new ArrayList<>(comb));
+            return;
+        }
+        // 选择当前元素和跳过当前元素是否可以调换顺序
+        if(target - candidates[id] >= 0){
+
+            comb.add(candidates[id]);
+            dfs(result, comb, candidates, target-candidates[id], id);
+            comb.remove(comb.size()-1);
+        }
+        dfs(result,comb,candidates,target,id+1);
+    }
 
 }
