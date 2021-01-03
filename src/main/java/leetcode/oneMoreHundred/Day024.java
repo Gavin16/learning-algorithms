@@ -1,15 +1,8 @@
 package leetcode.oneMoreHundred;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import utils.ArrayUtil;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  *
@@ -39,6 +32,16 @@ import java.util.LinkedList;
  * 输出：[1]
  *
  *  ==============================================================================
+ *  84. 柱状图中最大的矩形
+ *  给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+ *
+ *  求在该柱状图中，能够勾勒出来的矩形的最大面积。
+ *  输入: [2,1,5,6,2,3]
+ *  输出: 10
+ *
+ *
+ *
+ *  ==============================================================================
  *
  * @author Administrator
  */
@@ -47,20 +50,27 @@ public class Day024{
 
     public static void main(String[] args) {
 
-//        int[] nums = {1,3,-1,-3,5,3,6,7};
-//        int k = 3 ;
-//        3,3,5,5,6,7
-        int[] nums = {9,11};
-        int k = 1;
-
+        int[] nums = {1,3,-1,-3,5,3,6,7};
+        int k = 3 ;
 
         Day024 day024 = new Day024();
         int[] ints = day024.maxSlidingWindow(nums, k);
         ArrayUtil.showArray(ints);
+
+        System.out.println("-----------------------");
+
+        int[] nums1 = {2,1,5,6,2,3};
+        int[] nums2 = {1};
+        int[] nums3 = {1,1};
+        System.out.println(day024.largestRectangleArea(nums1));
+        System.out.println(day024.largestRectangleArea(nums2));
+        System.out.println(day024.largestRectangleArea(nums3));
+
     }
 
     /**
-     * 滑动窗解法:
+     * 239. 滑动窗口最大值
+     * 解法:
      *
      * (1)窗口从左向右滑动时,使用双端队列按从大到小保存数组中的元素(保存的下标)
      * (2)向队尾添加元素时，若元素小于队尾元素时向队尾添加元素,若元素大于队尾元素则弹出队尾元素
@@ -93,4 +103,53 @@ public class Day024{
         }
         return result;
     }
+
+
+    /**
+     * 84. 柱状图中最大的矩形
+     * @param heights
+     * @return
+     */
+    public int largestRectangleArea(int[] heights) {
+        int[][] boundaries  = new int[heights.length][2];
+        // 单调递增栈
+        Stack<List<Integer>> stack = new Stack<>();
+        for(int c = 0 ; c < heights.length ; c++){
+            while(!stack.isEmpty() && heights[stack.peek().get(0)] > heights[c]){
+                // 当前值比栈顶元素中list中的值小
+                List<Integer> pop = stack.pop();
+                int leftIndex = stack.isEmpty() ? -1 : stack.peek().get(stack.peek().size()-1);
+                for(int n : pop){
+                    boundaries[n][0] = leftIndex;
+                    boundaries[n][1] = c;
+                }
+            }
+            // 当前值等于单调栈顶元素值，追加
+            if(!stack.isEmpty() && heights[stack.peek().get(0).intValue()] == heights[c]){
+                stack.peek().add(c);
+            }else{
+                List<Integer> list = new ArrayList<>();
+                list.add(c);
+                stack.push(list);
+            }
+        }
+
+        // 栈中可能还有剩余元素需要找出它们的左右两侧比他们值小的元素对应下标
+        while(!stack.isEmpty()){
+            List<Integer> pop = stack.pop();
+            int leftIndex = stack.isEmpty() ? -1 : stack.peek().get(stack.peek().size()-1);
+            for(int m : pop){
+                boundaries[m][0] = leftIndex;
+                boundaries[m][1] = heights.length;
+            }
+        }
+        // 遍历boundaries 找出每个位置的 左右两侧的相邻更小值
+        int maxArea = 0;
+        for(int k = 0 ; k < boundaries.length ; k++){
+            int area = heights[k] * (boundaries[k][1] ==  boundaries[k][0] ? 1 :(boundaries[k][1] - boundaries[k][0] - 1));
+            if(area > maxArea) maxArea = area;
+        }
+        return maxArea;
+    }
+
 }
