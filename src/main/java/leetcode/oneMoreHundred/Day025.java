@@ -29,7 +29,91 @@ public class Day025 {
         System.out.println(NQueenProblem(8));
 
 
+        System.out.println("----------max bag value-------");
+        int[] weights = {3,2,4,7};
+        int[] values = {5,6,3,19};
+        int wLimit = 11;
+        System.out.println(maxBagValue(weights,values,wLimit));
+        System.out.println(maxBagValue2(weights,values,wLimit));
+    }
 
+
+    /**
+     * 01背包问题:
+     * 暴力递归解法
+     *
+     * @param w  背包中各个商品的重量
+     * @param v  背包中各个商品的价值
+     * @param wLimit 背包能承受商品的最大重量
+     * @return
+     */
+    public static int maxBagValue(int[]w , int[]v , int wLimit){
+        return bagDfs(w,v,0,wLimit);
+    }
+
+
+    /**
+     * bagDfs(w,v,curr,rest) 代表在 curr位置下 继续往后走，选或者不选能得到的最大价值
+     *
+     * @param w
+     * @param v
+     * @param curr
+     * @param rest 背包剩余能承受重量
+     * @return
+     */
+    private static int bagDfs(int[]w ,int[]v, int curr ,int rest){
+        if(rest < 0){
+            // 标识当前商品选择组合不合规
+            return -1;
+        }
+        // 在还有剩余空间的情况下遍历完所有的商品
+        if(curr == w.length){
+            return 0;
+        }
+        int c1 = -1;
+        int c2 = bagDfs(w,v,curr+1,rest);
+        int c1Next = bagDfs(w,v,curr+1,rest-w[curr]);
+        if(c1Next != -1){
+            c1 = v[curr] + c1Next;
+        }
+        return Math.max(c1,c2);
+    }
+
+
+
+    /**
+     * 01背包暴力递归过程 改为 动态规划
+     * 改造方法:
+     * (1) 递归的终止条件对应为动态规划的DP数组的初始值
+     * (2) 递归的嵌套调用逻辑对应动态规划的状态转移方程
+     * (3) 递归的初始调用值 对应动态规划的返回值
+     *
+     *  定义二维数组dp[N+1][M+1]  其中N代表背包中商品的总数量(从0开始,递归中结束条件用到N), M代表背包最大的承重
+     *  由暴力递归写法可知:
+     *      1) dp[N][..] 数组中的所有元素为0
+     *      2) 同时dp[..][..,-1] 中所有元素为 -1; 没有实际意义
+     *      3) 二维数组 dp[][] 的初始化值均为 0
+     *
+     *
+     *
+     * @param w
+     * @param v
+     * @param wLimit
+     * @return
+     */
+    public static int maxBagValue2(int[]w, int[]v ,int wLimit){
+        int[][]dp = new int[w.length+1][wLimit+1];
+        for(int i = w.length-1 ; i >= 0 ; i--){
+            for(int j = 0; j <= wLimit ; j++){
+                int c1 = -1;
+                int c2 = dp[i+1][j];
+                if(j - w[i] >= 0){
+                    c1 = v[i] + dp[i+1][j-w[i]];
+                }
+                dp[i][j] = Math.max(c1,c2);
+            }
+        }
+        return dp[0][wLimit];
     }
 
 
