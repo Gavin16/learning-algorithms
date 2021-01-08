@@ -21,9 +21,10 @@ public class Day025 {
 
     public static void main(String[] args) {
 
-        int[] nums1 = {3,7,10,1};
+        int[] nums1 = {3,7,5,10,8};
         System.out.println("---------Card In Line---------");
         System.out.println(maxCardSum(nums1));
+        System.out.println(maxCardSum1(nums1));
 
         System.out.println("--------N Queen Problem------");
         System.out.println(NQueenProblem(8));
@@ -180,7 +181,35 @@ public class Day025 {
     }
 
 
+    /**
+     * 博弈拿牌问题动态规划改造
+     * @param nums
+     */
+    public static int maxCardSum1(int[] nums){
+        int[][]first = new int[nums.length][nums.length];
+        int[][]second = new int[nums.length][nums.length];
 
+        for(int i = 0 ; i < nums.length ; i++){
+            first[i][i] = nums[i];
+        }
+
+        // 先手DP数据结果
+        for(int j = nums.length - 1 ; j >= 0 ; j--){
+            for(int k = j ; k < nums.length ; k++){
+                if(j != k){
+                    int c1 = nums[j] + second[j+1][k];
+                    int c2 = nums[k] + second[j][k-1];
+                    first[j][k] = Math.max(c1,c2);
+
+                    int p1 = first[j+1][k];
+                    int p2 = first[j][k-1];
+                    second[j][k] = Math.min(p1,p2);
+                }
+            }
+        }
+        return Math.max(first[0][nums.length-1],second[0][nums.length-1]);
+
+    }
 
 
     /**
