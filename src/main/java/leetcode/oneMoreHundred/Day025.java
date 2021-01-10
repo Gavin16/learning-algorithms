@@ -43,6 +43,7 @@ public class Day025 {
         int sum = 1000;
         System.out.println(combinationCaseNum(coins,sum));
         System.out.println(conbinationCaseNum1(coins,sum));
+        System.out.println(conbinationCaseNum2(coins,sum));
     }
 
 
@@ -86,7 +87,6 @@ public class Day025 {
         }
         return Math.max(c1,c2);
     }
-
 
 
     /**
@@ -334,7 +334,10 @@ public class Day025 {
 
         for(int index = N-1 ;  index >= 0 ; index--){
             for(int rest = 0 ; rest <= amt ; rest++){
-
+                dp[index][rest] = dp[index+1][rest];
+                if(rest >= coins[index]){
+                    dp[index][rest] += dp[index][rest-coins[index]];
+                }
             }
         }
         return dp[0][amt];
