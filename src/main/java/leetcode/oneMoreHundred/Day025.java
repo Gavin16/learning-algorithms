@@ -10,6 +10,7 @@ package leetcode.oneMoreHundred;
  *  剑指 Offer 46. 把数字翻译成字符串
  *  博弈拿牌问题
  *  N皇后问题
+ *  硬币(可重复)组合成指定金额组合数
  *
  * ==============================================================================
  *
@@ -36,6 +37,12 @@ public class Day025 {
         int wLimit = 11;
         System.out.println(maxBagValue(weights,values,wLimit));
         System.out.println(maxBagValue2(weights,values,wLimit));
+
+        System.out.println("----------combination Case Num-------");
+        int[] coins = {5,100,10,50};
+        int sum = 1000;
+        System.out.println(combinationCaseNum(coins,sum));
+        System.out.println(conbinationCaseNum1(coins,sum));
     }
 
 
@@ -261,5 +268,76 @@ public class Day025 {
     }
 
 
+    /**
+     * 返回能组成指定金额的组合数: 假定数组中不存在重复的值
+     * @param nums
+     * @return
+     */
+    public  static int combinationCaseNum(int[] nums , int amt){
+        int recursion = recursion(nums,0,amt);
+        return recursion;
+    }
+
+    private static int recursion(int[] coins, int index ,int rest){
+        if(index == coins.length){
+            return rest == 0 ? 1 : 0;
+        }
+        int cnt = 0;
+        // 当前硬币使用次数
+        for(int k = 0 ; k * coins[index] <= rest ; k++){
+            cnt += recursion(coins,index+1,rest - k * coins[index]);
+        }
+        return cnt;
+    }
+
+
+    /**
+     * 返回能组成指定金额的组合数: 假定数组中不存在重复的值 -> 动态规划实现改造
+     *
+     * 定义二维数组 dp[M][N]
+     * 其中dp[M] 代表遍历时数组的下标, dp[..][N] 代表每个位置凑齐amt还剩余的钱数
+     *
+     *
+     * @param coins
+     * @param amt
+     * @return
+     */
+    public static int conbinationCaseNum1(int[] coins , int amt){
+        int N = coins.length;
+        int[][] dp = new int[N+1][amt+1];
+        dp[N][0] = 1;
+
+        for(int index = N-1 ;  index >= 0 ; index--){
+            for(int rest = 0 ; rest <= amt ; rest++){
+                int cnt = 0;
+                // 存在枚举情况
+                for(int k = 0 ; k * coins[index] <= rest; k++){
+                    cnt += dp[index+1][rest - k * coins[index]];
+                }
+                dp[index][rest] = cnt;
+            }
+        }
+        return dp[0][amt];
+    }
+
+
+    /**
+     * 动态规划去掉枚举行为  -> 优化
+     * @param coins
+     * @param amt
+     * @return
+     */
+    public static int conbinationCaseNum2(int[] coins , int amt){
+        int N = coins.length;
+        int[][] dp = new int[N+1][amt+1];
+        dp[N][0] = 1;
+
+        for(int index = N-1 ;  index >= 0 ; index--){
+            for(int rest = 0 ; rest <= amt ; rest++){
+
+            }
+        }
+        return dp[0][amt];
+    }
 
 }
