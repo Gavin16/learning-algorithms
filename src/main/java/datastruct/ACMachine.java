@@ -106,7 +106,7 @@ public class ACMachine {
     }
 
     /**
-     * 构建失败指针
+     * 构建Trie树的失败指针
      */
     private void buildFailurePointer() {
         Queue<AcNode> queue = new LinkedList<>();
@@ -114,6 +114,7 @@ public class ACMachine {
         queue.add(root);
         while (!queue.isEmpty()) {
             AcNode p = queue.remove();
+            // 按照队列添加顺序，每次遍历单个节点下所有子节点
             for (int i = 0; i < MAX_CHAR_NUM; ++i) {
                 AcNode pc = p.children[i];
                 if (pc == null) continue;
@@ -121,10 +122,13 @@ public class ACMachine {
                     pc.fail = root;
                 } else {
                     AcNode q = p.fail;
+                    // 根据失败指针链由下往上搜索，找出Trie树中当前子节点所有可能的失败指针，若无则指向root
                     while (q != null) {
+                        // pc的字符是否和qc的字符相同,相同则记录失败指针
                         AcNode qc = q.children[pc.data - ' '];
                         if (qc != null) {
                             pc.fail = qc;
+                            // 当前子节点确定失败指针,则处理下一个子节点
                             break;
                         }
                         q = q.fail;
@@ -156,7 +160,7 @@ public class ACMachine {
                 p = p.fail; // 失败指针发挥作用的地方
             }
             p = p.children[idx];
-            if (p == null) p = root; // 如果没有匹配的，从root开始重新匹配
+            if (p == null) p = root; // 如果没有匹配的，从root开始重新匹配(后续逻辑将被跳过)
             AcNode tmp = p;
 
             while (tmp != root) { // 打印出可以匹配的模式串
