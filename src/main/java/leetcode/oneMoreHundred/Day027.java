@@ -73,12 +73,23 @@ public class Day027 {
     public static void main(String[] args) {
         int[] nums01 = {7,1,5,3,6,4};
         int[] nums02 = {7,1,5,3,6,4};
+        int[] nums03 = {3,3,5,0,0,3,1,4};
+        int[] nums04 = {3,2,6,5,0,3};
+        int[] nums041 = {2,4,1};
 
         Day027 day027 = new Day027();
         System.out.println(day027.maxProfit1(nums01));
 
         System.out.println("===================");
         System.out.println(day027.maxProfit2(nums02));
+        System.out.println("===================");
+
+        System.out.println(day027.maxProfit3(nums03));
+
+
+        System.out.println("=======================");
+        System.out.println(day027.maxProfit4(2,nums04));
+        System.out.println(day027.maxProfit4(2,nums041));
     }
 
 
@@ -146,19 +157,90 @@ public class Day027 {
 
     /**
      * 123. 买卖股票的最佳时机 III
+     * 由于股票只能买两次，因此对于股票的买卖状态，仅以下5种
+     * (0) 还未买过股票
+     * (1) 第一次买了股票
+     * (2) 第一次买的股票卖了
+     * (3) 第二次卖了股票
+     * (4) 第二次买的股票卖了
+     *
+     * 定义二维数组 dp[N][5]
+     * 其中N代表天数，5 对应当前买入的状态数，dp[i][j] 对应在第i天第j中状态下的余额
+     *
+     * 针对第i天的  0 ，1，2，3，4 五种状态下分别的有
+     * 状态0：代表第i天一次股票都没买的状态，显然的 有dp[i][0] = dp[i-1][0] , 并且dp[i][0] = 0;
+     * 状态1：代表第i天进入了买了第一次股票的状态，那么这个一次可以是前一天就已经买了的，也可以是第i天当天买的，因而有：
+     *    dp[i][1] = dp[i-1][1]  或者 dp[i-1][0] - prices[i], 究竟是第i 天买还是在前一天就进入买入状态，
+     *    这里可以通过贪心算法来获取全局最优解，因此 dp[i][1] = max(dp[i-1][1],dp[i-1][0] - prices[i])
+     * 对于状态2：第i天进入第一次卖出状态, 那么也存在两种可能
+     *    前一天就已经卖出了： dp[i][2] = dp[i-1][2]
+     *    当天才卖出： dp[i][2] = dp[i-1][1] + prices[i]
+     *    类似的，dp[i][2] 取 max(dp[i-1][2],dp[i-1][1] + prices[i])
+     *
+     * 对于状态3, 4 同1，2 类似，只不过对应的是第二次的买卖，因而有：
+     *    dp[i][3] = max(dp[i-1][3], dp[i-1][2] - prices[i])
+     *    dp[i][4] = max(dp[i-1][4],dp[i-1][3] + prices[i])
+     *
+     * 以上状态转移方程中每一步在填写 dp[i][j] 的剩余金额时，都是取的对当前时间和状态大的值，这样通过由前到后求解最终得到的会是一个全局的最优解
+     *
+     * @param prices
+     * @return
+     */
+    public int maxProfit3(int[] prices) {
+        if(null == prices || prices.length < 2) return 0;
+        int N = prices.length;
+        int[][] dp = new int[N][5];
+        dp[0][1] = -1*prices[0];
+        dp[0][3] = -1*prices[0];
+        for(int i = 1 ; i < N ; i++){
+            dp[i][0] = dp[i-1][0];
+            dp[i][1] = Math.max(dp[i-1][1],dp[i-1][0] - prices[i]);
+            dp[i][2] = Math.max(dp[i-1][2],dp[i-1][1] + prices[i]);
+            dp[i][3] = Math.max(dp[i-1][3],dp[i-1][2] - prices[i]);
+            dp[i][4] = Math.max(dp[i-1][4],dp[i-1][3] + prices[i]);
+        }
+        return Math.max(dp[N-1][2],dp[N-1][4]);
+    }
+
+
+    /**
+     * 188. 买卖股票的最佳时机 IV
+     *
+     * 最多完成K笔交易
+     * 类似于 123. 买卖股票的最佳时机 III
      *
      *
+     * 0 <= k <= 100
+     * 0 <= prices.length <= 1000
+     * 0 <= prices[i] <= 1000
      *
      * @param k
      * @param prices
      * @return
      */
-    public int maxProfit3(int k, int[] prices) {
-        return -1;
-    }
-
-
     public int maxProfit4(int k, int[] prices) {
-        return -1;
+        if(k == 0 || prices.length == 0) return 0;
+        int N = prices.length;
+        int[][] dp = new int[N][2*k+1];
+        for(int i = 0 ; i < k ; i++){
+            dp[0][2 * i + 1] = -1 * prices[0];
+        }
+
+        for(int j = 1 ; j < N ; j++){
+            for(int t = 1 ; t < 2 * k + 1 ; t++){
+                if(t % 2 == 1){
+                    dp[j][t] = Math.max(dp[j-1][t],dp[j-1][t-1] - prices[j]);
+                }else{
+                    dp[j][t] = Math.max(dp[j-1][t],dp[j-1][t-1] + prices[j]);
+                }
+            }
+        }
+        int maxProfit = -1;
+        for(int r = 0 ; r < 2 * k + 1 ; r++){
+            if(dp[N-1][r] > maxProfit){
+                maxProfit = dp[N-1][r];
+            }
+        }
+        return maxProfit;
     }
 }
