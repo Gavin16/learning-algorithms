@@ -35,6 +35,10 @@ public class Day028 {
         int[] ints1 = day028.maxSlidingWindow1(nums1, 3);
         ArrayUtil.showArray(ints0);
         ArrayUtil.showArray(ints1);
+
+        System.out.println("==============");
+        System.out.println(day028.chineseChessHorseCases(2,3,3));
+        System.out.println(day028.chineseChessHorseCases1(2,3,3));
     }
 
 
@@ -143,5 +147,80 @@ public class Day028 {
     }
 
 
+    /**
+     * 中国象棋马 从坐标(0,0) 到 坐标(x,y) 的走法数
+     *
+     * 坐标 x ∈[0,9) , y ∈ [0,10)
+     *
+     * 暴力递归实现
+     *
+     * @return
+     */
+    public int chineseChessHorseCases(int x , int y ,int k){
+        return func(x,y,k);
+    }
+
+    /**
+     * 到坐标 x,y 用 k 步走完，对应的走法数
+     * @param x
+     * @param y
+     * @param k
+     * @return
+     */
+    private int func(int x, int y, int k){
+        if(k == 0){
+            return (x == 0 && y == 0) ? 1 : 0;
+        }
+        if(x < 0 || x > 9 || y < 0 || y > 10){
+            return 0;
+        }
+
+        int steps = func(x-1,y+2, k-1) +
+                    func(x+1,y+2,k-1)+
+                    func(x+2,y+1,k-1)+
+                    func(x+2,y-1,k-1)+
+                    func(x+1,y-2,k-1)+
+                    func(x-1,y-2,k-1)+
+                    func(x-2,y-1,k-1)+
+                    func(x-2,y+1,k-1);
+
+        return steps;
+    }
+
+
+    /**
+     * 动态规划实现
+     * @param x
+     * @param y
+     * @param k
+     * @return
+     */
+    public int chineseChessHorseCases1(int x , int y ,int k){
+        int[][][] dp = new int[9][10][k+1];
+        dp[0][0][0] = 1;
+
+        for(int step = 1 ; step <= k ; step++){
+            for(int i = 0 ; i < 9 ; i++){
+                for(int j = 0 ; j < 10 ; j++){
+                    dp[i][j][step] = getRelatedCases(dp,i-1,j+2,step-1)+
+                            getRelatedCases(dp,i+1,j+2,step-1)+
+                            getRelatedCases(dp,i+2,j+1,step-1)+
+                            getRelatedCases(dp,i+2,j-1,step-1)+
+                            getRelatedCases(dp,i+1,j-2,step-1)+
+                            getRelatedCases(dp,i-1,j-2,step-1)+
+                            getRelatedCases(dp,i-2,j-1,step-1)+
+                            getRelatedCases(dp,i-2,j+1,step-1);
+                }
+            }
+        }
+        return dp[x][y][k];
+    }
+
+    private int getRelatedCases(int[][][] dp, int x, int y, int step) {
+        if(x < 0 || x >= 9 || y < 0 || y >= 10){
+            return 0;
+        }
+        return dp[x][y][step];
+    }
 
 }
