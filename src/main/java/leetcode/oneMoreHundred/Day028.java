@@ -90,4 +90,58 @@ public class Day028 {
         return res;
     }
 
+
+    /**
+     * 对于输入数组 int[] nums 和 数值 n
+     * 求数组中 nums数组中的所有子数组中满足  子数组中最大值 - 子数组中最小值 <= n 的数量
+     *
+     * 滑动窗 + 两个双端队列    求解
+     *
+     * 分析:
+     * 对于任意数组，arr[L..R] 范围内若满足  max - min <= n
+     * 那么 arr[L..R]的子数组同样满足 max'-min' <= n
+     *
+     * 类似的，对于任意数组 arr[L..R] 范围内，若 max -min > n
+     * 那么包括 arr[L..R] 范围比 arr[L..R]大的数组同样满足 max'' - min'' > n
+     *
+     * 可以得出结论:
+     * 使用固定一端(下标l)，滑动另一端(下标r)的窗口，当窗口右端滑动到第一次 max - min > n 时，
+     * 那么此前所有以l开头子数组，都满足 max - min <= n
+     *
+     *
+     */
+    public int subArrayCount(int[] nums, int k) {
+        int count = 0 ,l = 0 , r = 0;
+        Deque<Integer> maxQueue = new LinkedList(),minQueue = new LinkedList();
+        while(l < nums.length){
+            while(r < nums.length) {
+                while (!maxQueue.isEmpty() && nums[maxQueue.getLast()] < nums[r]) {
+                    maxQueue.removeLast();
+                }
+                while (!minQueue.isEmpty() && nums[minQueue.getLast()] > nums[r]) {
+                    minQueue.removeLast();
+                }
+                maxQueue.addLast(r);
+                minQueue.addLast(r);
+                if (nums[maxQueue.getFirst()] - nums[minQueue.getFirst()] > k) {
+                    break;
+                }
+                //
+                r++;
+            }
+            count += r - l;
+            // 更新过期窗口内容
+            if(minQueue.getFirst() == l){
+                minQueue.removeFirst();
+            }
+            if(maxQueue.getFirst() == l){
+                maxQueue.removeFirst();
+            }
+            l++;
+        }
+        return count;
+    }
+
+
+
 }
