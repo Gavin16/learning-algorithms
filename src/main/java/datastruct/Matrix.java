@@ -8,17 +8,6 @@ import java.util.Objects;
 public class Matrix {
 
 
-    public static void main(String[] args) {
-        int[][] test = {{1,1},{1,0}};
-//        int[][] e = {{1,0},{0,1}};
-
-        int[][] multiply = multiply(test, test);
-        int[][] power = power(test, 3);
-
-        showMatrix(multiply);
-        showMatrix(power);
-    }
-
     /**
      * 两个矩阵相乘，返回相乘后的结果
      *

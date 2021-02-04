@@ -15,20 +15,20 @@ public class ACMachine {
 
     private static final int MAX_CHAR_NUM = 96;
 
-    public static void main(String[] args) {
-        HashSet<String> set = new HashSet<>();
-        set.add("fuck");
-        set.add("damn");
-        set.add("bitch");
-        ACMachine acMachine = new ACMachine(set);
-        String testStr = "Hey,fuck you! you god damn bitch,leave that girl alone.";
-        List<String> match = acMachine.match(testStr.toCharArray());
-        System.out.println("AC 自动机多模匹配后结果:" + match);
-        int[][] sections =  mergeOverlap(match);
-        String s = replaceCharacters(testStr, sections);
-
-        System.out.println("替换敏感词后的字符串:" + s);
-    }
+//    public static void main(String[] args) {
+//        HashSet<String> set = new HashSet<>();
+//        set.add("fuck");
+//        set.add("damn");
+//        set.add("bitch");
+//        ACMachine acMachine = new ACMachine(set);
+//        String testStr = "Hey,fuck you! you god damn bitch,leave that girl alone.";
+//        List<String> match = acMachine.match(testStr.toCharArray());
+//        System.out.println("AC 自动机多模匹配后结果:" + match);
+//        int[][] sections =  mergeOverlap(match);
+//        String s = replaceCharacters(testStr, sections);
+//
+//        System.out.println("替换敏感词后的字符串:" + s);
+//    }
 
     private static String replaceCharacters(String testStr, int[][] sections) {
         StringBuilder stringBuilder = new StringBuilder(testStr);

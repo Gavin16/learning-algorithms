@@ -71,10 +71,33 @@ public class Day029 {
         System.out.println(day029.fastPower(2,16));
 
         System.out.println("================");
-        System.out.println(day029.Fibonacci1(4));
+        System.out.println(day029.Fibonacci1(2));
+        System.out.println("================");
+        System.out.println(day029.Fibonacci0(2));
+
     }
 
     /**
+     * DP 实现
+     * @param n
+     * @return
+     */
+    public int Fibonacci0(int n){
+        if(n <= 2) return n;
+        int pre = 1,prepre = 1;
+        int res = pre + prepre;
+        for (int i = 3 ; i <= n ; i++){
+            prepre = pre;
+            pre = res;
+            res =  pre + prepre;
+        }
+        return res;
+    }
+
+
+    /**
+     *
+     * 矩阵指数计算实现
      * f(1) = 1,f(2）= 2, f(3) = 3 ... f(n) = f(n-1) + f(n-2)
      *
      * @param n
