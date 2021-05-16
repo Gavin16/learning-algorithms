@@ -37,7 +37,6 @@ public class ReverseBetween {
     public static ListNode reverseBetween(ListNode head, int m, int n) {
         ListNode first = head, last = head ,next;
         ListNode preF = head, afterL = null, curr = head, preC = head ;
-
         if(m == n) return head;
 
         for(int i = 1 ; curr != null; i++){
@@ -61,7 +60,6 @@ public class ReverseBetween {
                 curr = curr.next;
             }
         }
-
         // 连接各个节点
         if(preF == first){
             preF.next = afterL != null ? afterL : null;

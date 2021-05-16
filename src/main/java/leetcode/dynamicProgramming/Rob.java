@@ -49,6 +49,8 @@ public class Rob {
         System.out.println(rob1XX(xx));
 
         System.out.println(massage(xx));
+        System.out.println("------------------------------");
+        System.out.println(dfsRob(arr,arr.length-1));
     }
 
 
@@ -83,20 +85,32 @@ public class Rob {
     public static int rob1Y(int[] nums){
         int[] memo = new int[nums.length];
         Arrays.fill(memo,-1);
-        return dp(nums,0,memo);
+        return dfsY(nums,0,memo);
     }
 
-    private static int dp(int[] nums , int start , int[] memo){
+    private static int dfsY(int[] nums , int start , int[] memo){
         if(start >= nums.length) return 0;
 
         if(memo[start] != -1) return memo[start];
 
-        int skip = dp(nums,start+1,memo);
-        int rob = nums[start] + dp(nums,start+2,memo);
+        int skip = dfsY(nums,start+1,memo);
+        int rob = nums[start] + dfsY(nums,start+2,memo);
 
         int res = Math.max(skip,rob);
         memo[start] =  res;
         return res;
+    }
+
+    /**
+     * ID递减
+     */
+    private static int dfsRob(int[]nums,int index){
+        if(index < 0) return 0;
+
+        int skip = dfsRob(nums,index-1);
+        int rob = nums[index] + dfsRob(nums,index-2);
+
+        return Math.max(skip,rob);
     }
 
     /**
