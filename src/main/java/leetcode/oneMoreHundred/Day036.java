@@ -53,13 +53,7 @@ public class Day036 {
     }
 
     public static int hammingDistance(int x, int y) {
-        int res = x ^ y , dist = 0;
-        while(res != 0){
-            int bit = res & 1;
-            dist = dist + bit;
-            res = res >>> 1;
-        }
-        return dist;
+        return Integer.bitCount(x ^ y);
     }
 
     /**
