@@ -183,6 +183,8 @@ public class Day040 {
         if(root.right != null){
             root.right.next = getFirstChildInNext(root.next);
         }
+        // 这里需要先遍历右子节点，再遍历左子节点
+        // 否则对于左右子节点都有两个子节点的情况，next指针会出现断开的情况
         connect3(root.right);
         connect3(root.left);
         return root;
