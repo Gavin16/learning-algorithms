@@ -18,6 +18,8 @@ import java.util.Map;
  * @version: 1.0
  * @author: minsky
  * @date: 2022/5/6
+ *
+ * 迭代:
  */
 public class Day046 {
 
@@ -32,7 +34,7 @@ public class Day046 {
         }
         lruCache.showCacheLinkedList();
 
-        int[] ints1 = ArrayUtil.randValueArray(10);
+        int[] ints1 = ArrayUtil.randValueArray(50);
         ArrayUtil.showArray(ints1);
         for(int nn : ints1){
             lruCache.put(nn);
