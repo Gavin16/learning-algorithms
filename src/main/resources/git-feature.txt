@@ -5,6 +5,11 @@ cherry-pick：复制 commit，可以将单独某一个或者几个commit 合并�
 
 stash：存储临时代码。
 reset --soft：软回溯，回退 commit 的同时保留修改内容。
+            hard 和 soft的主要区别在于:
+            (1) hard 参数，reset 操作之后两个版本之间的修改将不会保存在本地
+            (2) soft 参数 reset 操作之后两个版本之间的修改将在本地保存,这样还能看到做出了哪些修改。
+                   使用soft参数可以在本地还原最近几个版本的改动。如需要再改动上做修改再提交的话，最好使用soft参数。
+
 revert：撤销 commit 的修改内容。
 reflog：记录了 commit 的历史操作。
 
