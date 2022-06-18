@@ -26,3 +26,5 @@ reflog：记录了 commit 的历史操作。
 
 学习计划-stage2:
 2022年06月19日: 完成进阶不是知识
+
+测试difftool 使用
