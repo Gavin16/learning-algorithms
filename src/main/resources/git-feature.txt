@@ -19,6 +19,7 @@ reflog：记录了 commit 的历史操作。
         就可以使用 reflog 找出所有的操作对应日志，然后再次使用 reset 操作恢复到那个版本即可。
 
 更多教程参考:https://www.4e00.com/git-zh/toc.html
+查看不同语言gitignore 文件可以参看: https://github.com/github/gitignore/blob/main/Java.gitignore
 
 学习计划-stage1:
 2022年06月18日: 完成基本部分工具(git手册)
