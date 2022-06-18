@@ -1,7 +1,7 @@
 测试stash 功能
 
 cherry-pick：复制 commit，可以将单独某一个或者几个commit 合并到另一个分支。
-            注意: pick的提交需要在当前分支后head 所在位置后保持不间断且连续，否则会提示冲突。 pick操作若没有冲突，之后可直接提交
+            注意: pick的提交需要在当前分支后head 所在位置后保持不间断且连续，否则会提示冲突。 pick操作若没有冲突，之后可直接push
 
 stash：存储临时代码。
 reset --soft：软回溯，回退 commit 的同时保留修改内容。
