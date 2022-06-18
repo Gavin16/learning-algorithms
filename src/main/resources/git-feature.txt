@@ -13,6 +13,8 @@ reset --soft：软回溯，回退 commit 的同时保留修改内容。
 
 revert：撤销 commit 的修改内容。
 reflog：记录了 commit 的历史操作。
+        reflog: 记录了所有操作的日志，比log 更加齐全，因此如果出现使用了"reset --hard commitHash" 之后想要恢复
+        就可以使用 reflog 找出所有的操作对应日志，然后再次使用 reset 操作恢复到那个版本即可。
 
 更多教程参考:
 https://www.bilibili.com/video/BV1sM4y1M7Bd?spm_id_from=333.337.search-card.all.click&vd_source=47aa1cfb12660627e02b6074e6e4f287
