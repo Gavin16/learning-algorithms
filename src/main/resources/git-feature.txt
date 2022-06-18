@@ -1,3 +1,8 @@
 测试stash 功能
 
 cherry-pick：复制 commit，可以将单独某一个或者几个commit 合并到另一个分支。
+
+stash：存储临时代码。
+reset --soft：软回溯，回退 commit 的同时保留修改内容。
+revert：撤销 commit 的修改内容。
+reflog：记录了 commit 的历史操作。
