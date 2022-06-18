@@ -6,3 +6,6 @@ stash：存储临时代码。
 reset --soft：软回溯，回退 commit 的同时保留修改内容。
 revert：撤销 commit 的修改内容。
 reflog：记录了 commit 的历史操作。
+
+更多教程参考:
+https://www.bilibili.com/video/BV1sM4y1M7Bd?spm_id_from=333.337.search-card.all.click&vd_source=47aa1cfb12660627e02b6074e6e4f287
