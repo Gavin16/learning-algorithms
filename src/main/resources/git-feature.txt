@@ -1,1 +1,3 @@
 测试stash 功能
+
+cherry-pick：复制 commit，可以将单独某一个或者几个commit 合并到另一个分支。
