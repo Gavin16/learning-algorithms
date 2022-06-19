@@ -22,7 +22,7 @@ reflog：记录了 commit 的历史操作。
 查看不同语言gitignore 文件可以参看: https://github.com/github/gitignore/blob/main/Java.gitignore
 
 学习计划-stage1:
-2022年06月18日: 完成基本部分工具(git手册)....
+2022年06月18日: 完成基本部分工具(git手册)...!!!
 
 学习计划-stage2:
 2022年06月19日: 完成进阶不是知识
