@@ -370,6 +370,8 @@ Try - Confirm - Cancel 基于两阶段提交的
 
 
 
+
+
 redis/zookeeper实现分布式锁的原理?
 redis分布式锁基于 set key value ex nx 指令实现，当且仅当某个指令不存在时，指令才能执行成功。
 这就类似于加锁过程，当没有其它线程在访问时，当前线程才能获取到资源。
