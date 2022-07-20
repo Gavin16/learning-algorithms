@@ -47,6 +47,11 @@ public class Day049 {
         System.out.println(day049.findUnsortedSubarray(nums2));
         System.out.println(day049.findUnsortedSubarray(nums3));
         System.out.println(day049.findUnsortedSubarray(nums4));
+
+        System.out.println(day049.findUnsortedSubarray2(nums1));
+        System.out.println(day049.findUnsortedSubarray2(nums2));
+        System.out.println(day049.findUnsortedSubarray2(nums3));
+        System.out.println(day049.findUnsortedSubarray2(nums4));
     }
 
 
@@ -74,7 +79,6 @@ public class Day049 {
             }else{
                 maxSR = nums[i];
             }
-
             if(nums[j] > minGL){
                 begin = j;
             }else{
@@ -83,5 +87,28 @@ public class Day049 {
         }
 
         return end - begin + 1;
+    }
+
+
+    public int findUnsortedSubarray2(int[] nums) {
+        int len = nums.length;
+        int dy_min = nums[len-1];
+        int dy_max = nums[0];
+
+        int start = 0, end = -1;
+
+        for(int i = 0, j = len -1; i < len && j >= 0; i++, j--){
+            if(nums[i] >= dy_max){
+                dy_max = nums[i];
+            }else{
+                end = i;
+            }
+            if(nums[j] <= dy_min){
+                dy_min = nums[j];
+            }else{
+                start = j;
+            }
+        }
+        return end - start + 1;
     }
 }
