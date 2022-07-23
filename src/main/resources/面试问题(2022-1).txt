@@ -78,7 +78,8 @@ ALL -> 全表扫描聚簇索引
 事务的隔离级别
 
 
-RR级别事务实现原理 -- RR通过MVCC实现，简单来讲就是使用 readview + undolog + 数据隐藏字段(trx_id, roll_ptr) 来实现，RR隔离级别只在开启事务时创建对应的readview ，之后每次读取数据都是那同一个readview进行判断，判断方式为:
+RR级别事务实现原理 -- RR通过MVCC实现，简单来讲就是使用 readview + undolog + 数据隐藏字段(trx_id, roll_ptr) 来实现，
+RR隔离级别只在开启事务时创建对应的readview ，之后每次读取数据都是那同一个readview进行判断，判断方式为:
 (1) 查询到数据后，判断当前记录的最后修改事务id 是否为当前事务ID,若是则判断为可见
 (2) 记录的最后修改ID是否小于 readview 中up_trx_id ,小于的话意味着当前记录是已经提交过的事务，判断为可见
 (3) 记录的最后修改ID是否大于 readview 中low_trx_id, 若大于则意味着开启readview 时，修改该记录的事务还没提交(没创建)，判断为不可见
