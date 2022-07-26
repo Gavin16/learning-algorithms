@@ -2,6 +2,9 @@ package leetcode.oneMoreHundred;
 
 import utils.ArrayUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @className: Day050
  * @description:
@@ -57,10 +60,17 @@ public class Day050 {
         int[] arr2 = {-1,0};
 
         Day050 day050 = new Day050();
-        int[] ans1 = day050.singleNumber(arr1);
-        int[] ans2 = day050.singleNumber(arr2);
-        ArrayUtil.showArray(ans1);
-        ArrayUtil.showArray(ans2);
+//        int[] ans1 = day050.singleNumber(arr1);
+//        int[] ans2 = day050.singleNumber(arr2);
+//        ArrayUtil.showArray(ans1);
+//        ArrayUtil.showArray(ans2);
+
+        int[] nums = {1,2,3};
+        int[] nums1 = {1,1,1};
+        int[] nums2 = {1,-1,0};
+//        System.out.println(day050.subarraySum2(nums, 3));
+//        System.out.println(day050.subarraySum2(nums1, 2));
+        System.out.println(day050.subarraySum2(nums2, 0));
     }
 
     /**
@@ -96,10 +106,76 @@ public class Day050 {
     /**
      * 找出所有和为 K 的数组
      *
+     * 嵌套循环遍历
+     * 时间复杂度 O(N^2)
+     * 空间复杂度 O(1)
      */
     public int subarraySum(int[] nums, int k) {
-        return -1;
+        int len = nums.length;
+        int count = 0;
+        for(int left = 0 ; left < len; left++){
+            int sum = 0;
+            for(int right = left; right < len ; right++){
+                sum += nums[right];
+                if(sum == k){
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
+    /**
+     * 使用前缀数组减少重复计算量
+     *
+     * 时间复杂度 O(N^2)
+     * 空间复杂度 O(N)
+     */
+    public int subarraySum1(int[] nums, int k) {
+        int len = nums.length;
+        int[] preSums = new int[len+1];
+        // 计算前缀和,注意int数据是否越界，越界使用long
+        for(int i = 0; i < len; i++){
+            preSums[i+1] = preSums[i] + nums[i];
+        }
+        int count = 0;
+        for(int left = 0; left < len; left++){
+            for(int right = left; right < len ;right++){
+                if(preSums[right+1] - preSums[left] == k){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+
+    /**
+     * 使用前缀和 + hash
+     *
+     * 构造前缀和时，在Map中 逐个保存每个前缀出现的次数
+     * 因此找出子数组的个数问题可以转化为如下模型：
+     *      子前缀和 + 子数组  = 完整前缀和
+     *      当子数组和为 K 时则有  完整前缀和 - 子前缀和 = K
+     *      因此只要判断 Map中是否存在等于 完整前缀和 - K 的子前缀和
+     * 假设子数组的下标起止位置为 [j, i ]
+     * 那么只需要在Map中找出子前缀出现的次数 preSum[i] - k 出现的次数
+     * 出现过多少次，代表这存在着多少中满足[x, i] 的可能使用 [x,i] 的和为K
+     *
+     */
+    public int subarraySum2(int[] nums, int k) {
+        Map<Integer,Integer> map = new HashMap<>();
+        map.put(0,1);
+        int preSum = 0, count = 0;
+        for(int i = 0 ; i < nums.length; i++){
+            preSum += nums[i];
+            if(map.containsKey(preSum - k)){
+                count += map.get(preSum - k);
+            }
+            // 若之前存在了preSum 则在原基础上+1
+            map.put(preSum, map.getOrDefault(preSum,0) + 1);
+        }
+        return count;
+    }
 
 }
