@@ -1,9 +1,9 @@
 package leetcode.oneMoreHundred;
 
+import com.alibaba.fastjson.JSON;
 import utils.ArrayUtil;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @className: Day050
@@ -52,6 +52,29 @@ import java.util.Map;
  * -1000 <= nums[i] <= 1000
  * -107 <= k <= 107
  *
+ *
+ * 《15. 三数之和》
+ * 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。
+ * 注意：答案中不可以包含重复的三元组。
+ *
+ * 示例 1：
+ *
+ * 输入：nums = [-1,0,1,2,-1,-4]
+ * 输出：[[-1,-1,2],[-1,0,1]]
+ * 示例 2：
+ *
+ * 输入：nums = []
+ * 输出：[]
+ * 示例 3：
+ *
+ * 输入：nums = [0]
+ * 输出：[]
+ *  
+ * 提示：
+ *
+ * 0 <= nums.length <= 3000
+ * -105 <= nums[i] <= 105
+ *
  */
 public class Day050 {
 
@@ -70,7 +93,13 @@ public class Day050 {
         int[] nums2 = {1,-1,0};
 //        System.out.println(day050.subarraySum2(nums, 3));
 //        System.out.println(day050.subarraySum2(nums1, 2));
-        System.out.println(day050.subarraySum2(nums2, 0));
+//        System.out.println(day050.subarraySum2(nums2, 0));
+
+        int[] input = {-1,0,1,2,-1,-4};
+        List<List<Integer>> lists = day050.threeSum(input);
+        for(List<Integer> list : lists){
+            System.out.println(JSON.toJSON(list));
+        }
     }
 
     /**
@@ -176,6 +205,42 @@ public class Day050 {
             map.put(preSum, map.getOrDefault(preSum,0) + 1);
         }
         return count;
+    }
+
+
+    /**
+     * 求三数之和等于 0
+     *
+     * 为了避免重复，首先对数组进行排序
+     * 排序后的数组方便使用相邻下标来判断元素是否相同
+     * 若相同则跳过当前元素,否则进行等值判断
+     *
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        ArrayList<List<Integer>> lists = new ArrayList<>();
+        int len = nums.length;
+        for(int first = 0; first < len; first++){
+            if(first > 0 && nums[first] == nums[first - 1 ]){ continue;}
+            int target = - nums[first];
+            for(int second = first + 1; second < len; second++ ){
+                if(second > first + 1 && nums[second] == nums[second-1]){ continue; }
+                int third = len - 1;
+                // 判断 若 nums[second] + nums[third] > target 则说明third 太大
+                while(third > second && nums[second] + nums[third] > target){
+                    third--;
+                }
+                if(third == second){ break; }
+                if(nums[second] + nums[third] == target){
+                    ArrayList<Integer> list = new ArrayList<>();
+                    list.add(nums[first]);
+                    list.add(nums[second]);
+                    list.add(nums[third]);
+                    lists.add(list);
+                }
+            }
+        }
+        return lists;
     }
 
 }
