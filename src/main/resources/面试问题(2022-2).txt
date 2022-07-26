@@ -394,6 +394,26 @@ sentinel 限流使用的是一种近似的 滑动时间窗算法，具体来讲 
 
 
 3. 比较一下 paxos, zab 和 raft协议之间的区别?
+paxos协议(basic paxos) 算法描述:
+算法中存在三种角色:
+a) 提案节点 Proposer: 负责向集群中发起提案
+c) 决策节点 Acceptor: 负责对提案进行决策和审批
+d) 记录节点 Learner: 记录所有已经通过了决策的审批，如网络分区出现后少数派需要跟上多数派时，
+                    这时的少数派就是记录节点
+
+算法可以分为两个阶段
+阶段一:
+proposer 向Acceptor 发送编号为N的提案 作为 prepare请求
+Acceptor 判断提案之前是否接受到过编号大于N的提案
+    若没有接收到比N更大的提案,则向同意该提案，并返回之前接收到的最大的提案内容 maxValue作为返回
+    若之前接收到过比N更大的提案,则直接忽略该编号为N的提案
+
+阶段二:
+Proposer 接收到来自Acceptor 集合中过半数的 Acceptor 响应就会将提案N以及之前收到的maxValue作为value 一起组成二元组(N,maxValue)作为
+        Accept 请求发送给到Acceptor
+Acceptor 接收到编号为N的Accept请求，只要该Acceptor还未对编号大于N的prepare做出过响应，就通过该提案,并记录下来
+
+
 
 
 
