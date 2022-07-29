@@ -1,5 +1,7 @@
 package datastruct;
 
+import leetcode.byteDance.Day02;
+
 /**
  * @Class: TreeNode
  * @Description: 二叉树节点
@@ -14,4 +16,10 @@ public class TreeNode {
 
     public TreeNode(){}
     public TreeNode(int x) { val = x; }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
 }
