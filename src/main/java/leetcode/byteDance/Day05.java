@@ -1,6 +1,7 @@
 package leetcode.byteDance;
 
 import datastruct.ListNode;
+import edu.princeton.cs.StdRandom;
 import utils.ArrayUtil;
 import utils.LinkedListUtil;
 
@@ -29,7 +30,7 @@ public class Day05 {
             int rand;
             while((rand = random.nextInt(50)) < 2 ) rand = random.nextInt(50);
             int[] ints = ArrayUtil.randValueArray(rand);
-
+            StdRandom.shuffle(ints);
             day05.quickSort(ints);
 
             for(int k = 0; k < ints.length - 1; k++){
