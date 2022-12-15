@@ -1,5 +1,12 @@
 package algorithmsContest.charpt1;
 
+import edu.princeton.cs.In;
+
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.Stack;
+
 /**
  * 1.3 栈
  *
@@ -21,8 +28,32 @@ package algorithmsContest.charpt1;
  */
 public class RightDress {
 
+    // 3 5 1 7 4 6 =>  5 7 7 0 6 0
     public static void main(String[] args) {
-
+        RightDress instance = new RightDress();
+        instance.nearestHigher();
     }
 
+
+    public void nearestHigher(){
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        int[] a = new int[n];
+        for(int i = 0; i < n; i++){
+            a[i] = scanner.nextInt();
+        }
+
+        // 单调递减栈
+        Deque<Integer> stack = new LinkedList<>();
+        int[] ans = new int[n];
+        for(int i = 0; i < n ; i++){
+            while(!stack.isEmpty() && a[i] > a[stack.peek()]){
+                Integer pop = stack.pop();
+                ans[pop] = a[i];
+            }
+            stack.push(i);
+        }
+        for(int k : ans)
+            System.out.println(k);
+    }
 }

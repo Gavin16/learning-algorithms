@@ -1,4 +1,4 @@
-package algorithmsContest.charpt1;
+package algorithmsContest.charpt1.practice;
 
 import datastruct.ListNode;
 import utils.LinkedListUtil;
@@ -8,15 +8,15 @@ import java.util.Map;
 
 /**
  * @className: LinkedListPractice
- * @description:
+ * @description: 1.1 链表练习
  * @version: 1.0
  * @author: minsky
  * @date: 2022/12/11
  */
-public class LinkedListPractice {
+public class Practice_1_1 {
 
     public static void main(String[] args) {
-        LinkedListPractice instance = new LinkedListPractice();
+        Practice_1_1 instance = new Practice_1_1();
 //        Node node = new Node(1);
 //
 //        Node node2 = new Node(3);
