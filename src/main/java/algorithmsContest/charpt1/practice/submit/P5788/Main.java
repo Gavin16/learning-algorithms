@@ -29,7 +29,7 @@ public class Main {
             else ans[j] = stack.top();
             stack.push(j);
         }
-        for(int i = 1; i < ans.length; i++)
+        for(int i = 1; i <= n; i++)
             System.out.printf("%d ", ans[i]);
     }
 
