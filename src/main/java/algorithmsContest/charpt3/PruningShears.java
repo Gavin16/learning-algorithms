@@ -1,5 +1,7 @@
 package algorithmsContest.charpt3;
 
+import utils.ArrayUtil;
+
 import java.util.*;
 
 /**
@@ -41,7 +43,7 @@ import java.util.*;
  * 房间里有n块奶酪，给出每块奶酪的坐标，一只老鼠要把它们都吃掉，它的初始坐标是(0,0). 问至少要跑多少距离? 1 <= n <= 15;
  *
  * 输入: 第一行输入一个整数， 表示奶酪的数量n; 第 2 - n+1 行中，每行输入两个实数， 第 i+1 行的实数标识第i块奶酪的坐标(xi,yi)
- * 输出: 输出一个实数，表示要跑的最远距离， 保留两位小数。
+ * 输出: 输出一个实数，表示要跑的最短距离， 保留两位小数。
  *
  * --------------------------------------------------------------------------------------------------------------------
  * 例3.6 Tempter of the bone
@@ -56,6 +58,12 @@ import java.util.*;
  * 输出: 每个测试，如果够能到达, 输出 YES, 否则输出 NO
  *
  *
+ *
+ * --------------------------------------------------------------------------------------------------------------------
+ * 例3.10 SUDOKU
+ * 问题描述: 九宫格问题, 又称为数独问题。把一个9行9列的网格再细分为9个3*3的子网格。 要求每行，每列，每个子网格内都只能
+ * 填 1 - 9中的一个数字。 每行，每列，每个字网格内都不允许出现相同的数字。给出一个填写了部分格子的九宫格，要求填充
+ * 完九宫格并输出，如果有多种结果，则只需要输出其中一种。
  *
  * --------------------------------------------------------------------------------------------------------------------
  *
@@ -74,6 +82,21 @@ public class PruningShears {
         int ans = instance.CatchThatCow(2, 18);
         System.out.println(ans);
 
+        // 例3.4 数字三角形
+        int[] sequence = instance.DigitalTriangle(3, 9);
+        ArrayUtil.showArray(sequence);
+
+        // 例3.6 Tempter of the bone
+        char[][] matrix = {
+                {'.', '.', 'X', '.', 'X', '.', '.'},
+                {'.', '.', '.', '.', '.', '.', '.'},
+                {'S', '.', '.', '.', '.', 'X', '.'},
+                {'X', '.', '.', 'X', '.', '.', '.'},
+                {'.', '.', '.', '.', 'X', '.', '.'},
+                {'.', 'X', '.', '.', '.', '.', 'X'},
+                {'.', '.', '.', '.', '.', '.', 'D'}
+        };
+        instance.TempterOfTheBone(matrix, 18, 2, 0, 6, 6);
     }
 
 
@@ -181,13 +204,230 @@ public class PruningShears {
         return step;
     }
 
+
+    private static final int MAX_SUM = 12345;
+    private int[] ans;
+    private long ssum;
     /**
      * 例3.4 数字三角形
+     *
+     * 使用暴力搜索 + 枝剪
+     * 其中暴力搜索指的 对于输入n, 做n!次尝试。 当得到一种全排列之后
+     * 使用固定的系数 factor 计算判断该组合对应的结果输出是否为 sum
+     * 计算过程中，若发现前面部分已经大于了 sum, 那么则放弃该排列，尝试下一组。
+     *
+     * 若最后发现某排列的计算结果 等于sum, 则比较判断是否是最小字典序，保存最小字典序结果作为输出。
+     *
      * @param n
      * @param sum
      * @return
      */
-    public int[] DigitalTriangle(int n, int sum){
-        return null;
+    public int[] DigitalTriangle(int n, long sum){
+        if(n == 1) {return new int[] {1}; }
+        int[] factors = new int[n];
+        for(int i = 0; i < n; i++){
+            factors[i] = (comb(n-1, i));
+        }
+
+        int[] array = new int[n];
+        for(int i = 0; i < n; i++) array[i] = i + 1;
+        ssum = sum;
+
+        permute(array, 0, n, factors);
+        return ans;
     }
+
+    private void findDictMin(int n, long sum, int[] factors, int[] array) {
+        long currSum = 0;
+        for(int k = 0; k < n; k++){
+            currSum += factors[k] * array[k];
+            if(currSum > sum) break;
+        }
+        if(currSum == sum){
+            if(ans == null){
+                ans = Arrays.copyOf(array, n);
+            }else{
+                for(int s = 0; s < n; s++){
+                    if(array[s] != ans[s]){
+                        ans = array[s] < ans[s] ? Arrays.copyOf(array, n) : ans;
+                        break;
+                    }
+                }
+            }
+
+        }
+    }
+
+    private void permute(int[] array, int start, int n, int[] factors){
+        if(start == n){
+            findDictMin(n, ssum, factors, array);
+        }else{
+            for(int i = start; i < n; i++){
+                swap(array, start, i);
+                permute(array, start + 1, n, factors);
+                swap(array, start, i);
+            }
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    // C(n, k)计算组合数
+    private int comb(int n, int k){
+        int a = 1, b = 1;
+        if(k > n/2){
+            k = n - k;
+        }
+        for(int i = 1; i <= k; i++){
+            a *=(n + 1 - i);
+            b *= i;
+        }
+        return a / b;
+    }
+
+
+    double minCheeseDist = Double.MAX_VALUE;
+
+
+
+    class CheeseNode{
+        double x, y;
+        CheeseNode(double x, double y, CheeseNode next){
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    /**
+     * 例3.5 吃奶酪
+     *
+     * 全排列，找出所有排列中路程最短的; 距离使用直线距离
+     *
+     * @return
+     */
+    public double EachCheese(double[][] positions){
+        dfsEat(0, positions);
+        return minCheeseDist;
+    }
+
+    /**
+     *
+     * @param i
+     * @param positions
+     */
+    private void dfsEat(int i,  double[][] positions) {
+        if(i == positions.length){
+            double currDist = calPathDistance(positions);
+            minCheeseDist = currDist < minCheeseDist ? currDist : minCheeseDist;
+        }else{
+            for(int k = i; k < positions.length; k++){
+                swap(positions, i, k);
+                dfsEat(i+1, positions);
+                swap(positions, i, k);
+            }
+        }
+    }
+
+    private void swap(double[][] positions, int i, int j){
+        double[] tmp = positions[i];
+        positions[i] = positions[j];
+        positions[j] = tmp;
+    }
+
+    /**
+     * 计算当前所有点的路径和
+     * @param positions
+     * @return
+     */
+    private double calPathDistance(double[][] positions) {
+        double total = 0;
+        double preX = 0, preY = 0;
+        for(double[] pos : positions){
+            double xGap = pos[0] - preX;
+            double yGap = pos[1] - preY;
+            total += Math.sqrt(xGap * xGap + yGap * yGap);
+            preX = pos[0];
+            preY = pos[1];
+        }
+        return total;
+    }
+
+
+
+    // (x, y) 到终止目标点的汉明距离
+    private int hammingDist(int x, int y, int dx, int dy){
+        return Math.abs(dx - x) + Math.abs(dy - y);
+    }
+
+    // (x, y)边界判断
+    private boolean check(int x, int y, int N, int M){
+        return x >= 0 && x < N && y >= 0 && y < M ? true : false;
+    }
+
+    // 四个移动方向
+    private int[][] direction = {{1,0},{0,1},{-1,0},{0,-1}};
+
+    // 访问过的节点进行记录
+    byte[][] visit;
+
+    boolean reachable = false;
+    /**
+     * 例3.6 Tempter of the bone
+     *
+     * @param matrix  地图
+     * @param T       步数限制
+     * @param sx      起始点 X 坐标
+     * @param sy      起始点 Y 坐标
+     * @param dx      终止点 X 坐标
+     * @param dy      终止点 Y 坐标
+     */
+    public void TempterOfTheBone(char[][] matrix, int T, int sx,
+                                 int sy, int dx, int dy){
+        int N = matrix.length, M = matrix[0].length;
+        visit = new byte[N][M];
+
+        // 若S 到 D 的汉明距离 与 T的差为奇数, 说明即使绕着走也无法达到
+        // 因为 绕着只会比汉明距多偶数步 => 差值必须为偶数
+        int left = T - hammingDist(sx, sy, dx, dy);
+        if(left % 2 == 1){
+            System.out.println("NO");
+            return;
+        }
+        visit[sx][sy] = 1;
+
+        dfsReachable(matrix, T, sx, sy, dx, dy, 0);
+
+        if(reachable) System.out.println("YES");
+        else System.out.println("NO");
+    }
+
+    private void dfsReachable(char[][]matrix, int T,int cx, int cy,
+                               int dx, int dy, int cnt){
+        if(reachable) return;
+        // 枝剪判断若剩余步数少于当前位置到目标为止汉明距,则直接返回
+        int tmp = T - cnt - hammingDist(cx, cy, dx, dy);
+        if(tmp < 0) return;
+
+        if(cnt == T && matrix[cx][cy] == 'D'){
+            reachable = true;
+            return;
+        }
+        int N = matrix.length, M = matrix[0].length;
+        for(int i = 0; i < direction.length; i++){
+            int[] dire = direction[i];
+            int nx = cx + dire[0], ny = cy + dire[1];
+            if(check(nx, ny,N, M) && visit[nx][ny] != 1 && matrix[nx][ny] != 'X'){
+                visit[nx][ny] = 1;
+                dfsReachable(matrix, T, nx, ny, dx, dy, cnt + 1);
+                visit[nx][ny] = 0;
+            }
+        }
+    }
+
+
+
 }

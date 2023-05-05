@@ -52,6 +52,10 @@ public class ArrayUtil {
      * @param arr
      */
     public static void showArray(int[] arr){
+        if(null == arr){
+            System.out.println("null");
+            return;
+        }
         int len = arr.length;
         showArray(arr,len);
     }
