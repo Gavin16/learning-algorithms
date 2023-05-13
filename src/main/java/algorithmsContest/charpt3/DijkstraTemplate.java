@@ -15,6 +15,36 @@ import java.util.*;
  * <p>
  * <p>
  * 分析: n 与 m 的规模接近, 图相对稀疏，考虑使用邻接表来表示。
+ *
+ * ------------------------------------------------------------------------------------------------------------
+ * 1631. 最小体力消耗路径
+ *
+ * 你准备参加一场远足活动。给你一个二维 rows x columns 的地图 heights ，其中 heights[row][col] 表示格子 (row, col) 的高度。
+ * 一开始你在最左上角的格子 (0, 0) ，且你希望去最右下角的格子 (rows-1, columns-1) （注意下标从 0 开始编号）。
+ * 你每次可以往 上，下，左，右 四个方向之一移动，你想要找到耗费 体力 最小的一条路径。
+ * 一条路径耗费的 体力值 是路径上相邻格子之间 高度差绝对值 的 最大值 决定的。
+ * 请你返回从左上角走到右下角的最小 体力消耗值 。
+ *
+ * 输入：heights = [[1,2,2],[3,8,2],[5,3,5]]
+ * 输出：2
+ * 解释：路径 [1,3,5,3,5] 连续格子的差值绝对值最大为 2 。
+ * 这条路径比路径 [1,2,2,2,5] 更优，因为另一条路径差值最大值为 3 。
+ *
+ * 输入：heights = [[1,2,3],[3,8,4],[5,3,5]]
+ * 输出：1
+ * 解释：路径 [1,2,3,4,5] 的相邻格子差值绝对值最大为 1 ，比路径 [1,3,5,3,5] 更优。
+ *
+ * 输入：heights = [[1,2,1,1,1],[1,2,1,2,1],[1,2,1,2,1],[1,2,1,2,1],[1,1,1,2,1]]
+ * 输出：0
+ * 解释：上图所示路径不需要消耗任何体力。
+ *
+ * 提示：
+ *
+ * rows == heights.length
+ * columns == heights[i].length
+ * 1 <= rows, columns <= 100
+ * 1 <= heights[i][j] <= 106
+ *
  * @version: 1.0
  * @author: minsky
  * @date: 2023/5/7
@@ -44,11 +74,55 @@ public class DijkstraTemplate {
             adjList.add(neighbors);
         }
 
-        long[] minDist = instance.dijkstra1(adjList, 6);
-        for(int k = 0; k < minDist.length; k++){
-            if(k == minDist.length - 1) System.out.println(minDist[k]);
-            else System.out.printf("%s,", minDist[k]);
+//        long[] minDist = instance.dijkstra1(adjList, 6);
+//        for(int k = 0; k < minDist.length; k++){
+//            if(k == minDist.length - 1) System.out.println(minDist[k]);
+//            else System.out.printf("%s,", minDist[k]);
+//        }
+
+        long[] longs = instance.dijkstra2(adjTab, 6);
+        for(int k = 0; k < longs.length; k++){
+            if(k == longs.length - 1) System.out.println(longs[k]);
+            else System.out.printf("%s,", longs[k]);
         }
+
+        // 1631. 最小体力消耗路径
+        int[][] heights = {
+                {1, 2, 2},
+                {3, 8, 2},
+                {5, 3, 5}
+        };
+        int[][] heights1 = {
+                {1,2,1,1,1},
+                {1,2,1,2,1},
+                {1,2,1,2,1},
+                {1,2,1,2,1},
+                {1,1,1,2,1},
+        };
+        int[][] heights2 = {
+                {1, 2, 3},
+                {3, 8, 4},
+                {5, 3, 5}
+        };
+//        [[4,3,4,10,5,5,9,2],[10,8,2,10,9,7,5,6],[5,8,10,10,10,7,4,2],[5,1,3,1,1,3,1,9],[6,4,10,6,10,9,4,6]]
+        int[][] heights3 = {
+                {4, 3, 4, 10, 5,5,9,2},
+                {10,8, 2, 10, 9,7,5,6},
+                {5, 8, 10,10,10,7,4,2},
+                {5, 1, 3,  1, 1,3,1,9},
+                {6, 4,10,  6,10,9,4,6}
+        };
+
+        int ans = instance.minimumEffortPath(heights3);
+        System.out.println(ans);
+
+
+//        int ans = instance.minimumEffortPath(heights);
+//        System.out.println(ans);
+//        int ans1 = instance.minimumEffortPath(heights1);
+//        System.out.println(ans1);
+//        int ans2 = instance.minimumEffortPath(heights2);
+//        System.out.println(ans2);
     }
 
     /**
@@ -105,6 +179,91 @@ public class DijkstraTemplate {
             this.id = id;
             this.dist = dist;
         }
+    }
+
+
+    /**
+     * Dijkstra 使用数组实现 时间复杂度O(n^2)
+     * 当图的边数远远大于节点数时，优先使用邻接矩阵表示图
+     *
+     * @param adjTab
+     * @param n
+     * @return
+     */
+    public long[] dijkstra2(int[][] adjTab, int n) {
+        long[] dist = new long[n];
+        boolean[] used = new boolean[n];
+        long INF = Long.MAX_VALUE / 2;
+
+        Arrays.fill(dist, INF);
+        dist[0] = 0;
+
+        for(int i = 0; i < n; i++){
+            // 找出距离1(0)号节点距离最小的点
+            int k = -1;
+            for(int j = 0; j < n; j++){
+                if(!used[j] && (k == -1 || dist[k] > dist[j])){
+                    k = j;
+                }
+            }
+            used[k] = true;
+            // 用最小值更新所有与最小值节点相邻的点到1号节点的距离
+            for(int s = 0; s < n; s++){
+                if(!used[s] && adjTab[k][s] > 0){
+                    dist[s] = Math.min(dist[k] + adjTab[k][s], dist[s]);
+                }
+            }
+        }
+        for(int t = 0; t < n; t++){
+            if(dist[t] >= INF) dist[t] = -1;
+        }
+        return dist;
+    }
+
+
+    /**
+     * 1631. 最小体力消耗路径
+     *
+     * (1) 根据宫格构造图的邻接表
+     * (2) 根据链接表
+     * @param heights
+     * @return
+     */
+    public int minimumEffortPath(int[][] heights) {
+        int rows = heights.length, cols = heights[0].length;
+        int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        int[] dist = new int[rows * cols];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[0] = 0;
+
+        boolean[] visit = new boolean[rows * cols];
+        PriorityQueue<int[]> queue = new PriorityQueue<>(
+                Comparator.comparingInt(arr -> arr[2]));
+
+        queue.offer(new int[]{0, 0, 0});
+        int finishId = rows * cols - 1;
+
+        while(!queue.isEmpty()){
+            int[] poll = queue.poll();
+            int x = poll[0], y = poll[1], d = poll[2];
+            int id = x * cols + y;
+            if(id == finishId) break;
+            if(visit[id]) continue;
+            visit[id] = true;
+
+            for(int i = 0; i < dir.length; i++){
+                int next_x = x + dir[i][0];
+                int next_y = y + dir[i][1];
+                int next_id = next_x * cols + next_y;
+                if(next_x >= 0 && next_x < rows && next_y >=0 && next_y < cols &&
+                         Math.max(d, Math.abs(heights[x][y] - heights[next_x][next_y])) < dist[next_id]){
+                    dist[next_id] = Math.max(d, Math.abs(heights[x][y]-heights[next_x][next_y]));
+                    queue.offer(new int[]{next_x, next_y, dist[next_id]});
+                }
+            }
+        }
+        return dist[rows * cols - 1];
     }
 
 }
