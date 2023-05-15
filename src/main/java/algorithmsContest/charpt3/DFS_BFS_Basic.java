@@ -1,10 +1,7 @@
 package algorithmsContest.charpt3;
 
-import org.apache.commons.compress.utils.Lists;
-import sun.lwawt.macosx.CPrinterDevice;
 import utils.ArrayUtil;
 
-import java.awt.image.ImageProducer;
 import java.util.*;
 
 /**
